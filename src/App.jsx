@@ -283,7 +283,7 @@ export default function App() {
             📅 2026년 3월 공부 플래너
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 18 }}>
-            미듀의 React 정복 체크리스트 🌸
+            React 정복 체크리스트 🌸
           </div>
           <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 99, height: 8, marginBottom: 7 }}>
             <div style={{ background: "white", height: "100%", borderRadius: 99, width: `${progress}%`, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" }} />
