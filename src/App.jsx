@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const todayDate  = new Date();
 const TODAY_DAY  = todayDate.getDate();
@@ -196,24 +196,28 @@ const WEEKS = [
   }
 ];
 
-// 모든 날짜 목록 (이동 대상용)
 const ALL_DAYS = WEEKS.flatMap(w => w.days.map(d => d.day));
 const ALL_TASKS_FLAT = WEEKS.flatMap(w => w.days.flatMap(d => d.tasks));
 const DAY_LABELS = ["일","월","화","수","목","금","토"];
+const COLORS = ["#f59e0b","#6366f1","#10b981","#ef4444","#0ea5e9","#a855f7","#ec4899","#f97316"];
 
-function getDayLabel(day) {
-  return DAY_LABELS[new Date(2026, 2, day).getDay()];
-}
-function isWeekend(day) {
-  const d = new Date(2026, 2, day).getDay();
-  return d === 0 || d === 6;
-}
-function isToday(day) {
-  return IS_MARCH_2026 && day === TODAY_DAY;
-}
-function getTodayLabel() {
-  if (!IS_MARCH_2026) return null;
-  return `3/${TODAY_DAY}(${getDayLabel(TODAY_DAY)})`;
+function getDayLabel(day) { return DAY_LABELS[new Date(2026, 2, day).getDay()]; }
+function isWeekend(day) { const d = new Date(2026, 2, day).getDay(); return d === 0 || d === 6; }
+function isToday(day) { return IS_MARCH_2026 && day === TODAY_DAY; }
+function getTodayLabel() { return IS_MARCH_2026 ? `3/${TODAY_DAY}(${getDayLabel(TODAY_DAY)})` : null; }
+
+// 🎉 confetti 파티클 생성
+function makeConfetti(count = 60) {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    size: Math.random() * 8 + 5,
+    delay: Math.random() * 0.5,
+    duration: Math.random() * 1.5 + 1.5,
+    rotate: Math.random() * 360,
+    shape: Math.random() > 0.5 ? "circle" : "rect",
+  }));
 }
 
 export default function App() {
@@ -221,15 +225,17 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem("mio-checklist-v3") || "{}"); }
     catch { return {}; }
   });
-  // 이동된 할일: { taskId: targetDay }
   const [moved, setMoved] = useState(() => {
     try { return JSON.parse(localStorage.getItem("mio-checklist-moved") || "{}"); }
     catch { return {}; }
   });
   const [openWeeks, setOpenWeeks] = useState({ week1: true, week2: false, week3: false, week4: false });
   const [tab, setTab] = useState("all");
-  // 이동 모달 상태
-  const [moveModal, setMoveModal] = useState(null); // { taskId, taskText, fromDay }
+  const [moveModal, setMoveModal] = useState(null);
+  const [confetti, setConfetti] = useState([]);
+  const [celebMsg, setCelebMsg] = useState(null); // null | { type: "day"|"all", text }
+  const prevTodayDone = useRef(null);
+  const prevAllDone = useRef(null);
 
   useEffect(() => {
     try { localStorage.setItem("mio-checklist-v3", JSON.stringify(checked)); }
@@ -249,30 +255,16 @@ export default function App() {
 
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
   const toggleWeek = (id) => setOpenWeeks(p => ({ ...p, [id]: !p[id] }));
-
-  const openMoveModal = (taskId, taskText, fromDay) => {
-    setMoveModal({ taskId, taskText, fromDay });
-  };
-
+  const openMoveModal = (taskId, taskText, fromDay) => setMoveModal({ taskId, taskText, fromDay });
   const confirmMove = (targetDay) => {
     if (!moveModal) return;
     setMoved(p => ({ ...p, [moveModal.taskId]: targetDay }));
     setMoveModal(null);
   };
+  const cancelMove = (taskId) => setMoved(p => { const n = { ...p }; delete n[taskId]; return n; });
 
-  const cancelMove = (taskId) => {
-    setMoved(p => {
-      const next = { ...p };
-      delete next[taskId];
-      return next;
-    });
-  };
-
-  // 특정 날짜에 표시할 태스크 계산 (원래 + 이동된 것)
   function getTasksForDay(originalDay, originalTasks) {
-    // 원래 이 날의 태스크 중 다른 날로 이동 안 된 것
     const staying = originalTasks.filter(t => !(moved[t.id] && moved[t.id] !== originalDay));
-    // 다른 날에서 이 날로 이동된 것
     const incoming = ALL_TASKS_FLAT.filter(t => moved[t.id] === originalDay && !originalTasks.find(ot => ot.id === t.id));
     return { staying, incoming };
   }
@@ -287,6 +279,28 @@ export default function App() {
       })
     : [];
   const todayDone = todayTasks.filter(t => checked[t.id]).length;
+  const allComplete = totalDone === ALL_TASKS_FLAT.length && ALL_TASKS_FLAT.length > 0;
+
+  // 🎉 축하 애니메이션 트리거
+  useEffect(() => {
+    if (prevTodayDone.current === null) { prevTodayDone.current = todayDone; return; }
+    if (todayTasks.length > 0 && todayDone === todayTasks.length && prevTodayDone.current < todayDone) {
+      setConfetti(makeConfetti(50));
+      setCelebMsg({ type: "day", text: "오늘 할 일 완료! 🎉\n오늘도 고생했어 🌸" });
+      setTimeout(() => { setConfetti([]); setCelebMsg(null); }, 4000);
+    }
+    prevTodayDone.current = todayDone;
+  }, [todayDone]);
+
+  useEffect(() => {
+    if (prevAllDone.current === null) { prevAllDone.current = totalDone; return; }
+    if (allComplete && prevAllDone.current < totalDone) {
+      setConfetti(makeConfetti(120));
+      setCelebMsg({ type: "all", text: "3월 전체 완료!!! 🎊\n진짜 대단해!! 🌸🌸🌸" });
+      setTimeout(() => { setConfetti([]); setCelebMsg(null); }, 6000);
+    }
+    prevAllDone.current = totalDone;
+  }, [totalDone, allComplete]);
 
   const LEGEND = [
     { icon: "🎬", label: "얄코 강의" },
@@ -319,15 +333,68 @@ export default function App() {
           border-radius: 12px; padding: 12px 16px; margin-bottom: 8px;
           cursor: pointer; display: flex; justify-content: space-between; align-items: center;
           font-family: 'Pretendard', -apple-system, sans-serif;
-          font-size: 14px; font-weight: 500; color: #374151;
-          transition: all 0.15s;
+          font-size: 14px; font-weight: 500; color: #374151; transition: all 0.15s;
         }
         .day-btn:hover { border-color: #7c3aed; background: #faf5ff; color: #7c3aed; }
-        .moved-badge {
-          font-size: 11px; background: #fef3c7; color: #d97706;
-          border-radius: 99px; padding: 2px 8px; font-weight: 700;
+
+        /* confetti */
+        @keyframes confetti-fall {
+          0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .confetti-piece {
+          position: fixed; top: -20px; z-index: 999; pointer-events: none;
+          animation: confetti-fall linear forwards;
+        }
+
+        /* 축하 메시지 */
+        @keyframes pop-in {
+          0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+          60%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        @keyframes pop-out {
+          0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+          100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+        .celeb-msg {
+          position: fixed; top: 45%; left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 1000; pointer-events: none;
+          text-align: center;
+          background: white;
+          border-radius: 24px;
+          padding: 28px 36px;
+          box-shadow: 0 8px 40px rgba(124,58,237,0.25);
+          animation: pop-in 0.4s cubic-bezier(.4,0,.2,1) forwards;
+          white-space: pre-line;
         }
       `}</style>
+
+      {/* 🎉 CONFETTI */}
+      {confetti.map(p => (
+        <div key={p.id} className="confetti-piece" style={{
+          left: `${p.x}%`,
+          width: p.shape === "circle" ? p.size : p.size * 0.7,
+          height: p.shape === "circle" ? p.size : p.size * 1.4,
+          background: p.color,
+          borderRadius: p.shape === "circle" ? "50%" : "2px",
+          animationDuration: `${p.duration}s`,
+          animationDelay: `${p.delay}s`,
+        }} />
+      ))}
+
+      {/* 🎉 CELEBRATION MESSAGE */}
+      {celebMsg && (
+        <div className="celeb-msg">
+          <div style={{ fontSize: celebMsg.type === "all" ? 48 : 36 }}>
+            {celebMsg.type === "all" ? "🎊" : "🎉"}
+          </div>
+          <div style={{ fontSize: celebMsg.type === "all" ? 18 : 16, fontWeight: 800, color: "#1e1b4b", marginTop: 10, lineHeight: 1.6 }}>
+            {celebMsg.text}
+          </div>
+        </div>
+      )}
 
       <div style={{ fontFamily: "'Pretendard', -apple-system, sans-serif", minHeight: "100vh", paddingBottom: 48 }}>
 
@@ -342,7 +409,7 @@ export default function App() {
             📅 2026년 3월 공부 플래너
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 18 }}>
-            React 스터디 체크리스트 🌸
+            React Study Checklist 🌸
           </div>
           <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 99, height: 8, marginBottom: 7 }}>
             <div style={{ background: "white", height: "100%", borderRadius: 99, width: `${progress}%`, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" }} />
@@ -387,7 +454,7 @@ export default function App() {
             {Object.keys(moved).length === 0 ? (
               <div style={{ textAlign: "center", padding: "40px 20px", color: "#9ca3af", fontSize: 14 }}>
                 미룬 할일이 없어요 🎉<br/>
-                <span style={{ fontSize: 12 }}>할일을 길게 눌러서 날짜를 이동할 수 있어요</span>
+                <span style={{ fontSize: 12 }}>할일 오른쪽 미루기 버튼을 눌러보세요</span>
               </div>
             ) : (
               Object.entries(moved).map(([taskId, targetDay]) => {
@@ -453,12 +520,10 @@ export default function App() {
                         const tdy = isToday(dayObj.day);
                         const { staying, incoming } = getTasksForDay(dayObj.day, dayObj.tasks);
                         const allTasksForDay = [...staying, ...incoming];
-
                         let filtered;
                         if (tab === "today") filtered = tdy ? allTasksForDay : [];
                         else if (tab === "undone") filtered = allTasksForDay.filter(t => !checked[t.id]);
                         else filtered = allTasksForDay;
-
                         if (filtered.length === 0) return null;
 
                         const dayDone = allTasksForDay.filter(t => checked[t.id]).length;
@@ -493,14 +558,13 @@ export default function App() {
                             <div style={{ padding: "2px 14px 10px" }}>
                               {filtered.map((task, i) => {
                                 const isMoved = !!moved[task.id];
-                                const isIncoming = incoming.find(t => t.id === task.id);
+                                const isIncoming = !!incoming.find(t => t.id === task.id);
                                 return (
                                   <div key={task.id} style={{
                                     display: "flex", alignItems: "flex-start", gap: 10,
                                     padding: "10px 0",
                                     borderTop: i > 0 ? "1px solid #f1f5f9" : "none",
                                   }}>
-                                    {/* 체크박스 */}
                                     <div onClick={() => toggle(task.id)} style={{
                                       width: 22, height: 22, borderRadius: 7, flexShrink: 0, marginTop: 1,
                                       border: checked[task.id] ? `2px solid ${week.color}` : "2px solid #d1d5db",
@@ -511,11 +575,8 @@ export default function App() {
                                     }}>
                                       {checked[task.id] && <span style={{ color: "white", fontSize: 13, fontWeight: 900, lineHeight: 1 }}>✓</span>}
                                     </div>
-                                    {/* 텍스트 */}
                                     <div style={{ flex: 1 }}>
-                                      {isIncoming && (
-                                        <div style={{ fontSize: 11, color: "#d97706", fontWeight: 700, marginBottom: 2 }}>📦 다른 날에서 이동됨</div>
-                                      )}
+                                      {isIncoming && <div style={{ fontSize: 11, color: "#d97706", fontWeight: 700, marginBottom: 2 }}>📦 다른 날에서 이동됨</div>}
                                       <span onClick={() => toggle(task.id)} style={{
                                         fontSize: 14, fontWeight: checked[task.id] ? 400 : 500,
                                         lineHeight: 1.6, letterSpacing: "-0.01em",
@@ -525,7 +586,6 @@ export default function App() {
                                         WebkitTapHighlightColor: "transparent"
                                       }}>{task.text}</span>
                                     </div>
-                                    {/* 이동 버튼 */}
                                     {!checked[task.id] && (
                                       isMoved ? (
                                         <button onClick={() => cancelMove(task.id)} style={{
