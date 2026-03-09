@@ -643,7 +643,7 @@ export default function App() {
                                   {/* 버튼들 */}
                                   <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
                                     {/* ⭐ 중요 토글 */}
-                                    {!reorderMode&&<button onClick={()=>toggleImportant(task.id)} style={{border:"none",background:"transparent",fontSize:15,cursor:"pointer",padding:"2px 3px",opacity:important[task.id]?1:0.25,transition:"all 0.15s",lineHeight:1}} title="중요 표시">⭐</button>}
+                                    {!reorderMode&&isCustom&&<button onClick={()=>toggleImportant(task.id)} style={{border:"none",background:"transparent",fontSize:15,cursor:"pointer",padding:"2px 3px",opacity:important[task.id]?1:0.25,transition:"all 0.15s",lineHeight:1}} title="중요 표시">⭐</button>}
                                     {isCustom&&(
                                       <button onClick={()=>deleteCustomTask(day,task.id)} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>
                                     )}
