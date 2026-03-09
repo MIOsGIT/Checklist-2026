@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 const todayDate = new Date();
 const TODAY_DAY = todayDate.getDate();
 const IS_MARCH_2026 = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 2;
+const IS_APRIL_2026 = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 3;
+const TODAY_APR_DAY = IS_APRIL_2026 ? todayDate.getDate() : null;
 
 const DEFAULT_TAGS = [
   { id: "tag-lecture",   icon: "🎬", label: "얄코 강의" },
@@ -173,6 +175,137 @@ const BASE_TASKS_BY_DAY = {
   ],
 };
 
+
+// ── 4월 기본 태스크 ──
+const APR_TASKS_BY_DAY = {
+  // 1주차 4/1(수)~4/5(일)
+  1:  [
+    { id:"a1",  text:"🎨 Tailwind CSS 공식 문서 읽기 + 유틸리티 클래스 개념 정리", tagId:"tag-practice" },
+    { id:"a2",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  2:  [
+    { id:"a3",  text:"🎨 Tailwind 기본 레이아웃 (flex, grid, spacing) 실습", tagId:"tag-practice" },
+    { id:"a4",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  3:  [
+    { id:"a5",  text:"🎨 coupang 프로젝트 컴포넌트 1개 Tailwind 적용", tagId:"tag-practice" },
+    { id:"a6",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  4:  [
+    { id:"a7",  text:"🎨 Tailwind 반응형 (sm/md/lg) + 다크모드 클래스 익히기", tagId:"tag-practice" },
+    { id:"a8",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  5:  [
+    { id:"a9",  text:"🔁 1주차 회고 + Tailwind 모르는 것 정리", tagId:"tag-quiz" },
+    { id:"a10", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  // 2주차 4/6(월)~4/12(일)
+  6:  [
+    { id:"a11", text:"📖 React Query 공식 문서 읽기 — 왜 쓰는지 이해", tagId:"tag-lecture" },
+    { id:"a12", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  7:  [
+    { id:"a13", text:"✏️ useQuery 기본 사용법 실습", tagId:"tag-practice" },
+    { id:"a14", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  8:  [
+    { id:"a15", text:"✏️ useMutation 실습 — POST/PUT/DELETE 연동", tagId:"tag-practice" },
+    { id:"a16", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  9:  [
+    { id:"a17", text:"🔁 coupang API에 React Query 연결 시도", tagId:"tag-nestjs" },
+    { id:"a18", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  10: [
+    { id:"a19", text:"🔁 React Query + coupang 연결 마무리 + 에러 처리", tagId:"tag-nestjs" },
+    { id:"a20", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  11: [
+    { id:"a21", text:"✏️ Tailwind + React Query 합쳐서 UI 다듬기", tagId:"tag-practice" },
+    { id:"a22", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  12: [
+    { id:"a23", text:"🔁 2주차 회고 + 막힌 부분 정리", tagId:"tag-quiz" },
+    { id:"a24", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  // 3주차 4/13(월)~4/19(일) — 시험 직전, 가볍게
+  13: [
+    { id:"a25", text:"📌 coupang/kurly README 작성 시작", tagId:"tag-quiz" },
+    { id:"a26", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  14: [
+    { id:"a27", text:"📌 README 마무리 + 시연 GIF 제작", tagId:"tag-quiz" },
+    { id:"a28", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  15: [
+    { id:"a29", text:"✏️ 기술 블로그 개설 (벨로그 or 티스토리)", tagId:"tag-practice" },
+    { id:"a30", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  16: [
+    { id:"a31", text:"✏️ 블로그 글 1개 초안 작성 (React 훅 정리 or NestJS 구조)", tagId:"tag-practice" },
+    { id:"a32", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  17: [
+    { id:"a33", text:"📝 블로그 글 1개 발행", tagId:"tag-quiz" },
+    { id:"a34", text:"🏫 시험 공부 시작 — 코딩은 가볍게 유지", tagId:"tag-quiz" },
+  ],
+  18: [
+    { id:"a35", text:"🏫 시험 공부 집중", tagId:"tag-quiz" },
+    { id:"a36", text:"🐍 백준 Python 1문제 (가벼운 것)", tagId:"tag-algo" },
+  ],
+  19: [
+    { id:"a37", text:"🏫 시험 공부 마무리", tagId:"tag-quiz" },
+  ],
+  // 4주차 4/20(월)~4/26(일) — 중간고사
+  20: [
+    { id:"a38", text:"🏫 시험 공부 최종 점검", tagId:"tag-quiz" },
+  ],
+  21: [
+    { id:"a39", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+  ],
+  22: [
+    { id:"a40", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+  ],
+  23: [
+    { id:"a41", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+  ],
+  24: [
+    { id:"a42", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+  ],
+  25: [
+    { id:"a43", text:"🎉 시험 끝! 컨디션 회복 + 4월 중간 돌아보기", tagId:"tag-quiz" },
+  ],
+  26: [
+    { id:"a44", text:"🔍 GitHub good first issue 탐색", tagId:"tag-practice" },
+    { id:"a45", text:"🐍 백준 Python 1문제 (복귀!)", tagId:"tag-algo" },
+  ],
+  // 5주차 4/27(월)~4/30(목)
+  27: [
+    { id:"a46", text:"✏️ 오픈소스 이슈 도전 or 사이드 프로젝트 기획", tagId:"tag-practice" },
+    { id:"a47", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  28: [
+    { id:"a48", text:"✏️ 사이드 프로젝트 or 오픈소스 이슈 진행", tagId:"tag-practice" },
+    { id:"a49", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  29: [
+    { id:"a50", text:"✏️ 사이드 프로젝트 계속", tagId:"tag-practice" },
+    { id:"a51", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+  30: [
+    { id:"a52", text:"📝 4월 전체 회고 작성 (배운 것 / 아쉬운 것 / 5월 목표)", tagId:"tag-quiz" },
+    { id:"a53", text:"📋 5월 계획 초안 작성", tagId:"tag-quiz" },
+    { id:"a54", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+  ],
+};
+
+const APR_WEEKS_META = [
+  { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)",   month:"apr", theme:"🎨 Tailwind CSS 집중",           themeDesc:"Tailwind 기초 + coupang UI 리팩토링",           color:"#8b5cf6", lightColor:"#f5f3ff", days:[1,2,3,4,5] },
+  { id:"apr-week2", label:"2주차", range:"4/6(월) ~ 4/12(일)",  month:"apr", theme:"⚡ React Query 정복",            themeDesc:"useQuery/useMutation + coupang API 연동",       color:"#0ea5e9", lightColor:"#f0f9ff", days:[6,7,8,9,10,11,12] },
+  { id:"apr-week3", label:"3주차", range:"4/13(월) ~ 4/19(일)", month:"apr", theme:"📝 포폴 정리 + 시험 준비",       themeDesc:"README/GIF + 블로그 첫 글 + 시험 공부",         color:"#10b981", lightColor:"#f0fdf4", days:[13,14,15,16,17,18,19] },
+  { id:"apr-week4", label:"4주차", range:"4/20(월) ~ 4/26(일)", month:"apr", theme:"🏫 중간고사 주간",               themeDesc:"4/21~24 시험 — 코딩 휴식, 시험 전후 정리",     color:"#ef4444", lightColor:"#fef2f2", days:[20,21,22,23,24,25,26] },
+  { id:"apr-week5", label:"5주차", range:"4/27(월) ~ 4/30(목)", month:"apr", theme:"🚀 오픈소스 or 사이드 프로젝트", themeDesc:"good first issue 도전 + 4월 회고",              color:"#f59e0b", lightColor:"#fffbeb", days:[27,28,29,30] },
+];
 const WEEKS_META = [
   { id:"week1", label:"1주차", range:"3/6(금) ~ 3/9(월)",   theme:"⚡ 섹션1·2 시작 + Python 적응",    themeDesc:"환경세팅, JSX·컴포넌트 기초 / Python 알고리즘 입문", color:"#ec4899", lightColor:"#fdf2f8", days:[6,7,8,9] },
   { id:"week2", label:"2주차", range:"3/10(화) ~ 3/16(월)", theme:"🧩 Props·State·훅 + NestJS 복습",  themeDesc:"Props, State, useReducer, useRef, useEffect / CRUD 복습", color:"#0ea5e9", lightColor:"#f0f9ff", days:[10,11,12,13,14,15,16] },
@@ -186,6 +319,9 @@ const DAY_LABELS = ["일","월","화","수","목","금","토"];
 const COLORS = ["#f59e0b","#ec4899","#10b981","#ef4444","#0ea5e9","#a855f7","#ec4899","#f97316"];
 
 function getDayLabel(d) { return DAY_LABELS[new Date(2026,2,d).getDay()]; }
+function getDayLabelApr(d) { return DAY_LABELS[new Date(2026,3,d).getDay()]; }
+function isWeekendApr(d) { const w=new Date(2026,3,d).getDay(); return w===0||w===6; }
+function isTodayApr(d) { return IS_APRIL_2026 && d===TODAY_APR_DAY; }
 function isWeekend(d)   { const w=new Date(2026,2,d).getDay(); return w===0||w===6; }
 function isToday(d)     { return IS_MARCH_2026 && d===TODAY_DAY; }
 function getTodayLabel(){ return IS_MARCH_2026 ? `3/${TODAY_DAY}(${getDayLabel(TODAY_DAY)})` : null; }
@@ -228,11 +364,17 @@ export default function App() {
     catch { return {}; }
   });
 
-  const [openWeeks, setOpenWeeks]   = useState({week1:true,week2:false,week3:false,week4:false});
+  const [month, setMonth] = useState("mar"); // "mar" | "apr"
+  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,week3:false,week4:false,"apr-week1":true,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false});
   const [tab, setTab]               = useState("all");
   const [moveModal, setMoveModal]   = useState(null);
   const [addState, setAddState]     = useState({});
   const [reorderMode, setReorderMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editingText, setEditingText] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("mio-editing-text") || "{}"); }
+    catch { return {}; }
+  });
   const [dragActiveId, setDragActiveId] = useState(null);
   const [confetti, setConfetti]     = useState([]);
   const [celebMsg, setCelebMsg]     = useState(null);
@@ -247,6 +389,7 @@ export default function App() {
   useEffect(()=>{ try{localStorage.setItem("mio-checklist-moved", JSON.stringify(moved));}         catch{} },[moved]);
   useEffect(()=>{ try{localStorage.setItem("mio-checklist-v3",    JSON.stringify(checked));}       catch{} },[checked]);
   useEffect(()=>{ try{localStorage.setItem("mio-important",       JSON.stringify(important));}      catch{} },[important]);
+  useEffect(()=>{ try{localStorage.setItem("mio-editing-text",    JSON.stringify(editingText));}    catch{} },[editingText]);
 
   useEffect(()=>{
     if(!IS_MARCH_2026) return;
@@ -448,6 +591,13 @@ export default function App() {
         )}
       </div>
 
+      {/* 월 선택 탭 */}
+      <div style={{display:"flex",gap:8,padding:"14px 16px 0",borderBottom:"1px solid #f1f5f9"}}>
+        {[["mar","🌸 3월"],["apr","🌿 4월"]].map(([m,label])=>(
+          <button key={m} onClick={()=>setMonth(m)} style={{padding:"8px 20px",borderRadius:"12px 12px 0 0",border:"none",cursor:"pointer",fontSize:13,fontWeight:700,transition:"all 0.2s",background:month===m?"white":"transparent",color:month===m?"#db2777":"#9ca3af",boxShadow:month===m?"0 -2px 8px rgba(0,0,0,0.06)":""}}>{label}</button>
+        ))}
+      </div>
+
       {/* TAGS 범례 (가로 스크롤 + 추가) */}
       <div style={{padding:"14px 16px 4px"}}>
         <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:6,scrollbarWidth:"none"}}>
@@ -480,9 +630,12 @@ export default function App() {
         {[["all","📋 전체"],["today","🌅 오늘"],["undone","⏳ 미완료"],["moved","📦 미룬 할일"],["journal","📓 학습일지"]].map(([v,label])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"8px 20px",borderRadius:99,border:"none",cursor:"pointer",fontSize:13,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:tab===v?PINK:"white",color:tab===v?"white":"#6b7280",boxShadow:tab===v?`0 2px 14px rgba(219,39,119,0.35)`:"0 1px 4px rgba(0,0,0,0.08)"}}>{label}</button>
         ))}
-        <div style={{flexShrink:0,marginLeft:"auto"}}>
-          <button onClick={()=>setReorderMode(p=>!p)} style={{padding:"8px 16px",borderRadius:99,border:`1.5px solid ${reorderMode?"#f59e0b":"#e5e7eb"}`,cursor:"pointer",fontSize:12,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:reorderMode?"#fffbeb":"white",color:reorderMode?"#d97706":"#9ca3af"}}>
-            {reorderMode?"✅ 이동 완료":"↕️ 순서 이동"}
+        <div style={{flexShrink:0,marginLeft:"auto",display:"flex",gap:6}}>
+          <button onClick={()=>{ setReorderMode(p=>!p); setEditMode(false); }} style={{padding:"8px 14px",borderRadius:99,border:`1.5px solid ${reorderMode?"#f59e0b":"#e5e7eb"}`,cursor:"pointer",fontSize:12,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:reorderMode?"#fffbeb":"white",color:reorderMode?"#d97706":"#9ca3af"}}>
+            {reorderMode?"✅ 완료":"↕️ 이동"}
+          </button>
+          <button onClick={()=>{ setEditMode(p=>!p); setReorderMode(false); }} style={{padding:"8px 14px",borderRadius:99,border:`1.5px solid ${editMode?"#db2777":"#e5e7eb"}`,cursor:"pointer",fontSize:12,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:editMode?"#fdf2f8":"white",color:editMode?"#db2777":"#9ca3af"}}>
+            {editMode?"✅ 완료":"✏️ 수정"}
           </button>
         </div>
       </div>
@@ -593,7 +746,7 @@ export default function App() {
                               </div>
                               <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6}}>
                                 <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",userSelect:"none"}}>
-                                  <div onClick={()=>setAddState(p=>({...p,[day]:{...addS,isImportant:!addS.isImportant}}))} style={{width:18,height:18,borderRadius:5,border:`2px solid ${addS.isImportant?"#f59e0b":"#d1d5db"}`,background:addS.isImportant?"#f59e0b":"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+                                  <div onClick={()=>setAddState(p=>({...p,[day]:{...addS,isImportant:!addS.isImportant}}))} onMouseDown={e=>e.preventDefault()} style={{width:18,height:18,borderRadius:5,border:`2px solid ${addS.isImportant?"#f59e0b":"#d1d5db"}`,background:addS.isImportant?"#f59e0b":"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
                                     {addS.isImportant&&<span style={{color:"white",fontSize:11,fontWeight:900,lineHeight:1}}>✓</span>}
                                   </div>
                                   <span style={{fontSize:12,fontWeight:600,color:addS.isImportant?"#d97706":"#9ca3af"}}>⭐ 중요 할일로 표시</span>
@@ -636,8 +789,15 @@ export default function App() {
                                   {/* 텍스트 */}
                                   <div style={{flex:1}}>
                                     {isIncoming&&<div style={{fontSize:11,color:"#d97706",fontWeight:700,marginBottom:2}}>📦 미룬 할일</div>}
-
-                                    <span onClick={()=>toggle(task.id)} style={{fontSize:14,fontWeight:checked[task.id]?400:500,lineHeight:1.6,letterSpacing:"-0.01em",color:checked[task.id]?"#9ca3af":"#1f2937",textDecoration:checked[task.id]?"line-through":"none",transition:"all 0.15s",userSelect:"none",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>{task.text}</span>
+                                    {editMode ? (
+                                      <input
+                                        value={editingText[task.id] ?? task.text}
+                                        onChange={e=>setEditingText(p=>({...p,[task.id]:e.target.value}))}
+                                        style={{fontSize:14,fontWeight:500,color:"#1f2937",border:"none",borderBottom:"1.5px solid #db2777",background:"transparent",outline:"none",width:"100%",padding:"1px 0",fontFamily:"'Pretendard',-apple-system,sans-serif"}}
+                                      />
+                                    ) : (
+                                      <span onClick={()=>toggle(task.id)} style={{fontSize:14,fontWeight:checked[task.id]?400:500,lineHeight:1.6,letterSpacing:"-0.01em",color:checked[task.id]?"#9ca3af":"#1f2937",textDecoration:checked[task.id]?"line-through":"none",transition:"all 0.15s",userSelect:"none",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>{editingText[task.id]??task.text}</span>
+                                    )}
                                   </div>
 
                                   {/* 버튼들 */}
@@ -654,6 +814,129 @@ export default function App() {
                                         <button onClick={()=>openMoveModal(task.id,task.text,day)} style={{border:"none",background:"#f3f4f6",color:"#6b7280",borderRadius:8,padding:"3px 8px",fontSize:11,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>미루기</button>
                                       )
                                     )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* 4월 플래너 */}
+      {month==="apr" && tab!=="moved" && tab!=="journal" && (
+        <div style={{padding:"8px 16px",display:"flex",flexDirection:"column",gap:12}}>
+          {APR_WEEKS_META.map(week=>{
+            const wAll   = week.days.flatMap(d=>APR_TASKS_BY_DAY[d]||[]);
+            const wCustom= week.days.flatMap(d=>(customTasks[`apr-${d}`]||[]));
+            const wTasks = [...wAll,...wCustom];
+            const wDone  = wTasks.filter(t=>checked[t.id]).length;
+            const wPct   = wTasks.length>0?Math.round((wDone/wTasks.length)*100):0;
+            const isOpen = openWeeks[week.id];
+            return(
+              <div key={week.id} style={{background:"white",borderRadius:20,overflow:"hidden",boxShadow:"0 2px 18px rgba(0,0,0,0.07)"}}>
+                <button onClick={()=>toggleWeek(week.id)} style={{width:"100%",border:"none",background:week.lightColor,cursor:"pointer",padding:"16px 18px",borderLeft:`5px solid ${week.color}`,display:"flex",alignItems:"center",gap:14,textAlign:"left"}}>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:4}}>
+                      <span style={{fontSize:12,fontWeight:800,color:week.color}}>{week.label}</span>
+                      <span style={{fontSize:11,color:"#9ca3af",fontWeight:500}}>{week.range}</span>
+                    </div>
+                    <div style={{fontSize:15,fontWeight:800,color:"#1e1b4b",letterSpacing:"-0.03em",marginBottom:3}}>{week.theme}</div>
+                    <div style={{fontSize:12,color:"#6b7280"}}>{week.themeDesc}</div>
+                    <div style={{marginTop:10,background:"#e5e7eb",borderRadius:99,height:5}}>
+                      <div style={{background:week.color,height:"100%",borderRadius:99,width:`${wPct}%`,transition:"width 0.4s"}}/>
+                    </div>
+                  </div>
+                  <div style={{textAlign:"center",minWidth:44}}>
+                    <div style={{fontSize:19,fontWeight:900,color:week.color}}>{wPct}%</div>
+                    <div style={{fontSize:11,color:"#9ca3af",fontWeight:500}}>{wDone}/{wTasks.length}</div>
+                    <div style={{fontSize:14,marginTop:6,color:week.color,display:"inline-block",transform:isOpen?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.25s"}}>▼</div>
+                  </div>
+                </button>
+                {isOpen&&(
+                  <div style={{padding:"6px 12px 14px"}}>
+                    {week.days.map(day=>{
+                      const dayKey = `apr-${day}`;
+                      const tdy = isTodayApr(day);
+                      const base = (APR_TASKS_BY_DAY[day]||[]);
+                      const custom = (customTasks[dayKey]||[]);
+                      const allTasksForDay = [...base,...custom];
+                      let filtered;
+                      if(tab==="today") filtered=tdy?allTasksForDay:[];
+                      else if(tab==="undone") filtered=allTasksForDay.filter(t=>!checked[t.id]);
+                      else filtered=allTasksForDay;
+                      if(filtered.length===0&&tab==="today"&&!tdy) return null;
+                      const dayDone=allTasksForDay.filter(t=>checked[t.id]).length;
+                      const allDone=allTasksForDay.length>0&&dayDone===allTasksForDay.length;
+                      const wkd=isWeekendApr(day);
+                      const addS=addState[dayKey]||{};
+                      return(
+                        <div key={day} style={{margin:"8px 0",borderRadius:14,overflow:"hidden",border:tdy?`2px solid ${week.color}`:"1px solid #f1f5f9",background:tdy?week.lightColor:"#fafafa"}}>
+                          <div style={{padding:"10px 14px 6px",display:"flex",alignItems:"center",gap:10}}>
+                            <div style={{width:42,height:42,borderRadius:13,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:tdy?week.color:wkd?"#fee2e2":"#f1f5f9",color:tdy?"white":wkd?"#ef4444":"#374151"}}>
+                              <div style={{fontSize:16,fontWeight:800,lineHeight:1.1}}>{day}</div>
+                              <div style={{fontSize:10,fontWeight:700}}>{getDayLabelApr(day)}</div>
+                            </div>
+                            <div style={{flex:1}}>
+                              {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px"}}>TODAY</span>}
+                              {wkd&&!tdy&&<span style={{fontSize:11,fontWeight:600,color:"#ef4444"}}>주말 · 3~4시간</span>}
+                              {!wkd&&!tdy&&<span style={{fontSize:11,fontWeight:500,color:"#9ca3af"}}>평일 · 1~2시간</span>}
+                            </div>
+                            <div style={{display:"flex",alignItems:"center",gap:8}}>
+                              <div style={{fontSize:12,fontWeight:700,color:allDone?"#10b981":"#9ca3af"}}>{allDone?"✅ 완료!":`${dayDone}/${allTasksForDay.length}`}</div>
+                              <button onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,open:!addS.open,text:"",tagId:tags[0]?.id}}))} style={{width:28,height:28,borderRadius:8,border:"none",background:addS.open?week.color:"#f1f5f9",color:addS.open?"white":"#9ca3af",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s"}}>
+                                {addS.open?"✕":"+"}
+                              </button>
+                            </div>
+                          </div>
+                          {addS.open&&(
+                            <div className="slide-down" style={{padding:"0 14px 10px"}}>
+                              <div style={{display:"flex",gap:6,marginBottom:8,overflowX:"auto",paddingBottom:2}}>
+                                {tags.map(tag=>(
+                                  <button key={tag.id} onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,tagId:tag.id}}))} style={{flexShrink:0,padding:"4px 10px",borderRadius:99,border:"1.5px solid",borderColor:addS.tagId===tag.id?week.color:"#e5e7eb",background:addS.tagId===tag.id?week.lightColor:"white",color:addS.tagId===tag.id?week.color:"#6b7280",fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
+                                    {tag.icon} {tag.label}
+                                  </button>
+                                ))}
+                              </div>
+                              <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6}}>
+                                <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",userSelect:"none"}}>
+                                  <div onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,isImportant:!addS.isImportant}}))} onMouseDown={e=>e.preventDefault()} style={{width:18,height:18,borderRadius:5,border:`2px solid ${addS.isImportant?"#f59e0b":"#d1d5db"}`,background:addS.isImportant?"#f59e0b":"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+                                    {addS.isImportant&&<span style={{color:"white",fontSize:11,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <span style={{fontSize:12,fontWeight:600,color:addS.isImportant?"#d97706":"#9ca3af"}}>⭐ 중요 할일로 표시</span>
+                                </label>
+                              </div>
+                              <div style={{display:"flex",gap:8}}>
+                                <input value={addS.text||""} onChange={e=>setAddState(p=>({...p,[dayKey]:{...addS,text:e.target.value}}))} onKeyDown={e=>{if(e.key==="Enter"){const s=addState[dayKey]||{};if(!(s.text||"").trim())return;const tag=tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};const newId=`custom-${makeId()}`;const newTask={id:newId,text:`${tag.icon} ${s.text.trim()}`,tagId:tag.id};setCustomTasks(p=>({...p,[dayKey]:[...(p[dayKey]||[]),newTask]}));if(s.isImportant)setImportant(p=>({...p,[newId]:true}));setAddState(p=>({...p,[dayKey]:{open:false,text:"",tagId:null,isImportant:false}}));}}} placeholder="할일 입력 후 Enter..." style={{flex:1,border:`1.5px solid ${week.color}`,borderRadius:10,padding:"8px 12px",fontSize:13,outline:"none",background:"white",color:"#374151"}} autoFocus/>
+                                <button onClick={()=>{const s=addState[dayKey]||{};if(!(s.text||"").trim())return;const tag=tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};const newId=`custom-${makeId()}`;const newTask={id:newId,text:`${tag.icon} ${s.text.trim()}`,tagId:tag.id};setCustomTasks(p=>({...p,[dayKey]:[...(p[dayKey]||[]),newTask]}));if(s.isImportant)setImportant(p=>({...p,[newId]:true}));setAddState(p=>({...p,[dayKey]:{open:false,text:"",tagId:null,isImportant:false}}));}} style={{padding:"8px 14px",borderRadius:10,border:"none",background:week.color,color:"white",fontSize:13,fontWeight:700,cursor:"pointer",flexShrink:0}}>추가</button>
+                              </div>
+                            </div>
+                          )}
+                          <div style={{padding:"2px 14px 10px"}}>
+                            {filtered.map((task,i)=>{
+                              const isCustom=task.id.startsWith("custom-");
+                              return(
+                                <div key={task.id} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 6px",borderTop:i>0?"1px solid #f1f5f9":"none",background:important[task.id]?"#fffbeb":"transparent",borderRadius:8,border:important[task.id]?"1.5px solid #fde68a":"1.5px solid transparent"}}>
+                                  <div onClick={()=>toggle(task.id)} style={{width:22,height:22,borderRadius:7,flexShrink:0,marginTop:1,border:checked[task.id]?`2px solid ${week.color}`:"2px solid #d1d5db",background:checked[task.id]?week.color:"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>
+                                    {checked[task.id]&&<span style={{color:"white",fontSize:13,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <div style={{flex:1}}>
+                                    {editMode?(
+                                      <input value={editingText[task.id]??task.text} onChange={e=>setEditingText(p=>({...p,[task.id]:e.target.value}))} style={{fontSize:14,fontWeight:500,color:"#1f2937",border:"none",borderBottom:"1.5px solid #db2777",background:"transparent",outline:"none",width:"100%",padding:"1px 0",fontFamily:"'Pretendard',-apple-system,sans-serif"}}/>
+                                    ):(
+                                      <span onClick={()=>toggle(task.id)} style={{fontSize:14,fontWeight:checked[task.id]?400:500,lineHeight:1.6,color:checked[task.id]?"#9ca3af":"#1f2937",textDecoration:checked[task.id]?"line-through":"none",transition:"all 0.15s",userSelect:"none",cursor:"pointer"}}>{editingText[task.id]??task.text}</span>
+                                    )}
+                                  </div>
+                                  <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
+                                    {!reorderMode&&isCustom&&<button onClick={()=>toggleImportant(task.id)} style={{border:"none",background:"transparent",fontSize:15,cursor:"pointer",padding:"2px 3px",opacity:important[task.id]?1:0.25,transition:"all 0.15s",lineHeight:1}}>⭐</button>}
+                                    {isCustom&&<button onClick={()=>{setCustomTasks(p=>({...p,[dayKey]:(p[dayKey]||[]).filter(t=>t.id!==task.id)}));setChecked(p=>{const n={...p};delete n[task.id];return n;});}} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>}
                                   </div>
                                 </div>
                               );
