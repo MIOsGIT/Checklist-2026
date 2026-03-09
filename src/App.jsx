@@ -574,8 +574,11 @@ export default function App() {
 
       {/* HEADER */}
       <div style={{background:`linear-gradient(135deg,#f472b6 0%,${PINK} 100%)`,padding:"28px 20px 22px",color:"white",position:"sticky",top:0,zIndex:100,boxShadow:"0 4px 24px rgba(219,39,119,0.3)"}}>
-        <div style={{fontSize:11,fontWeight:500,opacity:0.75,letterSpacing:"0.05em",marginBottom:4}}>📅 2026년 3월 공부 플래너</div>
-        <div style={{fontSize:20,fontWeight:800,letterSpacing:"-0.03em",marginBottom:18,color:"white"}}>Study CheckList 🌸</div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+          <div style={{fontSize:11,fontWeight:500,opacity:0.75,letterSpacing:"0.05em"}}>📅 2026년 공부 플래너</div>
+          <button onClick={()=>setTab("journal")} style={{border:"1.5px solid rgba(255,255,255,0.5)",background:"rgba(255,255,255,0.15)",color:"white",borderRadius:99,padding:"4px 12px",fontSize:12,fontWeight:700,cursor:"pointer",backdropFilter:"blur(4px)",whiteSpace:"nowrap"}}>📓 학습일지</button>
+        </div>
+        <div style={{fontSize:20,fontWeight:800,letterSpacing:"-0.03em",marginBottom:18,color:"white"}}>Study CheckList ✨</div>
         <div style={{background:"rgba(255,255,255,0.22)",borderRadius:99,height:8,marginBottom:7}}>
           <div style={{background:"white",height:"100%",borderRadius:99,width:`${progress}%`,transition:"width 0.5s cubic-bezier(.4,0,.2,1)"}}/>
         </div>
