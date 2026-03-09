@@ -393,10 +393,15 @@ export default function App() {
       .celeb-msg{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);z-index:1000;pointer-events:none;text-align:center;background:white;border-radius:24px;padding:28px 36px;box-shadow:0 8px 40px rgba(219,39,119,0.25);animation:pop-in 0.4s cubic-bezier(.4,0,.2,1) forwards;white-space:pre-line;}
       @keyframes slide-down{0%{opacity:0;transform:translateY(-6px);}100%{opacity:1;transform:translateY(0);}}
       .slide-down{animation:slide-down 0.2s ease;}
-      .task-row{transition:opacity 0.15s;}
-      .task-row.dragging{opacity:0.4;}
-      .drag-handle{cursor:grab;color:#d1d5db;font-size:16px;padding:0 4px;touch-action:none;user-select:none;}
-      .drag-handle:active{cursor:grabbing;}
+      .task-row{transition:background 0.15s;}
+      .task-row.dragging{opacity:0.35;}
+      .drag-handle{
+        cursor:grab;color:#d1d5db;font-size:18px;padding:2px 4px;
+        touch-action:none;user-select:none;-webkit-user-drag:element;
+        -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
+        line-height:1;
+      }
+      .drag-handle:active{cursor:grabbing;color:#f9a8d4;}
     `}</style>
 
     {confetti.map(p=>(
@@ -586,7 +591,6 @@ export default function App() {
                               const isMoved    = !!moved[task.id];
                               const isIncoming = !!incoming.find(t=>t.id===task.id);
                               const isCustom   = task.id.startsWith("custom-");
-                              const taskTag    = tags.find(t=>t.id===task.tagId);
 
                               return(
                                 <div
@@ -598,7 +602,7 @@ export default function App() {
                                   onDragOver={reorderMode?onDragOver:undefined}
                                   onDrop={reorderMode?(e=>onDrop(e,day,task.id)):undefined}
                                   onDragEnd={reorderMode?onDragEnd:undefined}
-                                  style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 0",borderTop:i>0?"1px solid #f1f5f9":"none",cursor:reorderMode?"grab":"default",background:dragActiveId===task.id?"#fdf2f8":"transparent",borderRadius:8,transition:"background 0.15s"}}
+                                  style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 0",borderTop:i>0?"1px solid #f1f5f9":"none",cursor:reorderMode?"grab":"default",background:dragActiveId===task.id?"#fdf2f8":"transparent",borderRadius:8,transition:"background 0.15s",WebkitUserSelect:"none",userSelect:"none"}}
                                 >
                                   {/* 드래그 핸들 - 이동 모드일 때만 표시 */}
                                   {reorderMode&&<span className="drag-handle">⠿</span>}
@@ -611,7 +615,7 @@ export default function App() {
                                   {/* 텍스트 */}
                                   <div style={{flex:1}}>
                                     {isIncoming&&<div style={{fontSize:11,color:"#d97706",fontWeight:700,marginBottom:2}}>📦 미룬 할일</div>}
-                                    {taskTag&&<span style={{fontSize:10,background:"#f3f4f6",color:"#6b7280",borderRadius:99,padding:"1px 6px",fontWeight:600,marginRight:5}}>{taskTag.icon} {taskTag.label}</span>}
+
                                     <span onClick={()=>toggle(task.id)} style={{fontSize:14,fontWeight:checked[task.id]?400:500,lineHeight:1.6,letterSpacing:"-0.01em",color:checked[task.id]?"#9ca3af":"#1f2937",textDecoration:checked[task.id]?"line-through":"none",transition:"all 0.15s",userSelect:"none",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>{task.text}</span>
                                   </div>
 
