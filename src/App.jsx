@@ -1,3 +1,4 @@
+import Journal from "./Journal.jsx";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const todayDate  = new Date();
@@ -296,7 +297,7 @@ export default function App() {
     if (prevAllDone.current === null) { prevAllDone.current = totalDone; return; }
     if (allComplete && prevAllDone.current < totalDone) {
       setConfetti(makeConfetti(120));
-      setCelebMsg({ type: "all", text: "3월 전체 완료!!! 🎊\n진짜 대단해!! 🌸🌸🌸" });
+      setCelebMsg({ type: "all", text: "3월 전체 완료!!! 🎊\n 진짜 대단해!! 🌸🌸🌸" });
       setTimeout(() => { setConfetti([]); setCelebMsg(null); }, 6000);
     }
     prevAllDone.current = totalDone;
@@ -409,7 +410,7 @@ export default function App() {
             📅 2026년 3월 공부 플래너
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 18 }}>
-            React Study Checklist 🌸
+            Study CheckList 🌸
           </div>
           <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 99, height: 8, marginBottom: 7 }}>
             <div style={{ background: "white", height: "100%", borderRadius: 99, width: `${progress}%`, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" }} />
@@ -437,7 +438,7 @@ export default function App() {
 
         {/* TABS */}
         <div style={{ display: "flex", gap: 8, padding: "12px 16px 8px", overflowX: "auto" }}>
-          {[["all","📋 전체"],["today","🌅 오늘"],["undone","⏳ 미완료"],["moved","📦 미룬 할일"]].map(([v, label]) => (
+          {[["all","📋 전체"],["today","🌅 오늘"],["undone","⏳ 미완료"],["moved","📦 미룬 할일"],["journal","📓 학습일지"]].map(([v, label]) => (
             <button key={v} onClick={() => setTab(v)} style={{
               padding: "8px 20px", borderRadius: 99, border: "none", cursor: "pointer",
               fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", transition: "all 0.2s",
@@ -479,8 +480,10 @@ export default function App() {
           </div>
         )}
 
+        {tab === "journal" && <Journal />}
+
         {/* WEEKS */}
-        {tab !== "moved" && (
+        {tab !== "moved" && tab !== "journal" && (
           <div style={{ padding: "8px 16px", display: "flex", flexDirection: "column", gap: 12 }}>
             {WEEKS.map(week => {
               const wTasks = week.days.flatMap(d => d.tasks);
