@@ -1,5 +1,5 @@
 import Journal from "./Journal.jsx";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const todayDate  = new Date();
 const TODAY_DAY  = todayDate.getDate();
@@ -10,7 +10,7 @@ const WEEKS = [
     id: "week1", label: "1주차", range: "3/6(금) ~ 3/9(월)",
     theme: "⚡ 섹션1·2 시작 + 알고리즘 Python 적응",
     themeDesc: "환경세팅, JSX·컴포넌트 기초 / Python 알고리즘 입문",
-    color: "#6366f1", lightColor: "#eef2ff",
+    color: "#ec4899", lightColor: "#fdf2f8",
     days: [
       { day: 6, tasks: [
         { id: "t1",  text: "🎬 1강. 강의소개 (1분) 수강" },
@@ -200,14 +200,13 @@ const WEEKS = [
 const ALL_DAYS = WEEKS.flatMap(w => w.days.map(d => d.day));
 const ALL_TASKS_FLAT = WEEKS.flatMap(w => w.days.flatMap(d => d.tasks));
 const DAY_LABELS = ["일","월","화","수","목","금","토"];
-const COLORS = ["#f59e0b","#6366f1","#10b981","#ef4444","#0ea5e9","#a855f7","#ec4899","#f97316"];
+const COLORS = ["#f59e0b","#ec4899","#10b981","#ef4444","#0ea5e9","#a855f7","#ec4899","#f97316"];
 
 function getDayLabel(day) { return DAY_LABELS[new Date(2026, 2, day).getDay()]; }
 function isWeekend(day) { const d = new Date(2026, 2, day).getDay(); return d === 0 || d === 6; }
 function isToday(day) { return IS_MARCH_2026 && day === TODAY_DAY; }
 function getTodayLabel() { return IS_MARCH_2026 ? `3/${TODAY_DAY}(${getDayLabel(TODAY_DAY)})` : null; }
 
-// 🎉 confetti 파티클 생성
 function makeConfetti(count = 60) {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
@@ -216,7 +215,6 @@ function makeConfetti(count = 60) {
     size: Math.random() * 8 + 5,
     delay: Math.random() * 0.5,
     duration: Math.random() * 1.5 + 1.5,
-    rotate: Math.random() * 360,
     shape: Math.random() > 0.5 ? "circle" : "rect",
   }));
 }
@@ -230,23 +228,24 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem("mio-checklist-moved") || "{}"); }
     catch { return {}; }
   });
+  // 커스텀 할일: { day: [{id, text}] }
+  const [customTasks, setCustomTasks] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("mio-custom-tasks") || "{}"); }
+    catch { return {}; }
+  });
   const [openWeeks, setOpenWeeks] = useState({ week1: true, week2: false, week3: false, week4: false });
   const [tab, setTab] = useState("all");
   const [moveModal, setMoveModal] = useState(null);
+  const [addInput, setAddInput] = useState({}); // { [day]: string }
+  const [showAddInput, setShowAddInput] = useState({}); // { [day]: bool }
   const [confetti, setConfetti] = useState([]);
-  const [celebMsg, setCelebMsg] = useState(null); // null | { type: "day"|"all", text }
+  const [celebMsg, setCelebMsg] = useState(null);
   const prevTodayDone = useRef(null);
   const prevAllDone = useRef(null);
 
-  useEffect(() => {
-    try { localStorage.setItem("mio-checklist-v3", JSON.stringify(checked)); }
-    catch {}
-  }, [checked]);
-
-  useEffect(() => {
-    try { localStorage.setItem("mio-checklist-moved", JSON.stringify(moved)); }
-    catch {}
-  }, [moved]);
+  useEffect(() => { try { localStorage.setItem("mio-checklist-v3", JSON.stringify(checked)); } catch {} }, [checked]);
+  useEffect(() => { try { localStorage.setItem("mio-checklist-moved", JSON.stringify(moved)); } catch {} }, [moved]);
+  useEffect(() => { try { localStorage.setItem("mio-custom-tasks", JSON.stringify(customTasks)); } catch {} }, [customTasks]);
 
   useEffect(() => {
     if (!IS_MARCH_2026) return;
@@ -264,25 +263,50 @@ export default function App() {
   };
   const cancelMove = (taskId) => setMoved(p => { const n = { ...p }; delete n[taskId]; return n; });
 
+  // 커스텀 할일 추가
+  const addCustomTask = (day) => {
+    const text = (addInput[day] || "").trim();
+    if (!text) return;
+    const newTask = { id: `custom-${day}-${Date.now()}`, text: `➕ ${text}` };
+    setCustomTasks(p => ({ ...p, [day]: [...(p[day] || []), newTask] }));
+    setAddInput(p => ({ ...p, [day]: "" }));
+    setShowAddInput(p => ({ ...p, [day]: false }));
+  };
+
+  // 커스텀 할일 삭제
+  const deleteCustomTask = (day, taskId) => {
+    setCustomTasks(p => ({ ...p, [day]: (p[day] || []).filter(t => t.id !== taskId) }));
+    setChecked(p => { const n = { ...p }; delete n[taskId]; return n; });
+  };
+
   function getTasksForDay(originalDay, originalTasks) {
+    const dayCustom = (customTasks[originalDay] || []);
+    // 미룬 할일: 이 날로 들어오는 것 (최상단 배치)
+    const incoming = ALL_TASKS_FLAT.filter(t =>
+      moved[t.id] === originalDay && !originalTasks.find(ot => ot.id === t.id)
+    );
+    // 원래 할일 중 다른 날로 이동 안 된 것
     const staying = originalTasks.filter(t => !(moved[t.id] && moved[t.id] !== originalDay));
-    const incoming = ALL_TASKS_FLAT.filter(t => moved[t.id] === originalDay && !originalTasks.find(ot => ot.id === t.id));
-    return { staying, incoming };
+    // 순서: 미룬 것 → 원래 할일 → 커스텀
+    return { incoming, staying, dayCustom };
   }
 
-  const totalDone = ALL_TASKS_FLAT.filter(t => checked[t.id]).length;
-  const progress = Math.round((totalDone / ALL_TASKS_FLAT.length) * 100);
-  const todayTasks = IS_MARCH_2026
-    ? ALL_TASKS_FLAT.filter(t => {
-        const movedDay = moved[t.id];
-        if (movedDay) return movedDay === TODAY_DAY;
-        return WEEKS.flatMap(w => w.days.filter(d => d.day === TODAY_DAY).flatMap(d => d.tasks)).find(tt => tt.id === t.id);
-      })
-    : [];
-  const todayDone = todayTasks.filter(t => checked[t.id]).length;
-  const allComplete = totalDone === ALL_TASKS_FLAT.length && ALL_TASKS_FLAT.length > 0;
+  const allTasksCount = ALL_TASKS_FLAT.length + Object.values(customTasks).flat().length;
+  const totalDone = [...ALL_TASKS_FLAT, ...Object.values(customTasks).flat()].filter(t => checked[t.id]).length;
+  const progress = Math.round((totalDone / allTasksCount) * 100);
 
-  // 🎉 축하 애니메이션 트리거
+  const todayTasks = IS_MARCH_2026 ? (() => {
+    const base = ALL_TASKS_FLAT.filter(t => {
+      const movedDay = moved[t.id];
+      if (movedDay) return movedDay === TODAY_DAY;
+      return WEEKS.flatMap(w => w.days.filter(d => d.day === TODAY_DAY).flatMap(d => d.tasks)).find(tt => tt.id === t.id);
+    });
+    const custom = customTasks[TODAY_DAY] || [];
+    return [...base, ...custom];
+  })() : [];
+  const todayDone = todayTasks.filter(t => checked[t.id]).length;
+  const allComplete = totalDone === allTasksCount && allTasksCount > 0;
+
   useEffect(() => {
     if (prevTodayDone.current === null) { prevTodayDone.current = todayDone; return; }
     if (todayTasks.length > 0 && todayDone === todayTasks.length && prevTodayDone.current < todayDone) {
@@ -297,18 +321,16 @@ export default function App() {
     if (prevAllDone.current === null) { prevAllDone.current = totalDone; return; }
     if (allComplete && prevAllDone.current < totalDone) {
       setConfetti(makeConfetti(120));
-      setCelebMsg({ type: "all", text: "3월 전체 완료!!! 🎊\n 진짜 대단해!! 🌸🌸🌸" });
+      setCelebMsg({ type: "all", text: "3월 전체 완료!!! 🎊\n진짜 대단해!! 🌸🌸🌸" });
       setTimeout(() => { setConfetti([]); setCelebMsg(null); }, 6000);
     }
     prevAllDone.current = totalDone;
   }, [totalDone, allComplete]);
 
   const LEGEND = [
-    { icon: "🎬", label: "얄코 강의" },
-    { icon: "✏️", label: "직접 실습" },
-    { icon: "🐍", label: "Python 알고리즘" },
-    { icon: "🔁", label: "NestJS 복습" },
-    { icon: "📝", label: "퀴즈/정리" },
+    { icon: "🎬", label: "얄코 강의" }, { icon: "✏️", label: "직접 실습" },
+    { icon: "🐍", label: "Python 알고리즘" }, { icon: "🔁", label: "NestJS 복습" },
+    { icon: "📝", label: "퀴즈/정리" }, { icon: "➕", label: "직접 추가" },
   ];
 
   return (
@@ -316,108 +338,44 @@ export default function App() {
       <style>{`
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Pretendard', -apple-system, sans-serif; background: linear-gradient(160deg, #fdf4ff 0%, #f0f4ff 100%); }
-        button { font-family: 'Pretendard', -apple-system, sans-serif; }
+        body { font-family: 'Pretendard', -apple-system, sans-serif; background: linear-gradient(160deg, #fff0f6 0%, #fdf2f8 100%); }
+        button, input, textarea { font-family: 'Pretendard', -apple-system, sans-serif; }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 99px; }
-        .modal-overlay {
-          position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-          z-index: 200; display: flex; align-items: flex-end; justify-content: center;
-        }
-        .modal-box {
-          background: white; border-radius: 24px 24px 0 0;
-          width: 100%; max-width: 480px; padding: 24px 20px 40px;
-          max-height: 80vh; overflow-y: auto;
-        }
-        .day-btn {
-          width: 100%; border: 1.5px solid #e5e7eb; background: #fafafa;
-          border-radius: 12px; padding: 12px 16px; margin-bottom: 8px;
-          cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-          font-family: 'Pretendard', -apple-system, sans-serif;
-          font-size: 14px; font-weight: 500; color: #374151; transition: all 0.15s;
-        }
-        .day-btn:hover { border-color: #7c3aed; background: #faf5ff; color: #7c3aed; }
-
-        /* confetti */
-        @keyframes confetti-fall {
-          0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        .confetti-piece {
-          position: fixed; top: -20px; z-index: 999; pointer-events: none;
-          animation: confetti-fall linear forwards;
-        }
-
-        /* 축하 메시지 */
-        @keyframes pop-in {
-          0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-          60%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-          100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        @keyframes pop-out {
-          0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-          100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-        }
-        .celeb-msg {
-          position: fixed; top: 45%; left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 1000; pointer-events: none;
-          text-align: center;
-          background: white;
-          border-radius: 24px;
-          padding: 28px 36px;
-          box-shadow: 0 8px 40px rgba(124,58,237,0.25);
-          animation: pop-in 0.4s cubic-bezier(.4,0,.2,1) forwards;
-          white-space: pre-line;
-        }
+        ::-webkit-scrollbar-thumb { background: #f9a8d4; border-radius: 99px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; display: flex; align-items: flex-end; justify-content: center; }
+        .modal-box { background: white; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; padding: 24px 20px 40px; max-height: 80vh; overflow-y: auto; }
+        .day-btn { width: 100%; border: 1.5px solid #e5e7eb; background: #fafafa; border-radius: 12px; padding: 12px 16px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: 'Pretendard', -apple-system, sans-serif; font-size: 14px; font-weight: 500; color: #374151; transition: all 0.15s; }
+        .day-btn:hover { border-color: #db2777; background: #faf5ff; color: #db2777; }
+        @keyframes confetti-fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        .confetti-piece { position: fixed; top: -20px; z-index: 999; pointer-events: none; animation: confetti-fall linear forwards; }
+        @keyframes pop-in { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+        .celeb-msg { position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; pointer-events: none; text-align: center; background: white; border-radius: 24px; padding: 28px 36px; box-shadow: 0 8px 40px rgba(219,39,119,0.25); animation: pop-in 0.4s cubic-bezier(.4,0,.2,1) forwards; white-space: pre-line; }
+        @keyframes slide-down { 0% { opacity: 0; transform: translateY(-6px); } 100% { opacity: 1; transform: translateY(0); } }
+        .add-input-row { animation: slide-down 0.2s ease; }
       `}</style>
 
-      {/* 🎉 CONFETTI */}
       {confetti.map(p => (
-        <div key={p.id} className="confetti-piece" style={{
-          left: `${p.x}%`,
-          width: p.shape === "circle" ? p.size : p.size * 0.7,
-          height: p.shape === "circle" ? p.size : p.size * 1.4,
-          background: p.color,
-          borderRadius: p.shape === "circle" ? "50%" : "2px",
-          animationDuration: `${p.duration}s`,
-          animationDelay: `${p.delay}s`,
-        }} />
+        <div key={p.id} className="confetti-piece" style={{ left: `${p.x}%`, width: p.shape === "circle" ? p.size : p.size * 0.7, height: p.shape === "circle" ? p.size : p.size * 1.4, background: p.color, borderRadius: p.shape === "circle" ? "50%" : "2px", animationDuration: `${p.duration}s`, animationDelay: `${p.delay}s` }} />
       ))}
-
-      {/* 🎉 CELEBRATION MESSAGE */}
       {celebMsg && (
         <div className="celeb-msg">
-          <div style={{ fontSize: celebMsg.type === "all" ? 48 : 36 }}>
-            {celebMsg.type === "all" ? "🎊" : "🎉"}
-          </div>
-          <div style={{ fontSize: celebMsg.type === "all" ? 18 : 16, fontWeight: 800, color: "#1e1b4b", marginTop: 10, lineHeight: 1.6 }}>
-            {celebMsg.text}
-          </div>
+          <div style={{ fontSize: celebMsg.type === "all" ? 48 : 36 }}>{celebMsg.type === "all" ? "🎊" : "🎉"}</div>
+          <div style={{ fontSize: celebMsg.type === "all" ? 18 : 16, fontWeight: 800, color: "#1e1b4b", marginTop: 10, lineHeight: 1.6 }}>{celebMsg.text}</div>
         </div>
       )}
 
-      <div style={{ fontFamily: "'Pretendard', -apple-system, sans-serif", minHeight: "100vh", paddingBottom: 48 }}>
+      <div style={{ minHeight: "100vh", paddingBottom: 48 }}>
 
         {/* HEADER */}
-        <div style={{
-          background: "linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)",
-          padding: "28px 20px 22px", color: "white",
-          position: "sticky", top: 0, zIndex: 100,
-          boxShadow: "0 4px 24px rgba(124,58,237,0.3)"
-        }}>
-          <div style={{ fontSize: 11, fontWeight: 500, opacity: 0.75, letterSpacing: "0.05em", marginBottom: 4 }}>
-            📅 2026년 3월 공부 플래너
-          </div>
-          <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 18 }}>
-            Study CheckList 🌸
-          </div>
+        <div style={{ background: "linear-gradient(135deg, #f472b6 0%, #db2777 100%)", padding: "28px 20px 22px", color: "white", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 4px 24px rgba(219,39,119,0.3)" }}>
+          <div style={{ fontSize: 11, fontWeight: 500, opacity: 0.75, letterSpacing: "0.05em", marginBottom: 4 }}>📅 2026년 3월 공부 플래너</div>
+          <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 18 }}>Study CheckList 🌸</div>
           <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 99, height: 8, marginBottom: 7 }}>
             <div style={{ background: "white", height: "100%", borderRadius: 99, width: `${progress}%`, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" }} />
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontWeight: 500, opacity: 0.85 }}>
             <span>전체 진행률</span>
-            <span style={{ fontWeight: 700 }}>{totalDone} / {ALL_TASKS_FLAT.length}개 ({progress}%)</span>
+            <span style={{ fontWeight: 700 }}>{totalDone} / {allTasksCount}개 ({progress}%)</span>
           </div>
           {IS_MARCH_2026 && (
             <div style={{ marginTop: 14, background: "rgba(255,255,255,0.14)", borderRadius: 12, padding: "10px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -439,13 +397,7 @@ export default function App() {
         {/* TABS */}
         <div style={{ display: "flex", gap: 8, padding: "12px 16px 8px", overflowX: "auto" }}>
           {[["all","📋 전체"],["today","🌅 오늘"],["undone","⏳ 미완료"],["moved","📦 미룬 할일"],["journal","📓 학습일지"]].map(([v, label]) => (
-            <button key={v} onClick={() => setTab(v)} style={{
-              padding: "8px 20px", borderRadius: 99, border: "none", cursor: "pointer",
-              fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", transition: "all 0.2s",
-              background: tab === v ? "#7c3aed" : "white",
-              color: tab === v ? "white" : "#6b7280",
-              boxShadow: tab === v ? "0 2px 14px rgba(124,58,237,0.35)" : "0 1px 4px rgba(0,0,0,0.08)",
-            }}>{label}</button>
+            <button key={v} onClick={() => setTab(v)} style={{ padding: "8px 20px", borderRadius: 99, border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", transition: "all 0.2s", background: tab === v ? "#db2777" : "white", color: tab === v ? "white" : "#6b7280", boxShadow: tab === v ? "0 2px 14px rgba(219,39,119,0.35)" : "0 1px 4px rgba(0,0,0,0.08)" }}>{label}</button>
           ))}
         </div>
 
@@ -454,29 +406,21 @@ export default function App() {
           <div style={{ padding: "8px 16px" }}>
             {Object.keys(moved).length === 0 ? (
               <div style={{ textAlign: "center", padding: "40px 20px", color: "#9ca3af", fontSize: 14 }}>
-                미룬 할일이 없어요 🎉<br/>
-                <span style={{ fontSize: 12 }}>할일 오른쪽 미루기 버튼을 눌러보세요</span>
+                미룬 할일이 없어요 🎉<br/><span style={{ fontSize: 12 }}>할일 오른쪽 미루기 버튼을 눌러보세요</span>
               </div>
-            ) : (
-              Object.entries(moved).map(([taskId, targetDay]) => {
-                const task = ALL_TASKS_FLAT.find(t => t.id === taskId);
-                if (!task) return null;
-                return (
-                  <div key={taskId} style={{ background: "white", borderRadius: 14, padding: "14px 16px", marginBottom: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", alignItems: "flex-start", gap: 12 }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 11, color: "#d97706", fontWeight: 700, marginBottom: 4 }}>
-                        📦 3/{targetDay}({getDayLabel(targetDay)})로 이동됨
-                      </div>
-                      <div style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{task.text}</div>
-                    </div>
-                    <button onClick={() => cancelMove(taskId)} style={{
-                      border: "none", background: "#fee2e2", color: "#ef4444",
-                      borderRadius: 8, padding: "4px 10px", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0
-                    }}>취소</button>
+            ) : Object.entries(moved).map(([taskId, targetDay]) => {
+              const task = ALL_TASKS_FLAT.find(t => t.id === taskId);
+              if (!task) return null;
+              return (
+                <div key={taskId} style={{ background: "white", borderRadius: 14, padding: "14px 16px", marginBottom: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", alignItems: "flex-start", gap: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 11, color: "#d97706", fontWeight: 700, marginBottom: 4 }}>📦 3/{targetDay}({getDayLabel(targetDay)})로 이동됨</div>
+                    <div style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{task.text}</div>
                   </div>
-                );
-              })
-            )}
+                  <button onClick={() => cancelMove(taskId)} style={{ border: "none", background: "#fee2e2", color: "#ef4444", borderRadius: 8, padding: "4px 10px", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>취소</button>
+                </div>
+              );
+            })}
           </div>
         )}
 
@@ -487,18 +431,15 @@ export default function App() {
           <div style={{ padding: "8px 16px", display: "flex", flexDirection: "column", gap: 12 }}>
             {WEEKS.map(week => {
               const wTasks = week.days.flatMap(d => d.tasks);
-              const wDone  = wTasks.filter(t => checked[t.id]).length;
-              const wPct   = Math.round((wDone / wTasks.length) * 100);
+              const wCustom = week.days.flatMap(d => customTasks[d.day] || []);
+              const wAll = [...wTasks, ...wCustom];
+              const wDone = wAll.filter(t => checked[t.id]).length;
+              const wPct = Math.round((wDone / wAll.length) * 100);
               const isOpen = openWeeks[week.id];
 
               return (
                 <div key={week.id} style={{ background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 18px rgba(0,0,0,0.07)" }}>
-                  <button onClick={() => toggleWeek(week.id)} style={{
-                    width: "100%", border: "none", background: week.lightColor,
-                    cursor: "pointer", padding: "16px 18px",
-                    borderLeft: `5px solid ${week.color}`,
-                    display: "flex", alignItems: "center", gap: 14, textAlign: "left"
-                  }}>
+                  <button onClick={() => toggleWeek(week.id)} style={{ width: "100%", border: "none", background: week.lightColor, cursor: "pointer", padding: "16px 18px", borderLeft: `5px solid ${week.color}`, display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
                         <span style={{ fontSize: 12, fontWeight: 800, color: week.color }}>{week.label}</span>
@@ -512,7 +453,7 @@ export default function App() {
                     </div>
                     <div style={{ textAlign: "center", minWidth: 44 }}>
                       <div style={{ fontSize: 19, fontWeight: 900, color: week.color, letterSpacing: "-0.03em" }}>{wPct}%</div>
-                      <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500 }}>{wDone}/{wTasks.length}</div>
+                      <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500 }}>{wDone}/{wAll.length}</div>
                       <div style={{ fontSize: 14, marginTop: 6, color: week.color, display: "inline-block", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s" }}>▼</div>
                     </div>
                   </button>
@@ -521,89 +462,95 @@ export default function App() {
                     <div style={{ padding: "6px 12px 14px" }}>
                       {week.days.map(dayObj => {
                         const tdy = isToday(dayObj.day);
-                        const { staying, incoming } = getTasksForDay(dayObj.day, dayObj.tasks);
-                        const allTasksForDay = [...staying, ...incoming];
+                        const { incoming, staying, dayCustom } = getTasksForDay(dayObj.day, dayObj.tasks);
+                        // 순서: 미룬것 → 원래할일 → 커스텀
+                        const allTasksForDay = [...incoming, ...staying, ...dayCustom];
+
                         let filtered;
                         if (tab === "today") filtered = tdy ? allTasksForDay : [];
                         else if (tab === "undone") filtered = allTasksForDay.filter(t => !checked[t.id]);
                         else filtered = allTasksForDay;
-                        if (filtered.length === 0) return null;
+
+                        const hasAddBtn = tab === "all" || tab === "today";
+                        if (filtered.length === 0 && !hasAddBtn) return null;
+                        if (filtered.length === 0 && hasAddBtn && !tdy && tab === "today") return null;
 
                         const dayDone = allTasksForDay.filter(t => checked[t.id]).length;
-                        const allDone = dayDone === allTasksForDay.length;
+                        const allDone = allTasksForDay.length > 0 && dayDone === allTasksForDay.length;
                         const wkd = isWeekend(dayObj.day);
+                        const isShowingAdd = showAddInput[dayObj.day];
 
                         return (
-                          <div key={dayObj.day} style={{
-                            margin: "8px 0", borderRadius: 14, overflow: "hidden",
-                            border: tdy ? `2px solid ${week.color}` : "1px solid #f1f5f9",
-                            background: tdy ? week.lightColor : "#fafafa",
-                          }}>
+                          <div key={dayObj.day} style={{ margin: "8px 0", borderRadius: 14, overflow: "hidden", border: tdy ? `2px solid ${week.color}` : "1px solid #f1f5f9", background: tdy ? week.lightColor : "#fafafa" }}>
+                            {/* 날짜 헤더 */}
                             <div style={{ padding: "10px 14px 6px", display: "flex", alignItems: "center", gap: 10 }}>
-                              <div style={{
-                                width: 42, height: 42, borderRadius: 13, flexShrink: 0,
-                                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                                background: tdy ? week.color : wkd ? "#fee2e2" : "#f1f5f9",
-                                color: tdy ? "white" : wkd ? "#ef4444" : "#374151"
-                              }}>
+                              <div style={{ width: 42, height: 42, borderRadius: 13, flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: tdy ? week.color : wkd ? "#fee2e2" : "#f1f5f9", color: tdy ? "white" : wkd ? "#ef4444" : "#374151" }}>
                                 <div style={{ fontSize: 16, fontWeight: 800, lineHeight: 1.1 }}>{dayObj.day}</div>
                                 <div style={{ fontSize: 10, fontWeight: 700 }}>{getDayLabel(dayObj.day)}</div>
                               </div>
                               <div style={{ flex: 1 }}>
-                                {tdy  && <span style={{ fontSize: 11, fontWeight: 800, background: week.color, color: "white", borderRadius: 99, padding: "2px 9px" }}>TODAY</span>}
+                                {tdy && <span style={{ fontSize: 11, fontWeight: 800, background: week.color, color: "white", borderRadius: 99, padding: "2px 9px" }}>TODAY</span>}
                                 {wkd && !tdy && <span style={{ fontSize: 11, fontWeight: 600, color: "#ef4444" }}>주말 · 3~4시간</span>}
                                 {!wkd && !tdy && <span style={{ fontSize: 11, fontWeight: 500, color: "#9ca3af" }}>평일 · 1~2시간</span>}
                               </div>
-                              <div style={{ fontSize: 12, fontWeight: 700, color: allDone ? "#10b981" : "#9ca3af" }}>
-                                {allDone ? "✅ 완료!" : `${dayDone}/${allTasksForDay.length}`}
+                              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                <div style={{ fontSize: 12, fontWeight: 700, color: allDone ? "#10b981" : "#9ca3af" }}>
+                                  {allDone ? "✅ 완료!" : `${dayDone}/${allTasksForDay.length}`}
+                                </div>
+                                {/* 할일 추가 버튼 */}
+                                <button onClick={() => setShowAddInput(p => ({ ...p, [dayObj.day]: !p[dayObj.day] }))} style={{ width: 28, height: 28, borderRadius: 8, border: "none", background: isShowingAdd ? week.color : "#f1f5f9", color: isShowingAdd ? "white" : "#9ca3af", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", flexShrink: 0 }}>
+                                  {isShowingAdd ? "✕" : "+"}
+                                </button>
                               </div>
                             </div>
+
+                            {/* 할일 추가 입력창 */}
+                            {isShowingAdd && (
+                              <div className="add-input-row" style={{ padding: "0 14px 10px", display: "flex", gap: 8 }}>
+                                <input
+                                  value={addInput[dayObj.day] || ""}
+                                  onChange={e => setAddInput(p => ({ ...p, [dayObj.day]: e.target.value }))}
+                                  onKeyDown={e => e.key === "Enter" && addCustomTask(dayObj.day)}
+                                  placeholder="할일 추가..."
+                                  style={{ flex: 1, border: `1.5px solid ${week.color}`, borderRadius: 10, padding: "8px 12px", fontSize: 13, outline: "none", background: "white", color: "#374151" }}
+                                  autoFocus
+                                />
+                                <button onClick={() => addCustomTask(dayObj.day)} style={{ padding: "8px 14px", borderRadius: 10, border: "none", background: week.color, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>추가</button>
+                              </div>
+                            )}
+
+                            {/* 할일 목록 */}
                             <div style={{ padding: "2px 14px 10px" }}>
                               {filtered.map((task, i) => {
                                 const isMoved = !!moved[task.id];
                                 const isIncoming = !!incoming.find(t => t.id === task.id);
+                                const isCustom = task.id.startsWith("custom-");
+
                                 return (
-                                  <div key={task.id} style={{
-                                    display: "flex", alignItems: "flex-start", gap: 10,
-                                    padding: "10px 0",
-                                    borderTop: i > 0 ? "1px solid #f1f5f9" : "none",
-                                  }}>
-                                    <div onClick={() => toggle(task.id)} style={{
-                                      width: 22, height: 22, borderRadius: 7, flexShrink: 0, marginTop: 1,
-                                      border: checked[task.id] ? `2px solid ${week.color}` : "2px solid #d1d5db",
-                                      background: checked[task.id] ? week.color : "white",
-                                      display: "flex", alignItems: "center", justifyContent: "center",
-                                      transition: "all 0.15s", cursor: "pointer",
-                                      WebkitTapHighlightColor: "transparent"
-                                    }}>
+                                  <div key={task.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 0", borderTop: i > 0 ? "1px solid #f1f5f9" : "none" }}>
+                                    {/* 미룬 할일 구분선 */}
+                                    {isIncoming && i === 0 && (
+                                      <div style={{ position: "absolute", display: "none" }} />
+                                    )}
+                                    <div onClick={() => toggle(task.id)} style={{ width: 22, height: 22, borderRadius: 7, flexShrink: 0, marginTop: 1, border: checked[task.id] ? `2px solid ${week.color}` : "2px solid #d1d5db", background: checked[task.id] ? week.color : "white", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", cursor: "pointer", WebkitTapHighlightColor: "transparent" }}>
                                       {checked[task.id] && <span style={{ color: "white", fontSize: 13, fontWeight: 900, lineHeight: 1 }}>✓</span>}
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                      {isIncoming && <div style={{ fontSize: 11, color: "#d97706", fontWeight: 700, marginBottom: 2 }}>📦 다른 날에서 이동됨</div>}
-                                      <span onClick={() => toggle(task.id)} style={{
-                                        fontSize: 14, fontWeight: checked[task.id] ? 400 : 500,
-                                        lineHeight: 1.6, letterSpacing: "-0.01em",
-                                        color: checked[task.id] ? "#9ca3af" : "#1f2937",
-                                        textDecoration: checked[task.id] ? "line-through" : "none",
-                                        transition: "all 0.15s", userSelect: "none", cursor: "pointer",
-                                        WebkitTapHighlightColor: "transparent"
-                                      }}>{task.text}</span>
+                                      {isIncoming && <div style={{ fontSize: 11, color: "#d97706", fontWeight: 700, marginBottom: 2 }}>📦 미룬 할일</div>}
+                                      <span onClick={() => toggle(task.id)} style={{ fontSize: 14, fontWeight: checked[task.id] ? 400 : 500, lineHeight: 1.6, letterSpacing: "-0.01em", color: checked[task.id] ? "#9ca3af" : "#1f2937", textDecoration: checked[task.id] ? "line-through" : "none", transition: "all 0.15s", userSelect: "none", cursor: "pointer", WebkitTapHighlightColor: "transparent" }}>{task.text}</span>
                                     </div>
-                                    {!checked[task.id] && (
-                                      isMoved ? (
-                                        <button onClick={() => cancelMove(task.id)} style={{
-                                          border: "none", background: "#fef3c7", color: "#d97706",
-                                          borderRadius: 8, padding: "3px 8px", fontSize: 11, fontWeight: 700,
-                                          cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap"
-                                        }}>취소</button>
-                                      ) : (
-                                        <button onClick={() => openMoveModal(task.id, task.text, dayObj.day)} style={{
-                                          border: "none", background: "#f3f4f6", color: "#6b7280",
-                                          borderRadius: 8, padding: "3px 8px", fontSize: 11, fontWeight: 700,
-                                          cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap"
-                                        }}>미루기</button>
-                                      )
-                                    )}
+                                    <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+                                      {isCustom && (
+                                        <button onClick={() => deleteCustomTask(dayObj.day, task.id)} style={{ border: "none", background: "#fee2e2", color: "#ef4444", borderRadius: 8, padding: "3px 7px", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>삭제</button>
+                                      )}
+                                      {!checked[task.id] && !isCustom && (
+                                        isMoved ? (
+                                          <button onClick={() => cancelMove(task.id)} style={{ border: "none", background: "#fef3c7", color: "#d97706", borderRadius: 8, padding: "3px 8px", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>취소</button>
+                                        ) : (
+                                          <button onClick={() => openMoveModal(task.id, task.text, dayObj.day)} style={{ border: "none", background: "#f3f4f6", color: "#6b7280", borderRadius: 8, padding: "3px 8px", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>미루기</button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -619,28 +566,19 @@ export default function App() {
           </div>
         )}
 
-        {/* TIPS */}
         {tab === "all" && (
           <div style={{ margin: "8px 16px 0", background: "white", borderRadius: 20, padding: "20px", boxShadow: "0 2px 14px rgba(0,0,0,0.06)" }}>
             <div style={{ fontSize: 14, fontWeight: 800, color: "#374151", letterSpacing: "-0.02em", marginBottom: 14 }}>💡 3월 공부 원칙</div>
-            {[
-              "강의는 1.5배속 + 직접 손으로 따라치기 (복붙 금지)",
-              "모르면 구글 → 공식문서 → 강의 재수강 순서로",
-              "알고리즘은 Python으로 매일 1문제, 부담 없이 꾸준히",
-              "NestJS 복습은 '읽기'가 아니라 '설명할 수 있는지' 확인하기",
-              "AI 코드 생성 절대 금지 — 직접 만들어야 포폴이 됨",
-            ].map((tip, i) => (
+            {["강의는 1.5배속 + 직접 손으로 따라치기 (복붙 금지)","모르면 구글 → 공식문서 → 강의 재수강 순서로","알고리즘은 Python으로 매일 1문제, 부담 없이 꾸준히","NestJS 복습은 '읽기'가 아니라 '설명할 수 있는지' 확인하기","AI 코드 생성 절대 금지 — 직접 만들어야 포폴이 됨"].map((tip, i) => (
               <div key={i} style={{ display: "flex", gap: 10, marginBottom: 9, fontSize: 13, lineHeight: 1.6 }}>
-                <span style={{ color: "#7c3aed", fontWeight: 800, flexShrink: 0 }}>0{i + 1}.</span>
+                <span style={{ color: "#db2777", fontWeight: 800, flexShrink: 0 }}>0{i + 1}.</span>
                 <span style={{ color: "#4b5563", fontWeight: 400 }}>{tip}</span>
               </div>
             ))}
           </div>
         )}
 
-        <div style={{ textAlign: "center", marginTop: 28, fontSize: 13, fontWeight: 600, color: "#a78bfa" }}>
-          🌸 화이팅! 할 수 있어! 🌸
-        </div>
+        <div style={{ textAlign: "center", marginTop: 28, fontSize: 13, fontWeight: 600, color: "#a78bfa" }}>🌸 화이팅! 할 수 있어! 🌸</div>
       </div>
 
       {/* 날짜 이동 모달 */}
@@ -648,9 +586,7 @@ export default function App() {
         <div className="modal-overlay" onClick={() => setMoveModal(null)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
             <div style={{ fontSize: 16, fontWeight: 800, color: "#1e1b4b", marginBottom: 6 }}>📦 할일 미루기</div>
-            <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 20, lineHeight: 1.5, background: "#f9fafb", borderRadius: 10, padding: "10px 12px" }}>
-              {moveModal.taskText}
-            </div>
+            <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 20, lineHeight: 1.5, background: "#f9fafb", borderRadius: 10, padding: "10px 12px" }}>{moveModal.taskText}</div>
             <div style={{ fontSize: 13, fontWeight: 700, color: "#374151", marginBottom: 10 }}>어느 날로 미룰까요?</div>
             <div style={{ maxHeight: "45vh", overflowY: "auto" }}>
               {ALL_DAYS.filter(d => d > moveModal.fromDay).map(day => (
@@ -660,11 +596,7 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <button onClick={() => setMoveModal(null)} style={{
-              width: "100%", marginTop: 12, border: "none", background: "#f3f4f6",
-              borderRadius: 12, padding: "12px", fontSize: 14, fontWeight: 700,
-              color: "#6b7280", cursor: "pointer"
-            }}>취소</button>
+            <button onClick={() => setMoveModal(null)} style={{ width: "100%", marginTop: 12, border: "none", background: "#f3f4f6", borderRadius: 12, padding: "12px", fontSize: 14, fontWeight: 700, color: "#6b7280", cursor: "pointer" }}>취소</button>
           </div>
         </div>
       )}

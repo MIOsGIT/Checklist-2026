@@ -73,17 +73,17 @@
             <button onClick={() => setView("write")} style={{
             flex: 1, padding: "10px", borderRadius: 12, border: "none", cursor: "pointer",
             fontWeight: 700, fontSize: 14, fontFamily: "'Pretendard', sans-serif",
-            background: view === "write" ? "#7c3aed" : "white",
+            background: view === "write" ? "#db2777" : "white",
             color: view === "write" ? "white" : "#6b7280",
-            boxShadow: view === "write" ? "0 2px 12px rgba(124,58,237,0.3)" : "0 1px 4px rgba(0,0,0,0.08)",
+            boxShadow: view === "write" ? "0 2px 12px rgba(219,39,119,0.3)" : "0 1px 4px rgba(0,0,0,0.08)",
             transition: "all 0.2s"
             }}>✏️ 오늘 일지 쓰기</button>
             <button onClick={() => setView("list")} style={{
             flex: 1, padding: "10px", borderRadius: 12, border: "none", cursor: "pointer",
             fontWeight: 700, fontSize: 14, fontFamily: "'Pretendard', sans-serif",
-            background: view === "list" ? "#7c3aed" : "white",
+            background: view === "list" ? "#db2777" : "white",
             color: view === "list" ? "white" : "#6b7280",
-            boxShadow: view === "list" ? "0 2px 12px rgba(124,58,237,0.3)" : "0 1px 4px rgba(0,0,0,0.08)",
+            boxShadow: view === "list" ? "0 2px 12px rgba(219,39,119,0.3)" : "0 1px 4px rgba(0,0,0,0.08)",
             transition: "all 0.2s"
             }}>📚 지난 일지 보기 {filledDays.length > 0 && `(${filledDays.length})`}</button>
         </div>
@@ -105,16 +105,16 @@
                     <button key={d} onClick={() => setSelectedDay(d)} style={{
                         minWidth: 44, height: 52, borderRadius: 12, border: "none",
                         cursor: "pointer", flexShrink: 0, position: "relative",
-                        background: isSel ? "#7c3aed" : isTdy ? "#eef2ff" : "white",
+                        background: isSel ? "#db2777" : isTdy ? "#fdf2f8" : "white",
                         color: isSel ? "white" : isWeekend(d) ? "#ef4444" : "#374151",
-                        boxShadow: isSel ? "0 2px 10px rgba(124,58,237,0.35)" : "0 1px 3px rgba(0,0,0,0.07)",
+                        boxShadow: isSel ? "0 2px 10px rgba(219,39,119,0.35)" : "0 1px 3px rgba(0,0,0,0.07)",
                         fontFamily: "'Pretendard', sans-serif",
                         transition: "all 0.15s"
                     }}>
                         <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.1 }}>{d}</div>
                         <div style={{ fontSize: 9, fontWeight: 600 }}>{getDayLabel(d)}</div>
                         {hasEntry && (
-                        <div style={{ position: "absolute", top: 4, right: 5, width: 6, height: 6, borderRadius: "50%", background: isSel ? "white" : "#7c3aed" }} />
+                        <div style={{ position: "absolute", top: 4, right: 5, width: 6, height: 6, borderRadius: "50%", background: isSel ? "white" : "#db2777" }} />
                         )}
                     </button>
                     );
@@ -128,7 +128,7 @@
                 3월 {selectedDay}일 ({getDayLabel(selectedDay)})
                 </span>
                 {selectedDay === TODAY_DAY && (
-                <span style={{ marginLeft: 8, fontSize: 12, background: "#7c3aed", color: "white", borderRadius: 99, padding: "2px 8px", fontWeight: 700 }}>TODAY</span>
+                <span style={{ marginLeft: 8, fontSize: 12, background: "#db2777", color: "white", borderRadius: 99, padding: "2px 8px", fontWeight: 700 }}>TODAY</span>
                 )}
             </div>
 
@@ -139,12 +139,12 @@
                 {STUDY_LEVELS.map(l => (
                     <button key={l.emoji} onClick={() => update("study", entry.study === l.emoji ? null : l.emoji)} style={{
                     flex: 1, padding: "10px 4px", borderRadius: 12, border: "2px solid",
-                    borderColor: entry.study === l.emoji ? "#7c3aed" : "#f1f5f9",
+                    borderColor: entry.study === l.emoji ? "#db2777" : "#f1f5f9",
                     background: entry.study === l.emoji ? "#faf5ff" : "white",
                     cursor: "pointer", transition: "all 0.15s", fontFamily: "'Pretendard', sans-serif"
                     }}>
                     <div style={{ fontSize: 22 }}>{l.emoji}</div>
-                    <div style={{ fontSize: 10, fontWeight: 600, color: entry.study === l.emoji ? "#7c3aed" : "#9ca3af", marginTop: 4 }}>{l.label}</div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: entry.study === l.emoji ? "#db2777" : "#9ca3af", marginTop: 4 }}>{l.label}</div>
                     </button>
                 ))}
                 </div>
@@ -175,9 +175,9 @@
                 {MOOD_TAGS.map(tag => (
                     <button key={tag} onClick={() => toggleTag(tag)} style={{
                     padding: "6px 12px", borderRadius: 99, border: "1.5px solid",
-                    borderColor: (entry.tags || []).includes(tag) ? "#7c3aed" : "#e5e7eb",
+                    borderColor: (entry.tags || []).includes(tag) ? "#db2777" : "#e5e7eb",
                     background: (entry.tags || []).includes(tag) ? "#faf5ff" : "white",
-                    color: (entry.tags || []).includes(tag) ? "#7c3aed" : "#6b7280",
+                    color: (entry.tags || []).includes(tag) ? "#db2777" : "#6b7280",
                     fontSize: 12, fontWeight: 600, cursor: "pointer",
                     fontFamily: "'Pretendard', sans-serif", transition: "all 0.15s"
                     }}>{tag}</button>
@@ -200,7 +200,7 @@
                     outline: "none", boxSizing: "border-box",
                     background: "#fafafa"
                 }}
-                onFocus={e => e.target.style.borderColor = "#7c3aed"}
+                onFocus={e => e.target.style.borderColor = "#db2777"}
                 onBlur={e => e.target.style.borderColor = "#e5e7eb"}
                 />
                 <div style={{ textAlign: "right", fontSize: 11, color: "#9ca3af", marginTop: 6 }}>
@@ -227,7 +227,7 @@
                     <div key={d} onClick={() => { setSelectedDay(d); setView("write"); }} style={{
                     background: "white", borderRadius: 16, padding: "16px 18px", marginBottom: 10,
                     boxShadow: "0 2px 10px rgba(0,0,0,0.06)", cursor: "pointer",
-                    borderLeft: `4px solid ${d === TODAY_DAY ? "#7c3aed" : "#e5e7eb"}`,
+                    borderLeft: `4px solid ${d === TODAY_DAY ? "#db2777" : "#e5e7eb"}`,
                     transition: "all 0.15s"
                     }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -235,7 +235,7 @@
                         <span style={{ fontSize: 15, fontWeight: 800, color: "#1e1b4b" }}>
                             3/{d} ({getDayLabel(d)})
                         </span>
-                        {d === TODAY_DAY && <span style={{ fontSize: 11, background: "#7c3aed", color: "white", borderRadius: 99, padding: "1px 7px", fontWeight: 700 }}>TODAY</span>}
+                        {d === TODAY_DAY && <span style={{ fontSize: 11, background: "#db2777", color: "white", borderRadius: 99, padding: "1px 7px", fontWeight: 700 }}>TODAY</span>}
                         </div>
                         <div style={{ display: "flex", gap: 4 }}>
                         {j.study && <span style={{ fontSize: 20 }}>{j.study}</span>}
@@ -245,7 +245,7 @@
                     {(j.tags || []).length > 0 && (
                         <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
                         {j.tags.map(tag => (
-                            <span key={tag} style={{ fontSize: 11, background: "#f3f0ff", color: "#7c3aed", borderRadius: 99, padding: "2px 8px", fontWeight: 600 }}>{tag}</span>
+                            <span key={tag} style={{ fontSize: 11, background: "#f3f0ff", color: "#db2777", borderRadius: 99, padding: "2px 8px", fontWeight: 600 }}>{tag}</span>
                         ))}
                         </div>
                     )}
