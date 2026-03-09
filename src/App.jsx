@@ -367,7 +367,7 @@ export default function App() {
       <div style={{ minHeight: "100vh", paddingBottom: 48 }}>
 
         {/* HEADER */}
-        <div style={{ background: "linear-gradient(135deg, #f472b6 0%, #db2777 100%)", padding: "28px 20px 22px", color: "white", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 4px 24px rgba(219,39,119,0.3)" }}>
+        <div style={{ background: "linear-gradient(135deg, #f47272ff 0%, #ff4343ff 100%)", padding: "28px 20px 22px", color: "white", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 4px 24px rgba(219,39,119,0.3)" }}>
           <div style={{ fontSize: 11, fontWeight: 500, opacity: 0.75, letterSpacing: "0.05em", marginBottom: 4 }}>📅 2026년 3월 공부 플래너</div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 18 }}>Study CheckList 🌸</div>
           <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 99, height: 8, marginBottom: 7 }}>
