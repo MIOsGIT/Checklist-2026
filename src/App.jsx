@@ -222,6 +222,11 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem("mio-checklist-v3") || "{}"); }
     catch { return {}; }
   });
+  // ── 중요 표시 { taskId: true } ──
+  const [important, setImportant] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("mio-important") || "{}"); }
+    catch { return {}; }
+  });
 
   const [openWeeks, setOpenWeeks]   = useState({week1:true,week2:false,week3:false,week4:false});
   const [tab, setTab]               = useState("all");
@@ -241,6 +246,7 @@ export default function App() {
   useEffect(()=>{ try{localStorage.setItem("mio-custom-tasks",    JSON.stringify(customTasks));}   catch{} },[customTasks]);
   useEffect(()=>{ try{localStorage.setItem("mio-checklist-moved", JSON.stringify(moved));}         catch{} },[moved]);
   useEffect(()=>{ try{localStorage.setItem("mio-checklist-v3",    JSON.stringify(checked));}       catch{} },[checked]);
+  useEffect(()=>{ try{localStorage.setItem("mio-important",       JSON.stringify(important));}      catch{} },[important]);
 
   useEffect(()=>{
     if(!IS_MARCH_2026) return;
@@ -268,18 +274,22 @@ export default function App() {
     // 전체 풀: 미룬것 먼저, 그다음 staying+custom 합쳐서 순서 적용
     const pool = [...incoming, ...staying, ...custom];
     const order = taskOrder[day];
-    if(!order) return pool;
     const orderMap = {};
-    order.forEach((id,i)=>orderMap[id]=i);
-    // 순서에 없는 건 맨 뒤
+    if(order) order.forEach((id,i)=>orderMap[id]=i);
     return [...pool].sort((a,b)=>{
-      const ai = orderMap[a.id]??9999;
-      const bi = orderMap[b.id]??9999;
-      // incoming은 항상 앞
+      // 1순위: 중요 표시
+      const aImp = !!important[a.id];
+      const bImp = !!important[b.id];
+      if(aImp && !bImp) return -1;
+      if(!aImp && bImp) return 1;
+      // 2순위: incoming(미룬 것)
       const aIn = !!incoming.find(t=>t.id===a.id);
       const bIn = !!incoming.find(t=>t.id===b.id);
       if(aIn && !bIn) return -1;
       if(!aIn && bIn) return 1;
+      // 3순위: 사용자 지정 순서
+      const ai = orderMap[a.id]??9999;
+      const bi = orderMap[b.id]??9999;
       return ai-bi;
     });
   }
@@ -326,9 +336,11 @@ export default function App() {
     const s = addState[day]||{};
     if(!(s.text||"").trim()) return;
     const tag = tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};
-    const newTask = { id:`custom-${makeId()}`, text:`${tag.icon} ${s.text.trim()}`, tagId: tag.id };
+    const newId = `custom-${makeId()}`;
+    const newTask = { id:newId, text:`${tag.icon} ${s.text.trim()}`, tagId: tag.id };
     setCustomTasks(p=>({...p,[day]:[...(p[day]||[]),newTask]}));
-    setAddState(p=>({...p,[day]:{open:false,text:"",tagId:null}}));
+    if(s.isImportant) setImportant(p=>({...p,[newId]:true}));
+    setAddState(p=>({...p,[day]:{open:false,text:"",tagId:null,isImportant:false}}));
   };
   const deleteCustomTask = (day, taskId) => {
     setCustomTasks(p=>({...p,[day]:(p[day]||[]).filter(t=>t.id!==taskId)}));
@@ -337,6 +349,7 @@ export default function App() {
   };
 
   const toggle       = (id) => setChecked(p=>({...p,[id]:!p[id]}));
+  const toggleImportant = (id) => setImportant(p=>({...p,[id]:!p[id]}));
   const toggleWeek   = (id) => setOpenWeeks(p=>({...p,[id]:!p[id]}));
   const openMoveModal= (taskId,taskText,fromDay) => setMoveModal({taskId,taskText,fromDay});
   const confirmMove  = (targetDay) => { if(!moveModal) return; setMoved(p=>({...p,[moveModal.taskId]:targetDay})); setMoveModal(null); };
@@ -578,6 +591,14 @@ export default function App() {
                                   </button>
                                 ))}
                               </div>
+                              <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6}}>
+                                <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",userSelect:"none"}}>
+                                  <div onClick={()=>setAddState(p=>({...p,[day]:{...addS,isImportant:!addS.isImportant}}))} style={{width:18,height:18,borderRadius:5,border:`2px solid ${addS.isImportant?"#f59e0b":"#d1d5db"}`,background:addS.isImportant?"#f59e0b":"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+                                    {addS.isImportant&&<span style={{color:"white",fontSize:11,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <span style={{fontSize:12,fontWeight:600,color:addS.isImportant?"#d97706":"#9ca3af"}}>⭐ 중요 할일로 표시</span>
+                                </label>
+                              </div>
                               <div style={{display:"flex",gap:8}}>
                                 <input value={addS.text||""} onChange={e=>setAddState(p=>({...p,[day]:{...addS,text:e.target.value}}))} onKeyDown={e=>e.key==="Enter"&&addCustomTask(day)} placeholder="할일 입력 후 Enter..." style={{flex:1,border:`1.5px solid ${week.color}`,borderRadius:10,padding:"8px 12px",fontSize:13,outline:"none",background:"white",color:"#374151"}} autoFocus/>
                                 <button onClick={()=>addCustomTask(day)} style={{padding:"8px 14px",borderRadius:10,border:"none",background:week.color,color:"white",fontSize:13,fontWeight:700,cursor:"pointer",flexShrink:0}}>추가</button>
@@ -602,7 +623,7 @@ export default function App() {
                                   onDragOver={reorderMode?onDragOver:undefined}
                                   onDrop={reorderMode?(e=>onDrop(e,day,task.id)):undefined}
                                   onDragEnd={reorderMode?onDragEnd:undefined}
-                                  style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 0",borderTop:i>0?"1px solid #f1f5f9":"none",cursor:reorderMode?"grab":"default",background:dragActiveId===task.id?"#fdf2f8":"transparent",borderRadius:8,transition:"background 0.15s",WebkitUserSelect:"none",userSelect:"none"}}
+                                  style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 6px",borderTop:i>0?"1px solid #f1f5f9":"none",cursor:reorderMode?"grab":"default",background:dragActiveId===task.id?"#fdf2f8":important[task.id]?"#fffbeb":"transparent",borderRadius:10,transition:"background 0.15s",WebkitUserSelect:"none",userSelect:"none",border:important[task.id]?"1.5px solid #fde68a":"1.5px solid transparent",marginBottom:important[task.id]?2:0}}
                                 >
                                   {/* 드래그 핸들 - 이동 모드일 때만 표시 */}
                                   {reorderMode&&<span className="drag-handle">⠿</span>}
@@ -620,7 +641,9 @@ export default function App() {
                                   </div>
 
                                   {/* 버튼들 */}
-                                  <div style={{display:"flex",gap:4,flexShrink:0}}>
+                                  <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
+                                    {/* ⭐ 중요 토글 */}
+                                    {!reorderMode&&<button onClick={()=>toggleImportant(task.id)} style={{border:"none",background:"transparent",fontSize:15,cursor:"pointer",padding:"2px 3px",opacity:important[task.id]?1:0.25,transition:"all 0.15s",lineHeight:1}} title="중요 표시">⭐</button>}
                                     {isCustom&&(
                                       <button onClick={()=>deleteCustomTask(day,task.id)} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>
                                     )}
