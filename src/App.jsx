@@ -11,7 +11,6 @@ const DEFAULT_TAGS = [
   { id: "tag-algo",      icon: "🐍", label: "Python 알고리즘" },
   { id: "tag-nestjs",    icon: "🔁", label: "NestJS 복습" },
   { id: "tag-quiz",      icon: "📝", label: "퀴즈/정리" },
-  { id: "tag-custom",    icon: "➕", label: "직접 추가" },
 ];
 
 const BASE_TASKS_BY_DAY = {
@@ -227,13 +226,14 @@ export default function App() {
   const [openWeeks, setOpenWeeks]   = useState({week1:true,week2:false,week3:false,week4:false});
   const [tab, setTab]               = useState("all");
   const [moveModal, setMoveModal]   = useState(null);
-  const [addState, setAddState]     = useState({}); // {[day]: {open,text,tagId}}
+  const [addState, setAddState]     = useState({});
+  const [reorderMode, setReorderMode] = useState(false);
+  const [dragActiveId, setDragActiveId] = useState(null);
   const [confetti, setConfetti]     = useState([]);
   const [celebMsg, setCelebMsg]     = useState(null);
   const prevTodayDone = useRef(null);
   const prevAllDone   = useRef(null);
-  // drag
-  const dragItem      = useRef(null); // {day, id}
+  const dragItem      = useRef(null);
   const dragOverItem  = useRef(null);
 
   useEffect(()=>{ try{localStorage.setItem("mio-tags",            JSON.stringify(tags));}          catch{} },[tags]);
@@ -285,29 +285,47 @@ export default function App() {
   }
 
   // ── 드래그 ──
-  const onDragStart = (day, taskId) => { dragItem.current = {day, id:taskId}; };
-  const onDragEnter = (day, taskId) => { dragOverItem.current = {day, id:taskId}; };
-  const onDragEnd   = () => {
-    if(!dragItem.current || !dragOverItem.current) return;
-    if(dragItem.current.day !== dragOverItem.current.day) { dragItem.current=null; dragOverItem.current=null; return; }
-    const day = dragItem.current.day;
+  const onDragStart = (e, day, taskId) => {
+    dragItem.current = {day, id: taskId};
+    setDragActiveId(taskId);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", taskId);
+  };
+  const onDragEnter = (e, day, taskId) => {
+    e.preventDefault();
+    if(!dragItem.current) return;
+    if(dragItem.current.id === taskId) return;
+    dragOverItem.current = {day, id: taskId};
+  };
+  const onDragOver = (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; };
+  const onDrop = (e, day, taskId) => {
+    e.preventDefault();
+    if(!dragItem.current) return;
+    if(dragItem.current.day !== day) return;
+    const fromId = dragItem.current.id;
+    const toId   = taskId;
+    if(fromId === toId) return;
     const ordered = getOrderedTasks(day);
     const ids = ordered.map(t=>t.id);
-    const fromIdx = ids.indexOf(dragItem.current.id);
-    const toIdx   = ids.indexOf(dragOverItem.current.id);
-    if(fromIdx===-1||toIdx===-1||fromIdx===toIdx){ dragItem.current=null; dragOverItem.current=null; return; }
+    const fromIdx = ids.indexOf(fromId);
+    const toIdx   = ids.indexOf(toId);
+    if(fromIdx === -1 || toIdx === -1) return;
     const newIds = [...ids];
-    newIds.splice(fromIdx,1);
-    newIds.splice(toIdx,0,dragItem.current.id);
-    setTaskOrder(p=>({...p,[day]:newIds}));
-    dragItem.current=null; dragOverItem.current=null;
+    newIds.splice(fromIdx, 1);
+    newIds.splice(toIdx, 0, fromId);
+    setTaskOrder(p=>({...p, [day]: newIds}));
+  };
+  const onDragEnd = () => {
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setDragActiveId(null);
   };
 
   // ── 커스텀 할일 추가 ──
   const addCustomTask = (day) => {
     const s = addState[day]||{};
     if(!(s.text||"").trim()) return;
-    const tag = tags.find(t=>t.id===(s.tagId||"tag-custom"))||tags[tags.length-1];
+    const tag = tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};
     const newTask = { id:`custom-${makeId()}`, text:`${tag.icon} ${s.text.trim()}`, tagId: tag.id };
     setCustomTasks(p=>({...p,[day]:[...(p[day]||[]),newTask]}));
     setAddState(p=>({...p,[day]:{open:false,text:"",tagId:null}}));
@@ -439,11 +457,16 @@ export default function App() {
         )}
       </div>
 
-      {/* TABS */}
-      <div style={{display:"flex",gap:8,padding:"12px 16px 8px",overflowX:"auto"}}>
+      {/* TABS + 이동 버튼 */}
+      <div style={{display:"flex",gap:8,padding:"12px 16px 8px",overflowX:"auto",alignItems:"center"}}>
         {[["all","📋 전체"],["today","🌅 오늘"],["undone","⏳ 미완료"],["moved","📦 미룬 할일"],["journal","📓 학습일지"]].map(([v,label])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"8px 20px",borderRadius:99,border:"none",cursor:"pointer",fontSize:13,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:tab===v?PINK:"white",color:tab===v?"white":"#6b7280",boxShadow:tab===v?`0 2px 14px rgba(219,39,119,0.35)`:"0 1px 4px rgba(0,0,0,0.08)"}}>{label}</button>
         ))}
+        <div style={{flexShrink:0,marginLeft:"auto"}}>
+          <button onClick={()=>setReorderMode(p=>!p)} style={{padding:"8px 16px",borderRadius:99,border:`1.5px solid ${reorderMode?"#f59e0b":"#e5e7eb"}`,cursor:"pointer",fontSize:12,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:reorderMode?"#fffbeb":"white",color:reorderMode?"#d97706":"#9ca3af"}}>
+            {reorderMode?"✅ 이동 완료":"↕️ 순서 이동"}
+          </button>
+        </div>
       </div>
 
       {/* 미룬 할일 탭 */}
@@ -568,16 +591,17 @@ export default function App() {
                               return(
                                 <div
                                   key={task.id}
-                                  className={`task-row${dragItem.current?.id===task.id?" dragging":""}`}
-                                  draggable
-                                  onDragStart={()=>onDragStart(day,task.id)}
-                                  onDragEnter={()=>onDragEnter(day,task.id)}
-                                  onDragEnd={onDragEnd}
-                                  onDragOver={e=>e.preventDefault()}
-                                  style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 0",borderTop:i>0?"1px solid #f1f5f9":"none",cursor:"default"}}
+                                  className={`task-row${dragActiveId===task.id?" dragging":""}`}
+                                  draggable={reorderMode}
+                                  onDragStart={reorderMode?(e=>onDragStart(e,day,task.id)):undefined}
+                                  onDragEnter={reorderMode?(e=>onDragEnter(e,day,task.id)):undefined}
+                                  onDragOver={reorderMode?onDragOver:undefined}
+                                  onDrop={reorderMode?(e=>onDrop(e,day,task.id)):undefined}
+                                  onDragEnd={reorderMode?onDragEnd:undefined}
+                                  style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 0",borderTop:i>0?"1px solid #f1f5f9":"none",cursor:reorderMode?"grab":"default",background:dragActiveId===task.id?"#fdf2f8":"transparent",borderRadius:8,transition:"background 0.15s"}}
                                 >
-                                  {/* 드래그 핸들 */}
-                                  <span className="drag-handle" title="드래그해서 순서 변경">⠿</span>
+                                  {/* 드래그 핸들 - 이동 모드일 때만 표시 */}
+                                  {reorderMode&&<span className="drag-handle">⠿</span>}
 
                                   {/* 체크박스 */}
                                   <div onClick={()=>toggle(task.id)} style={{width:22,height:22,borderRadius:7,flexShrink:0,marginTop:1,border:checked[task.id]?`2px solid ${week.color}`:"2px solid #d1d5db",background:checked[task.id]?week.color:"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>
