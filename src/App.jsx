@@ -663,7 +663,7 @@ export default function App() {
       {tab==="journal"&&<Journal />}
 
       {/* WEEKS */}
-      {tab!=="moved"&&tab!=="journal"&&(
+      {month==="mar"&&tab!=="moved"&&tab!=="journal"&&(
         <div style={{padding:"8px 16px",display:"flex",flexDirection:"column",gap:12}}>
           {WEEKS_META.map(week=>{
             const wBaseTasks = week.days.flatMap(d=>BASE_TASKS_BY_DAY[d]||[]);
@@ -953,7 +953,7 @@ export default function App() {
         </div>
       )}
 
-      {tab==="all"&&(
+      {tab==="all"&&month==="mar"&&(
         <div style={{margin:"8px 16px 0",background:"white",borderRadius:20,padding:"20px",boxShadow:"0 2px 14px rgba(0,0,0,0.06)"}}>
           <div style={{fontSize:14,fontWeight:800,color:"#374151",letterSpacing:"-0.02em",marginBottom:14}}>💡 3월 공부 원칙</div>
           {["강의는 1.5배속 + 직접 손으로 따라치기 (복붙 금지)","모르면 구글 → 공식문서 → 강의 재수강 순서로","알고리즘은 Python으로 매일 1문제, 부담 없이 꾸준히","NestJS 복습은 '읽기'가 아니라 '설명할 수 있는지' 확인하기","AI 코드 생성 절대 금지 — 직접 만들어야 포폴이 됨"].map((tip,i)=>(
