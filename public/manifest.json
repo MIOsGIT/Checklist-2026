@@ -1,7 +1,7 @@
 {
-  "name": "Checklist-March",
+  "name": "Checklist",
   "short_name": "Checklist",
-  "description": "3월 React 공부 체크리스트",
+  "description": "체크리스트",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fdf4ff",
