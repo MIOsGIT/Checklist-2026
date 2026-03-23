@@ -13,258 +13,224 @@ const DEFAULT_TAGS = [
   { id: "tag-algo",      icon: "🐍", label: "Python 알고리즘" },
   { id: "tag-nestjs",    icon: "🔁", label: "NestJS 복습" },
   { id: "tag-quiz",      icon: "📝", label: "퀴즈/정리" },
+  { id: "tag-ca",        icon: "⚙️", label: "컴퓨터알고리즘" },
+  { id: "tag-cg",        icon: "🎨", label: "컴퓨터그래픽스" },
+  { id: "tag-dip",       icon: "📷", label: "디지털영상처리" },
+  { id: "tag-audio",     icon: "🎧", label: "오디오신호처리" },
+  { id: "tag-java",      icon: "☕", label: "자바프로그래밍" },
 ];
 
 const BASE_TASKS_BY_DAY = {
-  // ── 1주차: 3/10(화) ~ 3/15(일) ──
-  10: [
-    { id:"t1",  text:"🎬 1강. 강의소개 + 3강. 리액트를 배우는 이유 + 4강. DOM이란?", tagId:"tag-lecture" },
-    { id:"t2",  text:"🎬 5강. 환경설정 (5분) + 직접 세팅",                            tagId:"tag-lecture" },
-    { id:"t3",  text:"🐍 Python 기초 훑기 — 입출력, 리스트, 딕셔너리",               tagId:"tag-algo" },
-  ],
-  11: [
-    { id:"t4",  text:"🎬 7강. 프로젝트 생성하기 (8분)",        tagId:"tag-lecture" },
-    { id:"t5",  text:"🎬 8강. 프로젝트 명령어 (7분)",          tagId:"tag-lecture" },
-    { id:"t6",  text:"🎬 9강. 리액트 프로젝트 살펴보기 (8분)", tagId:"tag-lecture" },
-    { id:"t7",  text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
-  ],
-  // ── 2주차: 3/19(수) ~ 3/22(일) — 재시작! ──
-  19: [
-    { id:"t8",  text:"🎬 10강. 컴포넌트 기초 (8분)",           tagId:"tag-lecture" },
-    { id:"t9",  text:"🎬 11강. JSX 문법 기초 (7분)",           tagId:"tag-lecture" },
-    { id:"t10", text:"🎬 12강. 조건부·리스트 렌더링 (10분)",   tagId:"tag-lecture" },
-    { id:"t11", text:"🎬 13강. JSX 속성과 스타일링 (11분)",    tagId:"tag-lecture" },
-    { id:"t12", text:"✏️ 컴포넌트 & JSX 직접 손코딩 실습",    tagId:"tag-practice" },
-    { id:"t13", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
-  ],
-  20: [
-    { id:"t14", text:"📝 섹션1·2 퀴즈 풀기",                   tagId:"tag-quiz" },
-    { id:"t15", text:"✏️ 혼자 실습: 과일 목록 리스트 렌더링",  tagId:"tag-practice" },
-    { id:"t16", text:"🔁 NestJS — Module/Controller/Service 정리", tagId:"tag-nestjs" },
-    { id:"t17", text:"🎬 15강. 컴포넌트의 Props (10분)",       tagId:"tag-lecture" },
-    { id:"t18", text:"🎬 16강. 이벤트 핸들링 (8분)",           tagId:"tag-lecture" },
-    { id:"t19", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
-  ],
-  21: [
-    { id:"t20", text:"✏️ Props로 버튼 컴포넌트 만들기",        tagId:"tag-practice" },
-    { id:"t21", text:"🎬 17강. State 기초 (12분)",             tagId:"tag-lecture" },
-    { id:"t22", text:"🎬 18강. State 더 깊이 알기 (14분)",     tagId:"tag-lecture" },
-    { id:"t23", text:"✏️ 카운터 앱 혼자 만들기 (AI 없이!)",   tagId:"tag-practice" },
-    { id:"t24", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
-  ],
-  22: [
-    { id:"t25", text:"🎬 19강. useReducer (14분)",             tagId:"tag-lecture" },
-    { id:"t26", text:"✏️ useState → useReducer 리팩토링",      tagId:"tag-practice" },
-    { id:"t27", text:"🎬 20강. useRef (10분)",                 tagId:"tag-lecture" },
-    { id:"t28", text:"🔁 coupang — TypeORM Entity + CRUD 읽기", tagId:"tag-nestjs" },
-    { id:"t29", text:"📌 1·2주차 정리",                        tagId:"tag-quiz" },
-    { id:"t30", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
-  ],
-  // ── 3주차: 3/23(월) ~ 3/29(일) ──
+  // ── 3/23(월) ──
   23: [
-    { id:"t31", text:"🎬 21강. 생명주기와 useEffect (17분)",   tagId:"tag-lecture" },
-    { id:"t32", text:"✏️ useEffect로 타이머 만들기",           tagId:"tag-practice" },
-    { id:"t33", text:"🎬 22강. 커스텀 훅 (9분)",               tagId:"tag-lecture" },
-    { id:"t34", text:"✏️ useFetch 커스텀 훅 만들기",           tagId:"tag-practice" },
-    { id:"t35", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t1",  text:"🔄 근로 중: 전공 필기 가볍게 정리",              tagId:"tag-quiz" },
+    { id:"t2",  text:"🎬 저녁: 10~13강 (컴포넌트/JSX/조건부·리스트 렌더링)", tagId:"tag-lecture" },
+    { id:"t3",  text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
+  // ── 3/24(화) ──
   24: [
-    { id:"t36", text:"🎬 23강. 최적화 (7분)",                  tagId:"tag-lecture" },
-    { id:"t37", text:"✏️ useMemo / useCallback 정리",          tagId:"tag-practice" },
-    { id:"t38", text:"🎬 25강. Context (8분)",                 tagId:"tag-lecture" },
-    { id:"t39", text:"✏️ Context로 다크모드 토글 만들기",      tagId:"tag-practice" },
-    { id:"t40", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t4",  text:"🔄 수업 후: 오디오신호처리 당일 필기 훑기",      tagId:"tag-audio" },
+    { id:"t5",  text:"🔄 수업 후: 컴퓨터그래픽스 당일 필기 훑기",      tagId:"tag-cg" },
+    { id:"t6",  text:"🎬 저녁: 14~17강 (스타일링/Props/이벤트/State기초)", tagId:"tag-lecture" },
+    { id:"t7",  text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
+  // ── 3/25(수) ──
   25: [
-    { id:"t41", text:"🎬 26강. 라우팅 (10분)",                 tagId:"tag-lecture" },
-    { id:"t42", text:"🎬 27강. 리액트 19 추가기능 (8분)",      tagId:"tag-lecture" },
-    { id:"t43", text:"✏️ 페이지 이동 실습 (홈·상세·404)",      tagId:"tag-practice" },
-    { id:"t44", text:"📝 섹션3 퀴즈 풀기",                    tagId:"tag-quiz" },
-    { id:"t45", text:"🔁 kurly — coupang 구조 차이 + JWT 정리", tagId:"tag-nestjs" },
-    { id:"t46", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t8",  text:"🔄 수업 후: 컴퓨터알고리즘 당일 필기 훑기",      tagId:"tag-ca" },
+    { id:"t9",  text:"🔄 수업 후: 디지털영상처리 당일 필기 훑기",       tagId:"tag-dip" },
+    { id:"t10", text:"🎬 저녁: 18~20강 (State심화/useReducer/useRef)", tagId:"tag-lecture" },
+    { id:"t11", text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
+  // ── 3/26(목) — 근로+수업+알바 ──
   26: [
-    { id:"t47", text:"🎬 28강. 파이널 프로젝트 세팅 (6분)",    tagId:"tag-lecture" },
-    { id:"t48", text:"🎬 29강. 컨텍스트·라우팅 설계 (9분)",   tagId:"tag-lecture" },
-    { id:"t49", text:"🎬 30강. 페이지·컴포넌트 작성 (13분)",  tagId:"tag-lecture" },
-    { id:"t50", text:"🎉 완강! 혼자 설명 가능한 개념 목록",   tagId:"tag-quiz" },
-    { id:"t51", text:"📝 섹션4 퀴즈 풀기",                    tagId:"tag-quiz" },
-    { id:"t52", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t12", text:"🔄 근로 09~11: 전날 React 개념 복습",            tagId:"tag-lecture" },
+    { id:"t13", text:"🔄 근로 15~17: 오늘 수업 필기 정리 (그래픽스·디지털영상·알고리즘)", tagId:"tag-quiz" },
+    { id:"t14", text:"🐍 백준 Python 1문제 (근로 중)",                  tagId:"tag-algo" },
   ],
+  // ── 3/27(금) — 근로+수업+알바 ──
   27: [
-    { id:"t53", text:"✏️ 프로젝트 주제 확정 & 구조 설계",     tagId:"tag-practice" },
-    { id:"t54", text:"✏️ Vite로 React 프로젝트 생성",         tagId:"tag-practice" },
-    { id:"t55", text:"✏️ Header, Footer, 레이아웃 컴포넌트",  tagId:"tag-practice" },
-    { id:"t56", text:"🔁 NestJS — Pipe, ValidationPipe 정리",  tagId:"tag-nestjs" },
-    { id:"t57", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t15", text:"🔄 근로 09~11: 전공 복습 or 백준 1문제",         tagId:"tag-audio" },
+    { id:"t16", text:"🔄 수업 후: 오디오신호처리·자바 당일 필기 훑기",  tagId:"tag-java" },
+    { id:"t17", text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
+  // ── 3/28(토) — 낮 집중 ──
   28: [
-    { id:"t58", text:"✏️ React Router 라우팅 구조 잡기",      tagId:"tag-practice" },
-    { id:"t59", text:"✏️ 핵심 기능 1 구현 (목록 조회/검색)",  tagId:"tag-practice" },
-    { id:"t60", text:"⚠️ 막히면 구글 → 공식문서 (AI X)",      tagId:"tag-practice" },
-    { id:"t61", text:"📌 GitHub 중간 커밋 push",               tagId:"tag-quiz" },
-    { id:"t62", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t18", text:"🎬 오전: 21~25강 (useEffect/커스텀훅/최적화/Context)", tagId:"tag-lecture" },
+    { id:"t19", text:"✏️ Context 다크모드 토글 실습",                  tagId:"tag-practice" },
+    { id:"t20", text:"📚 전공 몰아복습: 컴퓨터알고리즘",               tagId:"tag-ca" },
+    { id:"t21", text:"📚 전공 몰아복습: 디지털영상처리",               tagId:"tag-dip" },
+    { id:"t22", text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
+  // ── 3/29(일) — 데이트 🌸 ──
   29: [
-    { id:"t63", text:"✏️ 핵심 기능 2 구현 (상세/추가/삭제)",  tagId:"tag-practice" },
-    { id:"t64", text:"✏️ coupang NestJS API 로컬 실행",        tagId:"tag-practice" },
-    { id:"t65", text:"✏️ React에서 coupang API fetch 연결",    tagId:"tag-practice" },
-    { id:"t66", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t23", text:"🎬 짬날 때: 26~27강 (라우팅/React19) 가볍게",   tagId:"tag-lecture" },
   ],
-  // ── 마무리: 3/30(월) ~ 3/31(화) ──
+  // ── 3/30(월) — 근로 09~17 ──
   30: [
-    { id:"t67", text:"✏️ CORS 해결 + 상품 목록 API → 화면 출력", tagId:"tag-practice" },
-    { id:"t68", text:"✏️ 로그인 폼 + JWT 연결 시도",           tagId:"tag-practice" },
-    { id:"t69", text:"📌 README.md 업데이트 + GitHub push",     tagId:"tag-quiz" },
-    { id:"t70", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t24", text:"🎬 근로 중: 28~30강 완강 🎉 (이동·틈틈이)",     tagId:"tag-lecture" },
+    { id:"t25", text:"📝 저녁: 완강 회고 + 배운 개념 정리",            tagId:"tag-quiz" },
+    { id:"t26", text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
+  // ── 3/31(화) ──
   31: [
-    { id:"t71", text:"✏️ 연결 기능 마무리 & 버그 수정",        tagId:"tag-practice" },
-    { id:"t72", text:"📝 3월 회고 작성",                        tagId:"tag-quiz" },
-    { id:"t73", text:"📋 4월 계획 확인",                        tagId:"tag-quiz" },
-    { id:"t74", text:"📌 커밋으로 3월 마무리 ✨",               tagId:"tag-quiz" },
-    { id:"t75", text:"🐍 백준 Python 1문제",                   tagId:"tag-algo" },
+    { id:"t27", text:"📋 4월 계획 확인",                               tagId:"tag-quiz" },
+    { id:"t28", text:"📌 GitHub 커밋으로 3월 마무리 ✨",               tagId:"tag-quiz" },
+    { id:"t29", text:"🐍 백준 Python 1문제",                           tagId:"tag-algo" },
   ],
 };
 
 
 // ── 4월 기본 태스크 ──
 const APR_TASKS_BY_DAY = {
-  // 1주차 4/1(수)~4/5(일)
+  // ── 1주차 4/1(수)~4/5(일) — React 프로젝트 시작 ──
   1:  [
-    { id:"a1",  text:"🎨 Tailwind CSS 공식 문서 읽기 + 유틸리티 클래스 개념 정리", tagId:"tag-practice" },
-    { id:"a2",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a1",  text:"🔄 수업 후: 컴퓨터알고리즘·디지털영상 당일 필기", tagId:"tag-ca" },
+    { id:"a2",  text:"✏️ 저녁: React 프로젝트 Vite 생성 + 레이아웃",   tagId:"tag-practice" },
+    { id:"a3",  text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   2:  [
-    { id:"a3",  text:"🎨 Tailwind 기본 레이아웃 (flex, grid, spacing) 실습", tagId:"tag-practice" },
-    { id:"a4",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a4",  text:"🔄 근로 09~11: 전공 복습",                        tagId:"tag-quiz" },
+    { id:"a5",  text:"🐍 백준 Python 1문제 (근로 중)",                  tagId:"tag-algo" },
   ],
   3:  [
-    { id:"a5",  text:"🎨 coupang 프로젝트 컴포넌트 1개 Tailwind 적용", tagId:"tag-practice" },
-    { id:"a6",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a6",  text:"🔄 근로 09~11: 전공 복습",                        tagId:"tag-quiz" },
+    { id:"a7",  text:"🔄 수업 후: 오디오·자바 당일 필기 훑기",          tagId:"tag-audio" },
+    { id:"a8",  text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   4:  [
-    { id:"a7",  text:"🎨 Tailwind 반응형 (sm/md/lg) + 다크모드 클래스 익히기", tagId:"tag-practice" },
-    { id:"a8",  text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a9",  text:"✏️ 낮: React 핵심기능 1 구현 (목록/검색)",        tagId:"tag-practice" },
+    { id:"a10", text:"📚 전공 몰아복습: 컴퓨터그래픽스",                tagId:"tag-cg" },
+    { id:"a11", text:"📚 전공 몰아복습: 오디오신호처리",                tagId:"tag-audio" },
+    { id:"a12", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   5:  [
-    { id:"a9",  text:"🔁 1주차 회고 + Tailwind 모르는 것 정리", tagId:"tag-quiz" },
-    { id:"a10", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a13", text:"🌸 데이트 — 쉬기",                               tagId:"tag-quiz" },
   ],
-  // 2주차 4/6(월)~4/12(일)
+  // ── 2주차 4/6(월)~4/12(일) — coupang 연결 + 전공 과제 ──
   6:  [
-    { id:"a11", text:"📖 React Query 공식 문서 읽기 — 왜 쓰는지 이해", tagId:"tag-lecture" },
-    { id:"a12", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a14", text:"🔄 근로 중: 전공 복습 (알고리즘 과제 체크)",      tagId:"tag-ca" },
+    { id:"a15", text:"✏️ 저녁: React 핵심기능 2 (상세/추가/삭제)",      tagId:"tag-practice" },
+    { id:"a16", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   7:  [
-    { id:"a13", text:"✏️ useQuery 기본 사용법 실습", tagId:"tag-practice" },
-    { id:"a14", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a17", text:"🔄 수업 후: 오디오·그래픽스 당일 필기 훑기",      tagId:"tag-audio" },
+    { id:"a18", text:"✏️ 저녁: coupang NestJS API 로컬 실행 + fetch 연결", tagId:"tag-practice" },
+    { id:"a19", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   8:  [
-    { id:"a15", text:"✏️ useMutation 실습 — POST/PUT/DELETE 연동", tagId:"tag-practice" },
-    { id:"a16", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a20", text:"🔄 수업 후: 알고리즘·디지털영상 당일 필기 훑기",  tagId:"tag-ca" },
+    { id:"a21", text:"✏️ 저녁: CORS 해결 + 상품 목록 API → 화면 출력", tagId:"tag-practice" },
+    { id:"a22", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   9:  [
-    { id:"a17", text:"🔁 coupang API에 React Query 연결 시도", tagId:"tag-nestjs" },
-    { id:"a18", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a23", text:"🔄 근로 09~11: 알고리즘 과제 체크",               tagId:"tag-ca" },
+    { id:"a24", text:"🔄 근로 15~17: 디지털영상·그래픽스 필기 정리",    tagId:"tag-dip" },
+    { id:"a25", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   10: [
-    { id:"a19", text:"🔁 React Query + coupang 연결 마무리 + 에러 처리", tagId:"tag-nestjs" },
-    { id:"a20", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a26", text:"🔄 근로 09~11: 오디오 과제 체크",                 tagId:"tag-audio" },
+    { id:"a27", text:"🔄 수업 후: 오디오·자바 당일 필기 훑기",          tagId:"tag-java" },
+    { id:"a28", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   11: [
-    { id:"a21", text:"✏️ Tailwind + React Query 합쳐서 UI 다듬기", tagId:"tag-practice" },
-    { id:"a22", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a29", text:"✏️ 낮: Tailwind CSS 적용 + 전공 몰아복습",        tagId:"tag-practice" },
+    { id:"a30", text:"📚 전공 몰아복습: 컴퓨터알고리즘",                tagId:"tag-ca" },
+    { id:"a31", text:"📚 전공 몰아복습: 자바프로그래밍",                tagId:"tag-java" },
+    { id:"a32", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   12: [
-    { id:"a23", text:"🔁 2주차 회고 + 막힌 부분 정리", tagId:"tag-quiz" },
-    { id:"a24", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a33", text:"🌸 데이트 — 쉬기",                               tagId:"tag-quiz" },
   ],
-  // 3주차 4/13(월)~4/19(일) — 시험 직전, 가볍게
+  // ── 3주차 4/13(월)~4/19(일) — 🚨 시험 2주 전! 전공 집중 ──
   13: [
-    { id:"a25", text:"📌 coupang/kurly README 작성 시작", tagId:"tag-quiz" },
-    { id:"a26", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a34", text:"🔄 근로 중: 컴퓨터알고리즘 1회독 시작",           tagId:"tag-ca" },
+    { id:"a35", text:"📚 저녁: 알고리즘 시험범위 정리",                 tagId:"tag-ca" },
+    { id:"a36", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   14: [
-    { id:"a27", text:"📌 README 마무리 + 시연 GIF 제작", tagId:"tag-quiz" },
-    { id:"a28", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a37", text:"🔄 수업 후: 그래픽스 당일 필기 훑기",             tagId:"tag-cg" },
+    { id:"a38", text:"📚 저녁: 컴퓨터그래픽스 시험범위 정리",           tagId:"tag-cg" },
+    { id:"a39", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   15: [
-    { id:"a29", text:"✏️ 기술 블로그 개설 (벨로그 or 티스토리)", tagId:"tag-practice" },
-    { id:"a30", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a40", text:"🔄 수업 후: 알고리즘·디지털영상 당일 필기",       tagId:"tag-dip" },
+    { id:"a41", text:"📚 저녁: 디지털영상처리 시험범위 정리",            tagId:"tag-dip" },
+    { id:"a42", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   16: [
-    { id:"a31", text:"✏️ 블로그 글 1개 초안 작성 (React 훅 정리 or NestJS 구조)", tagId:"tag-practice" },
-    { id:"a32", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a43", text:"🔄 근로 09~11: 오디오신호처리 복습",              tagId:"tag-audio" },
+    { id:"a44", text:"🔄 근로 15~17: 오디오 시험범위 정리",             tagId:"tag-audio" },
   ],
   17: [
-    { id:"a33", text:"📝 블로그 글 1개 발행", tagId:"tag-quiz" },
-    { id:"a34", text:"🏫 시험 공부 시작 — 코딩은 가볍게 유지", tagId:"tag-quiz" },
+    { id:"a45", text:"🔄 근로 09~11: 자바프로그래밍 복습",              tagId:"tag-java" },
+    { id:"a46", text:"🔄 수업 후: 오디오·자바 당일 필기 훑기",          tagId:"tag-java" },
   ],
   18: [
-    { id:"a35", text:"🏫 시험 공부 집중", tagId:"tag-quiz" },
-    { id:"a36", text:"🐍 백준 Python 1문제 (가벼운 것)", tagId:"tag-algo" },
+    { id:"a47", text:"📚 낮: 전과목 약점 정리 (1과목씩)",               tagId:"tag-quiz" },
+    { id:"a48", text:"📚 낮: React 가볍게 유지 — 코드 읽기만",         tagId:"tag-lecture" },
+    { id:"a49", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   19: [
-    { id:"a37", text:"🏫 시험 공부 마무리", tagId:"tag-quiz" },
+    { id:"a50", text:"🌸 데이트 — 쉬기",                               tagId:"tag-quiz" },
   ],
-  // 4주차 4/20(월)~4/26(일) — 중간고사
+  // ── 4주차 4/20(월)~4/26(일) — 🏫 중간고사 ──
   20: [
-    { id:"a38", text:"🏫 시험 공부 최종 점검", tagId:"tag-quiz" },
+    { id:"a51", text:"🔄 근로 중: 시험 직전 최종 정리",                 tagId:"tag-quiz" },
+    { id:"a52", text:"📚 저녁: 시험 직전 마무리 (약점 과목 집중)",      tagId:"tag-quiz" },
   ],
   21: [
-    { id:"a39", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+    { id:"a53", text:"🏫 중간고사 — 컨디션 관리, 코딩 완전 휴식 🙏",   tagId:"tag-quiz" },
   ],
   22: [
-    { id:"a40", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+    { id:"a54", text:"🏫 중간고사 — 코딩 완전 휴식 🙏",                tagId:"tag-quiz" },
   ],
   23: [
-    { id:"a41", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+    { id:"a55", text:"🏫 중간고사 — 코딩 완전 휴식 🙏",                tagId:"tag-quiz" },
   ],
   24: [
-    { id:"a42", text:"🏫 중간고사 — 코딩 완전 휴식 🙏", tagId:"tag-quiz" },
+    { id:"a56", text:"🏫 중간고사 — 코딩 완전 휴식 🙏",                tagId:"tag-quiz" },
   ],
   25: [
-    { id:"a43", text:"🎉 시험 끝! 컨디션 회복 + 4월 중간 돌아보기", tagId:"tag-quiz" },
+    { id:"a57", text:"🎉 시험 끝! 컨디션 회복 + 4월 중간 돌아보기",    tagId:"tag-quiz" },
+    { id:"a58", text:"🐍 백준 Python 1문제 (복귀!)",                    tagId:"tag-algo" },
   ],
   26: [
-    { id:"a44", text:"🔍 GitHub good first issue 탐색", tagId:"tag-practice" },
-    { id:"a45", text:"🐍 백준 Python 1문제 (복귀!)", tagId:"tag-algo" },
+    { id:"a59", text:"🌸 데이트 — 쉬기",                               tagId:"tag-quiz" },
   ],
-  // 5주차 4/27(월)~4/30(목)
+  // ── 5주차 4/27(월)~4/30(목) ──
   27: [
-    { id:"a46", text:"✏️ 오픈소스 이슈 도전 or 사이드 프로젝트 기획", tagId:"tag-practice" },
-    { id:"a47", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a60", text:"🔄 근로 중: React Query 개념 공부",               tagId:"tag-lecture" },
+    { id:"a61", text:"✏️ 저녁: React Query useQuery 실습",              tagId:"tag-practice" },
+    { id:"a62", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   28: [
-    { id:"a48", text:"✏️ 사이드 프로젝트 or 오픈소스 이슈 진행", tagId:"tag-practice" },
-    { id:"a49", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a63", text:"🔄 수업 후: 그래픽스·오디오 당일 필기 훑기",      tagId:"tag-cg" },
+    { id:"a64", text:"✏️ 저녁: ☕ 자바 팀프로젝트 팀원과 킥오프",       tagId:"tag-java" },
+    { id:"a65", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   29: [
-    { id:"a50", text:"✏️ 사이드 프로젝트 계속", tagId:"tag-practice" },
-    { id:"a51", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a66", text:"🔄 수업 후: 알고리즘·디지털영상 당일 필기",       tagId:"tag-ca" },
+    { id:"a67", text:"✏️ 저녁: React Query useMutation 실습",           tagId:"tag-practice" },
+    { id:"a68", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
   30: [
-    { id:"a52", text:"📝 4월 전체 회고 작성 (배운 것 / 아쉬운 것 / 5월 목표)", tagId:"tag-quiz" },
-    { id:"a53", text:"📋 5월 계획 초안 작성", tagId:"tag-quiz" },
-    { id:"a54", text:"🐍 백준 Python 1문제", tagId:"tag-algo" },
+    { id:"a69", text:"🔄 근로 중: 4월 전체 회고 + 5월 계획 초안",      tagId:"tag-quiz" },
+    { id:"a70", text:"📝 저녁: 4월 회고 마무리 + GitHub 커밋",          tagId:"tag-quiz" },
+    { id:"a71", text:"🐍 백준 Python 1문제",                            tagId:"tag-algo" },
   ],
 };
 
 const APR_WEEKS_META = [
-  { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)",   month:"apr", theme:"🎨 Tailwind CSS 집중",           themeDesc:"Tailwind 기초 + coupang UI 리팩토링",           color:"#8b5cf6", lightColor:"#f5f3ff", days:[1,2,3,4,5] },
-  { id:"apr-week2", label:"2주차", range:"4/6(월) ~ 4/12(일)",  month:"apr", theme:"⚡ React Query 정복",            themeDesc:"useQuery/useMutation + coupang API 연동",       color:"#0ea5e9", lightColor:"#f0f9ff", days:[6,7,8,9,10,11,12] },
-  { id:"apr-week3", label:"3주차", range:"4/13(월) ~ 4/19(일)", month:"apr", theme:"📝 포폴 정리 + 시험 준비",       themeDesc:"README/GIF + 블로그 첫 글 + 시험 공부",         color:"#10b981", lightColor:"#f0fdf4", days:[13,14,15,16,17,18,19] },
-  { id:"apr-week4", label:"4주차", range:"4/20(월) ~ 4/26(일)", month:"apr", theme:"🏫 중간고사 주간",               themeDesc:"4/21~24 시험 — 코딩 휴식, 시험 전후 정리",     color:"#ef4444", lightColor:"#fef2f2", days:[20,21,22,23,24,25,26] },
-  { id:"apr-week5", label:"5주차", range:"4/27(월) ~ 4/30(목)", month:"apr", theme:"🚀 오픈소스 or 사이드 프로젝트", themeDesc:"good first issue 도전 + 4월 회고",              color:"#f59e0b", lightColor:"#fffbeb", days:[27,28,29,30] },
+  { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)",   month:"apr", theme:"✏️ React 프로젝트 시작",           themeDesc:"Vite 생성·레이아웃·핵심기능 1 / 전공 당일복습 유지",     color:"#8b5cf6", lightColor:"#f5f3ff", days:[1,2,3,4,5] },
+  { id:"apr-week2", label:"2주차", range:"4/6(월) ~ 4/12(일)",  month:"apr", theme:"🔗 coupang 연결 + Tailwind",       themeDesc:"API 연동·CORS 해결·화면 출력 / 전공 과제 체크",          color:"#0ea5e9", lightColor:"#f0f9ff", days:[6,7,8,9,10,11,12] },
+  { id:"apr-week3", label:"3주차", range:"4/13(월) ~ 4/19(일)", month:"apr", theme:"🚨 시험 2주 전! 전공 집중",        themeDesc:"전과목 1회독 + 시험범위 정리 / React 가볍게 유지",       color:"#ef4444", lightColor:"#fef2f2", days:[13,14,15,16,17,18,19] },
+  { id:"apr-week4", label:"4주차", range:"4/20(월) ~ 4/26(일)", month:"apr", theme:"🏫 중간고사",                      themeDesc:"4/21~24 시험 — 코딩 완전 휴식 / 시험 후 회복",           color:"#f59e0b", lightColor:"#fffbeb", days:[20,21,22,23,24,25,26] },
+  { id:"apr-week5", label:"5주차", range:"4/27(월) ~ 4/30(목)", month:"apr", theme:"🚀 React Query + 자바 팀프로젝트", themeDesc:"React Query 실습 / 팀프로젝트 킥오프 / 4월 회고",         color:"#10b981", lightColor:"#f0fdf4", days:[27,28,29,30] },
 ];
 const WEEKS_META = [
-  { id:"week1", label:"1주차", range:"3/10(화) ~ 3/11(수)",  theme:"⚡ 환경세팅 + React 입문",          themeDesc:"강의소개, DOM, 환경설정, 프로젝트 생성/명령어 / Python 입문", color:"#ec4899", lightColor:"#fdf2f8", days:[10,11] },
-  { id:"week2", label:"2주차", range:"3/19(수) ~ 3/22(일)",  theme:"🧩 JSX·컴포넌트·Props·State·훅",   themeDesc:"JSX, 컴포넌트, Props, State, useReducer, useRef 집중 공략",   color:"#0ea5e9", lightColor:"#f0f9ff", days:[19,20,21,22] },
-  { id:"week3", label:"3주차", range:"3/23(월) ~ 3/29(일)",  theme:"🔗 훅 완성 + 완강 + 프로젝트 시작", themeDesc:"useEffect, 커스텀훅, Context, Router, 완강 🎉 + 혼자 만들기", color:"#10b981", lightColor:"#f0fdf4", days:[23,24,25,26,27,28,29] },
-  { id:"week4", label:"마무리", range:"3/30(월) ~ 3/31(화)", theme:"🚀 coupang 연결 + 3월 마무리",      themeDesc:"API 연동 마무리 + 회고 + 4월 준비",                           color:"#f59e0b", lightColor:"#fffbeb", days:[30,31] },
+  { id:"week1", label:"1주차", range:"3/23(월) ~ 3/29(일)", theme:"🎬 인강 완주 + 전공 당일복습",  themeDesc:"강의 10~27강 / 수업 당일 필기 / 근로 중 복습 / 알바 고려", color:"#ec4899", lightColor:"#fdf2f8", days:[23,24,25,26,27,28,29] },
+  { id:"week2", label:"마무리", range:"3/30(월) ~ 3/31(화)", theme:"🎉 완강 + 4월 준비",           themeDesc:"28~30강 완강 / 완강 회고 / 4월 계획 확인",                 color:"#f59e0b", lightColor:"#fffbeb", days:[30,31] },
 ];
-
 const ALL_BASE_TASKS = Object.values(BASE_TASKS_BY_DAY).flat();
 const ALL_DAYS = Object.keys(BASE_TASKS_BY_DAY).map(Number);
 const DAY_LABELS = ["일","월","화","수","목","금","토"];
@@ -317,7 +283,7 @@ export default function App() {
   });
 
   const [month, setMonth] = useState("mar"); // "mar" | "apr"
-  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,week3:false,week4:false,"apr-week1":false,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false});
+  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,"apr-week1":false,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false});
   const [tab, setTab]               = useState("all");
   const [moveModal, setMoveModal]   = useState(null);
   const [addState, setAddState]     = useState({});
