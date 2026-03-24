@@ -40,6 +40,7 @@ export default function Journal() {
     return 10;
   });
   const [view, setView] = useState("write");
+  const [expandedDays, setExpandedDays] = useState({});
   const [journals, setJournals] = useState(() => {
     try { return JSON.parse(localStorage.getItem("mio-journal-v1") || "{}"); }
     catch { return {}; }
@@ -257,39 +258,46 @@ export default function Journal() {
               const j = journals[k] || {};
               const isTdy = isToday(d);
               return (
-                <div key={d} onClick={() => { setSelectedDay(d); setView("write"); }} style={{
-                  background: "white", borderRadius: 16, padding: "16px 18px", marginBottom: 10,
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.06)", cursor: "pointer",
+                <div key={d} style={{
+                  background: "white", borderRadius: 16, marginBottom: 10,
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
                   borderLeft: `4px solid ${isTdy ? PINK : "#e5e7eb"}`,
-                  transition: "all 0.15s"
+                  overflow: "hidden"
                 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  {/* 헤더 — 항상 보임, 클릭하면 펼치기/접기 */}
+                  <div onClick={() => setExpandedDays(p => ({...p, [k]: !p[k]}))} style={{ padding: "16px 18px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 15, fontWeight: 800, color: "#1e1b4b" }}>
                         {monthLabel} {d}일 ({getDayLabel(d)})
                       </span>
                       {isTdy && <span style={{ fontSize: 11, background: PINK, color: "white", borderRadius: 99, padding: "1px 7px", fontWeight: 700 }}>TODAY</span>}
                     </div>
-                    <div style={{ display: "flex", gap: 4 }}>
-                      {j.study && <span style={{ fontSize: 20 }}>{j.study}</span>}
-                      {j.condition && <span style={{ fontSize: 20 }}>{j.condition}</span>}
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      {j.study && <span style={{ fontSize: 18 }}>{j.study}</span>}
+                      {j.condition && <span style={{ fontSize: 18 }}>{j.condition}</span>}
+                      <span style={{ fontSize: 12, color: "#9ca3af", transition: "transform 0.2s", display: "inline-block", transform: expandedDays[k] ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
                     </div>
                   </div>
-                  {(j.tags || []).length > 0 && (
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
-                      {j.tags.map(tag => (
-                        <span key={tag} style={{ fontSize: 11, background: "#fdf2f8", color: PINK, borderRadius: 99, padding: "2px 8px", fontWeight: 600 }}>{tag}</span>
-                      ))}
+                  {/* 펼쳐진 내용 */}
+                  {expandedDays[k] && (
+                    <div style={{ padding: "0 18px 16px", borderTop: "1px solid #f1f5f9" }}>
+                      {(j.tags || []).length > 0 && (
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 4, margin: "12px 0 10px" }}>
+                          {j.tags.map(tag => (
+                            <span key={tag} style={{ fontSize: 11, background: "#fdf2f8", color: PINK, borderRadius: 99, padding: "2px 8px", fontWeight: 600 }}>{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                      {j.memo ? (
+                        <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.7, whiteSpace: "pre-wrap", marginTop: (j.tags||[]).length ? 0 : 12 }}>
+                          {j.memo}
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 12, color: "#d1d5db", marginTop: 12 }}>메모 없음</div>
+                      )}
+                      <div onClick={() => { setSelectedDay(d); setView("write"); }} style={{ marginTop: 12, fontSize: 11, color: PINK, fontWeight: 600, cursor: "pointer", textAlign: "right" }}>✏️ 편집하기 →</div>
                     </div>
                   )}
-                  {j.memo ? (
-                    <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
-                      {j.memo}
-                    </div>
-                  ) : (
-                    <div style={{ fontSize: 12, color: "#d1d5db" }}>메모 없음</div>
-                  )}
-                  <div style={{ marginTop: 8, fontSize: 11, color: "#f9a8d4", fontWeight: 600 }}>눌러서 편집 →</div>
                 </div>
               );
             })
