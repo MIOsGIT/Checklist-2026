@@ -253,7 +253,7 @@ function getScheduleBadge(monthIndex, day) {
   if (dw === 1) return { text: "월 · 근로", color: "#6b7280" }; // 월
   if (dw === 4) return { text: "목 · 근로/알바", color: "#6b7280" }; // 목
   if (dw === 5) return { text: "금 · 근로/알바", color: "#6b7280" }; // 금
-  if (dw === 6) return { text: "토 · 알바", color: "#ef4444" }; // 토
+  if (dw === 6) return { text: "토 · 알바", color: "#3b82f6" }; // 토
   if (dw === 0) return { text: "일 · 자유공부", color: "#ef4444" }; // 일
   return { text: "화/수 · 개인공부", color: "#374151" }; // 화, 수
 }
