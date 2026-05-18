@@ -80,7 +80,7 @@ const BASE_TASKS_BY_DAY = {
     { id:"t31", text:"📌 GitHub 커밋으로 3월 마무리 ✨",                     tagId:"tag-quiz" },
     { id:"t32", text:"🐍 백준 Python 1문제",                                 tagId:"tag-algo" },
   ],
-};};
+};
 
 
 // ── 5월 태스크 ──
@@ -486,7 +486,7 @@ const APR_TASKS_BY_DAY = {
     { id:"a84", text:"📝 4월 회고 마무리 + GitHub 커밋",               tagId:"tag-quiz" },
     { id:"a85", text:"🐍 백준 Python 1문제",                                 tagId:"tag-algo" },
   ],
-};};
+};
 
 const APR_WEEKS_META = [
   { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)",   month:"apr", theme:"✏️ React 프로젝트 시작",           themeDesc:"Vite 생성·레이아웃·핵심기능 1 / 전공 당일복습 유지",     color:"#8b5cf6", lightColor:"#f5f3ff", days:[1,2,3,4,5] },
