@@ -60,26 +60,26 @@ const APR_TASKS_BY_DAY = {
   30: [{ id:"a82", text:"👩🏻‍💻 근로(오전): 4월 회고", tagId:"tag-react" }, { id:"a83", text:"👩🏻‍💻 근로(오후): 5월 초안", tagId:"tag-react" }],
 };
 
-// ── 5월 (근로 중 LC 원천 차단 적용) ──
+// ── 5월 (React 공식문서 'UI 구성' & '상호작용' 집중) ──
 const MAY_TASKS_BY_DAY = {
   // [3주차: 5/18(월) ~ 5/24(일)]
   18: [ // 월 (근로)
     { id:"m1", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 50개 암기 (눈으로)", tagId:"tag-toeic" },
-    { id:"m2", text:"👩🏻‍💻 근로(오후): 🌐 React 공식문서 튜토리얼 정독", tagId:"tag-react" },
+    { id:"m2", text:"👩🏻‍💻 근로(오후): 🌐 React 퀵 스타트 (틱택토 튜토리얼 눈으로 훑기)", tagId:"tag-react" },
     { id:"m3", text:"☕ 자바 팀프로젝트 현황 파악 및 역할 분담", tagId:"tag-java" },
   ],
   19: [ // 화 (자유)
     { id:"m4", text:"📗 토익 RC Part 5, 6 문법 뽀개기", tagId:"tag-toeic" },
-    { id:"m5", text:"🌐 React 공식문서 - State와 Props 실습", tagId:"tag-react" },
+    { id:"m5", text:"🌐 UI 구성하기 1: 컴포넌트, JSX, Props 실습", tagId:"tag-react" },
   ],
   20: [ // 수 (자유)
     { id:"m6", text:"📗 토익 LC Part 3, 4 쉐도잉 연습", tagId:"tag-toeic" },
-    { id:"m7", text:"🌐 React Hooks (useState) 블로그 아티클 정리", tagId:"tag-react" },
+    { id:"m7", text:"🌐 UI 구성하기 2: 조건부/리스트 렌더링, 순수 컴포넌트", tagId:"tag-react" },
     { id:"m8", text:"☕ 15시 자바 팀미팅", tagId:"tag-java" },
   ],
   21: [ // 목 (근로/알바)
     { id:"m9", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 RC 단어 복습 및 오답 정리", tagId:"tag-toeic" },
-    { id:"m10", text:"👩🏻‍💻 근로 짬날 때: 🌐 React 기술 블로그 스크랩", tagId:"tag-react" },
+    { id:"m10", text:"👩🏻‍💻 근로 짬날 때: 🌐 상호작용 추가하기 1: 이벤트 응답, State 기초 정독", tagId:"tag-react" },
   ],
   22: [ // 금 (근로/알바)
     { id:"m11", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 속독 요령 및 단어 정리", tagId:"tag-toeic" },
@@ -91,7 +91,7 @@ const MAY_TASKS_BY_DAY = {
   ],
   24: [ // 일 (자유)
     { id:"m15", text:"📗 모의고사 1회 오답노트 및 LC 약점 분석", tagId:"tag-toeic" },
-    { id:"m16", text:"🌐 React 공식문서 - useEffect 실습해보기", tagId:"tag-react" },
+    { id:"m16", text:"🌐 상호작용 추가하기 2: 렌더링과 커밋, 객체/배열 State 업데이트 실습", tagId:"tag-react" },
   ],
 
   // [4주차: 5/25(월) ~ 5/31(일)]
@@ -101,7 +101,7 @@ const MAY_TASKS_BY_DAY = {
   ],
   26: [ // 화 (자유)
     { id:"m19", text:"📗 토익 RC 기출문제 1세트 풀기", tagId:"tag-toeic" },
-    { id:"m20", text:"🌐 React Router 개념 공식문서/블로그 학습", tagId:"tag-react" },
+    { id:"m20", text:"🌐 State 관리하기 1: State 구조화, 컴포넌트 간 State 공유", tagId:"tag-react" },
   ],
   27: [ // 수 (자유)
     { id:"m21", text:"📗 토익 LC 기출문제 1세트 집중 풀기", tagId:"tag-toeic" },
@@ -123,7 +123,7 @@ const MAY_TASKS_BY_DAY = {
   ],
 };
 
-// ── 6월 (근로 중 LC 원천 차단 적용) ──
+// ── 6월 (기말고사 후 React 'State 심화' & '탈출구(Effect)' 마무리) ──
 const JUN_TASKS_BY_DAY = {
   // [1주차: 6/1(월) ~ 6/7(일)]
   1: [ // 월 (근로)
@@ -188,25 +188,25 @@ const JUN_TASKS_BY_DAY = {
   18: [ { id:"j26", text:"🏫 기말고사 3일차", tagId:"tag-java" } ],
   19: [ { id:"j27", text:"🏫 기말고사 4일차 (마지막)", tagId:"tag-java" } ],
   20: [ { id:"j28", text:"🎉 오전: 기말 끝! 푹 쉬기 (17시 알바 가기 전까지)", tagId:"tag-react" } ],
-  21: [ { id:"j29", text:"🌐 React 공식문서 기반 미니 프로젝트 기획", tagId:"tag-react" } ],
+  21: [ { id:"j29", text:"🌐 State 관리하기 2: State 보존/초기화, Reducer 개념 파악", tagId:"tag-react" } ],
 
-  // [4주차: 6/22(월) ~ 6/28(일)]
+  // [4주차: 6/22(월) ~ 6/28(일)] - 본격적인 공식문서 후반부 & 실습
   22: [ // 월 (근로)
-    { id:"j30", text:"👩🏻‍💻 근로 중: 🌐 React 공식문서 컴포넌트 개념 복습", tagId:"tag-react" },
-    { id:"j31", text:"🌐 귀가 후: 프로젝트 세팅 및 레이아웃", tagId:"tag-react" }
+    { id:"j30", text:"👩🏻‍💻 근로 중: 🌐 State 관리하기 3: Context API 정독", tagId:"tag-react" },
+    { id:"j31", text:"🌐 귀가 후: 탈출구 1 - Ref로 값 참조 및 DOM 조작 실습", tagId:"tag-react" }
   ],
-  23: [ { id:"j32", text:"🌐 React 상태관리(useState/Context) 적용", tagId:"tag-react" } ],
-  24: [ { id:"j33", text:"🌐 React API 연동 및 데이터 패칭 실습", tagId:"tag-react" } ],
-  25: [ { id:"j34", text:"👩🏻‍💻 근로(오전/오후): 🌐 React 관련 블로그 아티클 스크랩", tagId:"tag-react" } ],
+  23: [ { id:"j32", text:"🌐 탈출구 2: Effect와 동기화, Effect가 필요 없는 경우 파악", tagId:"tag-react" } ],
+  24: [ { id:"j33", text:"🌐 탈출구 3: Effect 생명주기 및 커스텀 훅으로 로직 재사용", tagId:"tag-react" } ],
+  25: [ { id:"j34", text:"👩🏻‍💻 근로(오전/오후): 🌐 공식문서 전체 복습 및 미니 프로젝트 기획", tagId:"tag-react" } ],
   26: [
-    { id:"j35", text:"👩🏻‍💻 근로(오전): 🌐 아티클 읽기 및 개념 정리", tagId:"tag-react" },
-    { id:"j36", text:"🌐 오후 집중: 리팩토링 및 커스텀 훅 분리", tagId:"tag-react" },
+    { id:"j35", text:"👩🏻‍💻 근로(오전): 🌐 프로젝트 데이터 구조 설계", tagId:"tag-react" },
+    { id:"j36", text:"🌐 오후 집중: 컴포넌트 세팅 및 State/Context 연결", tagId:"tag-react" },
   ],
-  27: [ { id:"j37", text:"🌐 오전: React 프로젝트 UI 폴리싱 및 버그 수정", tagId:"tag-react" } ],
+  27: [ { id:"j37", text:"🌐 오전: 외부 데이터(혹은 LocalStorage) Effect 연동 및 버그 수정", tagId:"tag-react" } ],
   28: [ { id:"j38", text:"🌐 미니 프로젝트 최종 완성 및 GitHub 배포 🚀", tagId:"tag-react" } ],
 
   // [5주차: 6/29(월) ~ 6/30(화)]
-  29: [ { id:"j39", text:"👩🏻‍💻 근로(오전/오후): 🌐 개발 블로그에 프로젝트 회고 작성", tagId:"tag-react" } ],
+  29: [ { id:"j39", text:"👩🏻‍💻 근로(오전/오후): 🌐 공식문서 기반 프로젝트 회고 작성", tagId:"tag-react" } ],
   30: [ { id:"j40", text:"📝 6월 최종 마무리 및 7월 방향성 세우기", tagId:"tag-react" } ],
 };
 
