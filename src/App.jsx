@@ -59,151 +59,154 @@ const APR_TASKS_BY_DAY = {
   30: [{ id:"a82", text:"👩🏻‍💻 근로(오전): 4월 회고", tagId:"tag-react" }, { id:"a83", text:"👩🏻‍💻 근로(오후): 5월 초안", tagId:"tag-react" }],
 };
 
-// ── 5월 (월~일 단위 완벽 매칭, 인강 배제, 알바/근로 반영) ──
+// ── 5월 (근로 중 LC 원천 차단 적용) ──
 const MAY_TASKS_BY_DAY = {
   // [3주차: 5/18(월) ~ 5/24(일)]
-  18: [ // 월
-    { id:"m1", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 50개 암기", tagId:"tag-toeic" },
+  18: [ // 월 (근로)
+    { id:"m1", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 50개 암기 (눈으로)", tagId:"tag-toeic" },
     { id:"m2", text:"👩🏻‍💻 근로(오후): 🌐 React 공식문서 튜토리얼 정독", tagId:"tag-react" },
     { id:"m3", text:"☕ 자바 팀프로젝트 현황 파악 및 역할 분담", tagId:"tag-java" },
   ],
-  19: [ // 화 (No 근로/알바)
+  19: [ // 화 (자유)
     { id:"m4", text:"📗 토익 RC Part 5, 6 문법 뽀개기", tagId:"tag-toeic" },
     { id:"m5", text:"🌐 React 공식문서 - State와 Props 실습", tagId:"tag-react" },
   ],
-  20: [ // 수 (No 근로/알바)
+  20: [ // 수 (자유)
     { id:"m6", text:"📗 토익 LC Part 3, 4 쉐도잉 연습", tagId:"tag-toeic" },
     { id:"m7", text:"🌐 React Hooks (useState) 블로그 아티클 정리", tagId:"tag-react" },
     { id:"m8", text:"☕ 15시 자바 팀미팅", tagId:"tag-java" },
   ],
-  21: [ // 목 (근로 종일, 17시 알바)
-    { id:"m9", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 복습 및 오답 확인", tagId:"tag-toeic" },
-    { id:"m10", text:"🌐 React 기술 블로그 아티클 1개 읽기", tagId:"tag-react" },
+  21: [ // 목 (근로/알바)
+    { id:"m9", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 RC 단어 복습 및 오답 정리", tagId:"tag-toeic" },
+    { id:"m10", text:"👩🏻‍💻 근로 짬날 때: 🌐 React 기술 블로그 스크랩", tagId:"tag-react" },
   ],
-  22: [ // 금 (오전 근로, 17시 알바)
-    { id:"m11", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 속독 요령 정리", tagId:"tag-toeic" },
+  22: [ // 금 (근로/알바)
+    { id:"m11", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 속독 요령 및 단어 정리", tagId:"tag-toeic" },
     { id:"m12", text:"☕ 오후 집중: 자바 팀프로젝트 핵심 로직 구현", tagId:"tag-java" },
   ],
-  23: [ // 토 (17시 알바)
+  23: [ // 토 (알바)
     { id:"m13", text:"📗 오전 집중: 토익 실전 모의고사 1회 (시간엄수)", tagId:"tag-toeic" },
     { id:"m14", text:"☕ 자바 팀프로젝트 개별 작업", tagId:"tag-java" },
   ],
-  24: [ // 일 (Free)
-    { id:"m15", text:"📗 모의고사 1회 오답노트 및 약점 분석", tagId:"tag-toeic" },
+  24: [ // 일 (자유)
+    { id:"m15", text:"📗 모의고사 1회 오답노트 및 LC 약점 분석", tagId:"tag-toeic" },
     { id:"m16", text:"🌐 React 공식문서 - useEffect 실습해보기", tagId:"tag-react" },
   ],
 
   // [4주차: 5/25(월) ~ 5/31(일)]
-  25: [ // 월
-    { id:"m17", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 50개 암기", tagId:"tag-toeic" },
+  25: [ // 월 (근로)
+    { id:"m17", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 50개 암기 및 문법 정리", tagId:"tag-toeic" },
     { id:"m18", text:"☕ 자바 팀플 코드 리뷰 및 피드백 반영", tagId:"tag-java" },
   ],
-  26: [ // 화
+  26: [ // 화 (자유)
     { id:"m19", text:"📗 토익 RC 기출문제 1세트 풀기", tagId:"tag-toeic" },
     { id:"m20", text:"🌐 React Router 개념 공식문서/블로그 학습", tagId:"tag-react" },
   ],
-  27: [ // 수
-    { id:"m21", text:"📗 토익 LC 기출문제 1세트 풀기", tagId:"tag-toeic" },
+  27: [ // 수 (자유)
+    { id:"m21", text:"📗 토익 LC 기출문제 1세트 집중 풀기", tagId:"tag-toeic" },
     { id:"m22", text:"☕ 자바 팀플 최종 병합 준비", tagId:"tag-java" },
   ],
-  28: [ // 목 (근로 종일, 17시 알바)
-    { id:"m23", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 오답노트 복습", tagId:"tag-toeic" },
+  28: [ // 목 (근로/알바)
+    { id:"m23", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 RC 오답노트 및 단어 반복 (LC제외)", tagId:"tag-toeic" },
   ],
-  29: [ // 금 (오전 근로, 17시 알바)
-    { id:"m24", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 시간 단축 연습", tagId:"tag-toeic" },
+  29: [ // 금 (근로/알바)
+    { id:"m24", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 지문 독해 훈련", tagId:"tag-toeic" },
     { id:"m25", text:"☕ 오후 집중: 자바 팀프로젝트 버그 수정", tagId:"tag-java" },
   ],
-  30: [ // 토 (17시 알바)
+  30: [ // 토 (알바)
     { id:"m26", text:"📗 오전 집중: 토익 실전 모의고사 2회 풀기", tagId:"tag-toeic" },
   ],
-  31: [ // 일 (Free)
-    { id:"m27", text:"📗 모의고사 2회 오답 분석", tagId:"tag-toeic" },
+  31: [ // 일 (자유)
+    { id:"m27", text:"📗 모의고사 2회 LC/RC 꼼꼼한 오답 분석", tagId:"tag-toeic" },
     { id:"m28", text:"☕ 자바 팀프로젝트 최종본 점검 🚀", tagId:"tag-java" },
   ],
 };
 
-// ── 6월 (기말고사 및 토익 디데이 반영) ──
+// ── 6월 (근로 중 LC 원천 차단 적용) ──
 const JUN_TASKS_BY_DAY = {
   // [1주차: 6/1(월) ~ 6/7(일)]
-  1: [ // 월
-    { id:"j1", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 50개, LC 오답듣기", tagId:"tag-toeic" },
+  1: [ // 월 (근로)
+    { id:"j1", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 50개 및 RC Part 5 오답 확인", tagId:"tag-toeic" },
     { id:"j2", text:"☕ 기말고사 시험범위 파악 및 계획 세우기", tagId:"tag-java" },
   ],
-  2: [ // 화
-    { id:"j3", text:"📗 토익 900+ 고득점 문법 정리", tagId:"tag-toeic" },
+  2: [ // 화 (자유)
+    { id:"j3", text:"📗 밀린 토익 LC 오답 듣기 및 900+ 문법 정리", tagId:"tag-toeic" },
     { id:"j4", text:"☕ 전공 기말고사 1회독 시작", tagId:"tag-java" },
   ],
-  3: [ // 수
-    { id:"j5", text:"📗 토익 LC 패러프레이징 단어 정리", tagId:"tag-toeic" },
+  3: [ // 수 (자유)
+    { id:"j5", text:"📗 토익 LC 패러프레이징 단어 정리 및 쉐도잉", tagId:"tag-toeic" },
     { id:"j6", text:"☕ 전공 기말고사 1회독 계속", tagId:"tag-java" },
   ],
-  4: [ // 목 (근로 종일, 17시 알바)
+  4: [ // 목 (근로/알바)
     { id:"j7", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 RC Part 5 100제 풀기", tagId:"tag-toeic" },
   ],
-  5: [ // 금 (오전 근로, 17시 알바)
-    { id:"j8", text:"👩🏻‍💻 근로(오전): 📗 토익 약점 파트 보완", tagId:"tag-toeic" },
+  5: [ // 금 (근로/알바)
+    { id:"j8", text:"👩🏻‍💻 근로(오전): 📗 토익 RC 약점 파트 집중 보완", tagId:"tag-toeic" },
     { id:"j9", text:"☕ 오후 집중: 전공 과목 핵심 요약", tagId:"tag-java" },
   ],
-  6: [ // 토 (17시 알바)
+  6: [ // 토 (알바)
     { id:"j10", text:"📗 오전 집중: 토익 실전 모의고사 3회 (시간엄수)", tagId:"tag-toeic" },
   ],
-  7: [ // 일 (Free)
-    { id:"j11", text:"📗 모의고사 3회 오답 분석", tagId:"tag-toeic" },
+  7: [ // 일 (자유)
+    { id:"j11", text:"📗 모의고사 3회 오답 분석 (LC 중점)", tagId:"tag-toeic" },
     { id:"j12", text:"☕ 전공 기말고사 2회독", tagId:"tag-java" },
   ],
 
   // [2주차: 6/8(월) ~ 6/14(일)]
-  8: [ // 월
-    { id:"j13", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 자주 틀리는 단어장 반복", tagId:"tag-toeic" },
+  8: [ // 월 (근로)
+    { id:"j13", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 자주 틀리는 단어장 반복 (눈으로)", tagId:"tag-toeic" },
   ],
-  9: [ // 화
+  9: [ // 화 (자유)
     { id:"j14", text:"📗 토익 RC Part 7 하프 모의고사", tagId:"tag-toeic" },
     { id:"j15", text:"☕ 기말고사 기출문제 풀이", tagId:"tag-java" },
   ],
-  10: [ // 수
+  10: [ // 수 (자유)
     { id:"j16", text:"📗 토익 LC 하프 모의고사", tagId:"tag-toeic" },
     { id:"j17", text:"☕ 기말고사 오답 정리", tagId:"tag-java" },
   ],
-  11: [ // 목 (근로 종일, 17시 알바)
-    { id:"j18", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 D-3 멘탈 관리 및 단어", tagId:"tag-toeic" },
+  11: [ // 목 (근로/알바)
+    { id:"j18", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 D-3 멘탈 관리 및 기출단어 암기", tagId:"tag-toeic" },
   ],
-  12: [ // 금 (오전 근로, 17시 알바)
-    { id:"j19", text:"👩🏻‍💻 근로(오전): 📗 토익 시간 배분 최종 시뮬레이션", tagId:"tag-toeic" },
-    { id:"j20", text:"☕ 오후: 전공 핵심 요약본 암기", tagId:"tag-java" },
+  12: [ // 금 (근로/알바)
+    { id:"j19", text:"👩🏻‍💻 근로(오전): 📗 토익 RC 시간 단축 집중 훈련 (LC제외)", tagId:"tag-toeic" },
+    { id:"j20", text:"☕ 오후: 전공 요약 암기 + 토익 LC 가벼운 마무리", tagId:"tag-java" },
   ],
-  13: [ // 토 (17시 알바)
+  13: [ // 토 (알바)
     { id:"j21", text:"📗 오전 집중: 가벼운 LC 듣기 및 컨디션 조절", tagId:"tag-toeic" },
   ],
-  14: [ // 일 (Free)
+  14: [ // 일 (자유)
     { id:"j22", text:"🏆 토익 정기시험! 900점 가자 🔥", tagId:"tag-toeic" },
   ],
 
   // [3주차: 6/15(월) ~ 6/21(일)] - 16~19일 기말고사
-  15: [ // 월
+  15: [ // 월 (근로)
     { id:"j23", text:"👩🏻‍💻 근로(오전/오후): ☕ 기말고사 D-1 전과목 총정리", tagId:"tag-java" },
   ],
   16: [ { id:"j24", text:"🏫 기말고사 1일차 - 파이팅!", tagId:"tag-java" } ],
   17: [ { id:"j25", text:"🏫 기말고사 2일차", tagId:"tag-java" } ],
   18: [ { id:"j26", text:"🏫 기말고사 3일차", tagId:"tag-java" } ],
   19: [ { id:"j27", text:"🏫 기말고사 4일차 (마지막)", tagId:"tag-java" } ],
-  20: [ { id:"j28", text:"🎉 오전: 기말 끝! 푹 쉬기 (17시 알바)", tagId:"tag-react" } ],
+  20: [ { id:"j28", text:"🎉 오전: 기말 끝! 푹 쉬기 (17시 알바 가기 전까지)", tagId:"tag-react" } ],
   21: [ { id:"j29", text:"🌐 React 공식문서 기반 미니 프로젝트 기획", tagId:"tag-react" } ],
 
   // [4주차: 6/22(월) ~ 6/28(일)]
-  22: [ { id:"j30", text:"🌐 React 프로젝트 세팅 및 컴포넌트 레이아웃", tagId:"tag-react" } ],
-  23: [ { id:"j31", text:"🌐 React 상태관리(useState/Context) 적용", tagId:"tag-react" } ],
-  24: [ { id:"j32", text:"🌐 React API 연동 및 데이터 패칭 실습", tagId:"tag-react" } ],
-  25: [ { id:"j33", text:"👩🏻‍💻 근로(오전/오후): 🌐 React 관련 블로그 아티클 스크랩", tagId:"tag-react" } ],
-  26: [
-    { id:"j34", text:"👩🏻‍💻 근로(오전): 🌐 아티클 읽기", tagId:"tag-react" },
-    { id:"j35", text:"🌐 오후 집중: 리팩토링 및 커스텀 훅 분리", tagId:"tag-react" },
+  22: [ // 월 (근로)
+    { id:"j30", text:"👩🏻‍💻 근로 중: 🌐 React 공식문서 컴포넌트 개념 복습", tagId:"tag-react" },
+    { id:"j31", text:"🌐 귀가 후: 프로젝트 세팅 및 레이아웃", tagId:"tag-react" }
   ],
-  27: [ { id:"j36", text:"🌐 오전: React 프로젝트 UI 폴리싱 및 버그 수정", tagId:"tag-react" } ],
-  28: [ { id:"j37", text:"🌐 미니 프로젝트 최종 완성 및 GitHub 배포 🚀", tagId:"tag-react" } ],
+  23: [ { id:"j32", text:"🌐 React 상태관리(useState/Context) 적용", tagId:"tag-react" } ],
+  24: [ { id:"j33", text:"🌐 React API 연동 및 데이터 패칭 실습", tagId:"tag-react" } ],
+  25: [ { id:"j34", text:"👩🏻‍💻 근로(오전/오후): 🌐 React 관련 블로그 아티클 스크랩", tagId:"tag-react" } ],
+  26: [
+    { id:"j35", text:"👩🏻‍💻 근로(오전): 🌐 아티클 읽기 및 개념 정리", tagId:"tag-react" },
+    { id:"j36", text:"🌐 오후 집중: 리팩토링 및 커스텀 훅 분리", tagId:"tag-react" },
+  ],
+  27: [ { id:"j37", text:"🌐 오전: React 프로젝트 UI 폴리싱 및 버그 수정", tagId:"tag-react" } ],
+  28: [ { id:"j38", text:"🌐 미니 프로젝트 최종 완성 및 GitHub 배포 🚀", tagId:"tag-react" } ],
 
   // [5주차: 6/29(월) ~ 6/30(화)]
-  29: [ { id:"j38", text:"👩🏻‍💻 근로(오전/오후): 🌐 개발 블로그에 프로젝트 회고 작성", tagId:"tag-react" } ],
-  30: [ { id:"j39", text:"📝 6월 최종 마무리 및 7월 방향성 세우기", tagId:"tag-react" } ],
+  29: [ { id:"j39", text:"👩🏻‍💻 근로(오전/오후): 🌐 개발 블로그에 프로젝트 회고 작성", tagId:"tag-react" } ],
+  30: [ { id:"j40", text:"📝 6월 최종 마무리 및 7월 방향성 세우기", tagId:"tag-react" } ],
 };
 
 // 배열 평탄화
@@ -224,7 +227,6 @@ const APR_WEEKS_META = [
   { id:"apr-week4", label:"4주차", range:"4/20(월) ~ 4/26(일)", month:"apr", theme:"🏫 중간고사", themeDesc:"시험 후 회복", color:"#f59e0b", lightColor:"#fffbeb", days:[20] },
   { id:"apr-week5", label:"5주차", range:"4/27(월) ~ 4/30(목)", month:"apr", theme:"🚀 4월 마무리", themeDesc:"4월 회고", color:"#10b981", lightColor:"#f0fdf4", days:[27,30] },
 ];
-// 월~일 규칙 완벽 적용
 const MAY_WEEKS_META = [
   { id:"may-week3", label:"3주차", range:"5/18(월) ~ 5/24(일)", month:"may", theme:"🚀 토익 900+ / React 공식문서 시작", themeDesc:"단어/LC/RC 집중, React 튜토리얼 읽기, 자바 시작", color:"#ec4899", lightColor:"#fdf2f8", days:[18,19,20,21,22,23,24] },
   { id:"may-week4", label:"4주차", range:"5/25(월) ~ 5/31(일)", month:"may", theme:"📗 실전 모의고사 + 자바 프로젝트 마감", themeDesc:"토익 모의고사 풀이, 자바 최종 제출", color:"#8b5cf6", lightColor:"#f5f3ff", days:[25,26,27,28,29,30,31] },
@@ -244,10 +246,18 @@ function getDayLabel(d) { return DAY_LABELS[new Date(2026,2,d).getDay()]; }
 function getDayLabelApr(d) { return DAY_LABELS[new Date(2026,3,d).getDay()]; }
 function getDayLabelMay(d) { return DAY_LABELS[new Date(2026,4,d).getDay()]; }
 function getDayLabelJun(d) { return DAY_LABELS[new Date(2026,5,d).getDay()]; }
-function isWeekend(d)   { const w=new Date(2026,2,d).getDay(); return w===0||w===6; }
-function isWeekendApr(d) { const w=new Date(2026,3,d).getDay(); return w===0||w===6; }
-function isWeekendMay(d) { const w=new Date(2026,4,d).getDay(); return w===0||w===6; }
-function isWeekendJun(d) { const w=new Date(2026,5,d).getDay(); return w===0||w===6; }
+
+// 요일에 따른 라벨링 함수 (월 근로, 목 근로/알바, 금 근로/알바, 토 알바)
+function getScheduleBadge(monthIndex, day) {
+  const dw = new Date(2026, monthIndex, day).getDay();
+  if (dw === 1) return { text: "월 · 근로", color: "#6b7280" }; // 월
+  if (dw === 4) return { text: "목 · 근로/알바", color: "#6b7280" }; // 목
+  if (dw === 5) return { text: "금 · 근로/알바", color: "#6b7280" }; // 금
+  if (dw === 6) return { text: "토 · 알바", color: "#ef4444" }; // 토
+  if (dw === 0) return { text: "일 · 자유공부", color: "#ef4444" }; // 일
+  return { text: "화/수 · 개인공부", color: "#374151" }; // 화, 수
+}
+
 function isToday(d)     { return IS_MARCH_2026 && d===TODAY_DAY; }
 function isTodayApr(d) { return IS_APRIL_2026 && d===TODAY_APR_DAY; }
 const IS_MAY_2026  = todayDate.getFullYear()===2026 && todayDate.getMonth()===4;
@@ -263,7 +273,6 @@ export default function App() {
   const [tags, setTags] = useState(() => {
     try { 
       const saved = JSON.parse(localStorage.getItem("mio-tags")); 
-      // 이전 코드로 저장된 불필요한 태그(얄코 강의 등)가 있으면 3개로 초기화
       if (saved && saved.length !== 3) return DEFAULT_TAGS;
       return saved || DEFAULT_TAGS;
     } catch { return DEFAULT_TAGS; }
@@ -436,7 +445,6 @@ export default function App() {
   const confirmMove  = (targetDay) => { if(!moveModal) return; setMoved(p=>({...p,[moveModal.taskId]:targetDay})); setMoveModal(null); };
   const cancelMove   = (taskId) => setMoved(p=>{ const n={...p}; delete n[taskId]; return n; });
 
-  // 현재 선택된 '달'의 진행률만 계산
   let currentMonthBaseTasks = [];
   if (month === "mar") currentMonthBaseTasks = ALL_BASE_TASKS_MAR;
   else if (month === "apr") currentMonthBaseTasks = ALL_BASE_TASKS_APR;
@@ -460,6 +468,7 @@ export default function App() {
 
   const PINK = "#db2777";
   const monthLabelText = { mar: "3월", apr: "4월", may: "5월", jun: "6월" }[month];
+  const monthIdxMap = { mar: 2, apr: 3, may: 4, jun: 5 };
 
   return (<>
     <style>{`
@@ -485,8 +494,6 @@ export default function App() {
     `}</style>
 
     <div style={{minHeight:"100vh",paddingBottom:48}}>
-
-      {/* HEADER */}
       <div style={{background:`linear-gradient(135deg,#f472b6 0%,${PINK} 100%)`,padding:"28px 20px 22px",color:"white",position:"sticky",top:0,zIndex:100,boxShadow:"0 4px 24px rgba(219,39,119,0.3)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
           <div style={{fontSize:11,fontWeight:500,opacity:0.75,letterSpacing:"0.05em"}}>📅 2026년 집중 공부 플래너</div>
@@ -502,14 +509,12 @@ export default function App() {
         </div>
       </div>
 
-      {/* 월 선택 탭 */}
       <div style={{display:"flex",gap:8,padding:"14px 16px 0",borderBottom:"1px solid #f1f5f9"}}>
         {[["mar","🌸 3월"],["apr","🌿 4월"],["may","☀️ 5월"],["jun","🌊 6월"]].map(([m,label])=>(
           <button key={m} onClick={()=>{setMonth(m); setSelectedTag(null);}} style={{padding:"8px 20px",borderRadius:"12px 12px 0 0",border:"none",cursor:"pointer",fontSize:13,fontWeight:700,transition:"all 0.2s",background:month===m?"white":"transparent",color:month===m?"#db2777":"#9ca3af",boxShadow:month===m?"0 -2px 8px rgba(0,0,0,0.06)":""}}>{label}</button>
         ))}
       </div>
 
-      {/* TAGS 범례 (필터 기능 추가) */}
       <div style={{padding:"14px 16px 4px"}}>
         <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:6,scrollbarWidth:"none"}}>
           <style>{`.tag-scroll::-webkit-scrollbar{display:none;}`}</style>
@@ -543,7 +548,6 @@ export default function App() {
         )}
       </div>
 
-      {/* TABS + 이동/수정 버튼 */}
       <div style={{display:"flex",gap:8,padding:"12px 16px 8px",overflowX:"auto",alignItems:"center"}}>
         {[["all","📋 전체"],["today","🌅 오늘"],["undone","⏳ 미완료"],["moved","📦 미룬 할일"],["journal","📓 학습일지"]].map(([v,label])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"8px 20px",borderRadius:99,border:"none",cursor:"pointer",fontSize:13,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:tab===v?PINK:"white",color:tab===v?"white":"#6b7280",boxShadow:tab===v?`0 2px 14px rgba(219,39,119,0.35)`:"0 1px 4px rgba(0,0,0,0.08)"}}>{label}</button>
@@ -623,12 +627,14 @@ export default function App() {
                     <div style={{padding:"6px 12px 14px"}}>
                       {week.days.map(day => {
                         const dayKey = month === "mar" ? day : `${month}-${day}`;
-                        let tdy = false, wkd = false, dayLabel = "";
+                        let tdy = false, dayLabel = "";
                         
-                        if(month==="mar"){ tdy=isToday(day); wkd=isWeekend(day); dayLabel=getDayLabel(day); }
-                        else if(month==="apr"){ tdy=isTodayApr(day); wkd=isWeekendApr(day); dayLabel=getDayLabelApr(day); }
-                        else if(month==="may"){ tdy=isTodayMay(day); wkd=isWeekendMay(day); dayLabel=getDayLabelMay(day); }
-                        else if(month==="jun"){ tdy=isTodayJun(day); wkd=isWeekendJun(day); dayLabel=getDayLabelJun(day); }
+                        if(month==="mar"){ tdy=isToday(day); dayLabel=getDayLabel(day); }
+                        else if(month==="apr"){ tdy=isTodayApr(day); dayLabel=getDayLabelApr(day); }
+                        else if(month==="may"){ tdy=isTodayMay(day); dayLabel=getDayLabelMay(day); }
+                        else if(month==="jun"){ tdy=isTodayJun(day); dayLabel=getDayLabelJun(day); }
+
+                        const badge = getScheduleBadge(monthIdxMap[month], day);
 
                         const orderedTasks = getOrderedTasks(day, month);
                         let filtered = orderedTasks;
@@ -645,14 +651,13 @@ export default function App() {
                         return (
                           <div key={day} style={{margin:"8px 0",borderRadius:14,overflow:"hidden",border:tdy?`2px solid ${week.color}`:"1px solid #f1f5f9",background:tdy?week.lightColor:"#fafafa"}}>
                             <div style={{padding:"10px 14px 6px",display:"flex",alignItems:"center",gap:10}}>
-                              <div style={{width:42,height:42,borderRadius:13,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:tdy?week.color:wkd?"#fee2e2":"#f1f5f9",color:tdy?"white":wkd?"#ef4444":"#374151"}}>
+                              <div style={{width:42,height:42,borderRadius:13,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:tdy?week.color:badge.color==="#ef4444"?"#fee2e2":"#f1f5f9",color:tdy?"white":badge.color}}>
                                 <div style={{fontSize:16,fontWeight:800,lineHeight:1.1}}>{day}</div>
                                 <div style={{fontSize:10,fontWeight:700}}>{dayLabel}</div>
                               </div>
                               <div style={{flex:1}}>
-                                {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px"}}>TODAY</span>}
-                                {wkd&&!tdy&&<span style={{fontSize:11,fontWeight:600,color:"#ef4444"}}>주말 · 오후 알바</span>}
-                                {!wkd&&!tdy&&<span style={{fontSize:11,fontWeight:500,color:"#9ca3af"}}>평일 · 근로/알바</span>}
+                                {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px",marginRight:4}}>TODAY</span>}
+                                <span style={{fontSize:11,fontWeight:600,color:badge.color}}>{badge.text}</span>
                               </div>
                               <div style={{display:"flex",alignItems:"center",gap:8}}>
                                 <div style={{fontSize:12,fontWeight:700,color:allDone?"#10b981":"#9ca3af"}}>{allDone?"✅ 완료!":`${dayDone}/${orderedTasks.length}`}</div>
@@ -754,7 +759,7 @@ export default function App() {
           <div style={{fontSize:14,fontWeight:800,color:"#374151",letterSpacing:"-0.02em",marginBottom:14}}>💡 5~6월 공부 원칙</div>
           {["React는 인강 대신 공식문서/블로그 위주로 직접 찾아가며 실습",
             "목,금,토 알바(17시~) 가기 전에는 무조건 공부 분량 다 채우기!",
-            "월/목/금 오전 근로 중에는 토익 단어나 가벼운 복습 위주",
+            "이어폰을 낄 수 없는 근로 중(월,목,금)에는 단어 암기 및 눈으로 푸는 독해 위주",
             "토익 900+을 위해 주말에는 무조건 실전 모의고사 1회 이상 풀기",
             "기말고사는 2주 전(6월초)부터 전공 1회독 시작하기"].map((tip,i)=>(
             <div key={i} style={{display:"flex",gap:10,marginBottom:9,fontSize:13,lineHeight:1.6}}>
@@ -767,7 +772,6 @@ export default function App() {
       <div style={{textAlign:"center",marginTop:28,fontSize:13,fontWeight:600,color:"#f9a8d4"}}>🌸 토익 900, 기말고사 모두 화이팅! 🌸</div>
     </div>
 
-    {/* 날짜 이동 모달 (각 달에 맞게 텍스트/표기 동적 적용) */}
     {moveModal && (() => {
       let availableDays = [];
       if(month === "mar") availableDays = Object.keys(BASE_TASKS_BY_DAY).map(Number);
@@ -783,16 +787,18 @@ export default function App() {
             <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>어느 날로 미룰까요? ({monthLabelText})</div>
             <div style={{maxHeight:"45vh",overflowY:"auto"}}>
               {availableDays.filter(d=>d>moveModal.fromDay).map(day=>{
-                let dLabel = ""; let wkd = false;
-                if(month==="mar"){ dLabel=getDayLabel(day); wkd=isWeekend(day); }
-                else if(month==="apr"){ dLabel=getDayLabelApr(day); wkd=isWeekendApr(day); }
-                else if(month==="may"){ dLabel=getDayLabelMay(day); wkd=isWeekendMay(day); }
-                else if(month==="jun"){ dLabel=getDayLabelJun(day); wkd=isWeekendJun(day); }
+                let dLabel = "";
+                if(month==="mar") dLabel=getDayLabel(day);
+                else if(month==="apr") dLabel=getDayLabelApr(day);
+                else if(month==="may") dLabel=getDayLabelMay(day);
+                else if(month==="jun") dLabel=getDayLabelJun(day);
+                
+                const badge = getScheduleBadge(monthIdxMap[month], day);
 
                 return (
                   <button key={day} className="day-btn" onClick={()=>confirmMove(day)}>
                     <span>{day}일 ({dLabel})</span>
-                    <span style={{fontSize:12,color:"#9ca3af"}}>{wkd?"주말":"평일"}</span>
+                    <span style={{fontSize:12,color:badge.color}}>{badge.text}</span>
                   </button>
                 );
               })}
