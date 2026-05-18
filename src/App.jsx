@@ -18,6 +18,8 @@ const DEFAULT_TAGS = [
   { id: "tag-dip",       icon: "📷", label: "디지털영상처리" },
   { id: "tag-audio",     icon: "🎧", label: "오디오신호처리" },
   { id: "tag-java",      icon: "☕", label: "자바프로그래밍" },
+  { id: "tag-toeic",     icon: "📗", label: "토익" },
+  { id: "tag-react",     icon: "🌐", label: "React 공부" },
 ];
 
 const BASE_TASKS_BY_DAY = {
@@ -78,8 +80,259 @@ const BASE_TASKS_BY_DAY = {
     { id:"t31", text:"📌 GitHub 커밋으로 3월 마무리 ✨",                     tagId:"tag-quiz" },
     { id:"t32", text:"🐍 백준 Python 1문제",                                 tagId:"tag-algo" },
   ],
+};};
+
+
+// ── 5월 태스크 ──
+const MAY_TASKS_BY_DAY = {
+  // ── 3주차 5/18(일)~5/18(일) — 오늘부터 시작! ──
+  18: [
+    { id:"m1",  text:"📗 토익 파트별 유형 파악 (LC/RC 구조 이해)",       tagId:"tag-toeic" },
+    { id:"m2",  text:"🌐 React 공식문서 — 시작하기 읽기",                tagId:"tag-react" },
+    { id:"m3",  text:"☕ 자바 팀프로젝트 현황 파악 + 역할 정리",         tagId:"tag-java" },
+  ],
+  // ── 4주차 5/19(월)~5/25(일) ──
+  19: [
+    { id:"m4",  text:"👩🏻‍💻 근로(오전): 📗 토익 LC Part 1~2 유형 정리",  tagId:"tag-toeic" },
+    { id:"m5",  text:"👩🏻‍💻 근로(오후): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"m6",  text:"🌐 토익 공부 후: React 공식문서 — 컴포넌트",       tagId:"tag-react" },
+    { id:"m7",  text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  20: [
+    { id:"m8",  text:"📗 LC Part 1~2 문제풀이 + 오답 정리",             tagId:"tag-toeic" },
+    { id:"m9",  text:"🎧 수업: 오디오신호처리 복습",                     tagId:"tag-audio" },
+    { id:"m10", text:"🎨 수업: 컴퓨터그래픽스 복습",                     tagId:"tag-cg" },
+    { id:"m11", text:"☕ 15시 자바 팀미팅",                              tagId:"tag-java" },
+    { id:"m12", text:"🌐 React 공식문서 — Props & State",               tagId:"tag-react" },
+    { id:"m13", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  21: [
+    { id:"m14", text:"📗 RC Part 5 빈출 문법 정리 (품사/시제/태)",       tagId:"tag-toeic" },
+    { id:"m15", text:"⚙️ 수업: 컴퓨터알고리즘 복습",                    tagId:"tag-ca" },
+    { id:"m16", text:"📷 수업: 디지털영상처리 복습",                     tagId:"tag-dip" },
+    { id:"m17", text:"🌐 React 공식문서 — useState 훅",                 tagId:"tag-react" },
+    { id:"m18", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  22: [
+    { id:"m19", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"m20", text:"👩🏻‍💻 근로(오후): 📗 RC Part 5 문제풀이",           tagId:"tag-toeic" },
+    { id:"m21", text:"☕ 자바 팀프로젝트 작업",                          tagId:"tag-java" },
+    { id:"m22", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  23: [
+    { id:"m23", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"m24", text:"🎧 수업: 오디오신호처리 복습",                     tagId:"tag-audio" },
+    { id:"m25", text:"☕ 수업: 자바프로그래밍 복습 + 프로젝트",          tagId:"tag-java" },
+    { id:"m26", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  24: [
+    { id:"m27", text:"📗 토익 LC Part 3~4 유형 파악",                   tagId:"tag-toeic" },
+    { id:"m28", text:"🌐 React 공식문서 — useEffect 훅",                tagId:"tag-react" },
+    { id:"m29", text:"⚙️ 컴퓨터알고리즘 집중복습",                      tagId:"tag-ca" },
+    { id:"m30", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  25: [
+    { id:"m31", text:"📗 토익 RC Part 6~7 독해 유형 정리",              tagId:"tag-toeic" },
+    { id:"m32", text:"🌐 React 공식문서 — 이벤트 처리",                 tagId:"tag-react" },
+    { id:"m33", text:"📝 이번 주 토익 학습 회고",                        tagId:"tag-quiz" },
+    { id:"m34", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  // ── 5주차 5/26(월)~5/31(토) ──
+  26: [
+    { id:"m35", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"m36", text:"👩🏻‍💻 근로(오후): 📗 LC Part 3~4 문제풀이",         tagId:"tag-toeic" },
+    { id:"m37", text:"🌐 React 공식문서 — 조건부 렌더링",               tagId:"tag-react" },
+    { id:"m38", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  27: [
+    { id:"m39", text:"📗 LC Part 3~4 오답 분석",                        tagId:"tag-toeic" },
+    { id:"m40", text:"🎧 수업: 오디오신호처리 복습",                     tagId:"tag-audio" },
+    { id:"m41", text:"🎨 수업: 컴퓨터그래픽스 복습",                     tagId:"tag-cg" },
+    { id:"m42", text:"☕ 15시 자바 팀미팅 + 프로젝트 마무리 점검",      tagId:"tag-java" },
+    { id:"m43", text:"🌐 React 공식문서 — 리스트와 Key",               tagId:"tag-react" },
+    { id:"m44", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  28: [
+    { id:"m45", text:"📗 RC Part 6~7 문제풀이",                         tagId:"tag-toeic" },
+    { id:"m46", text:"⚙️ 수업: 컴퓨터알고리즘 복습",                    tagId:"tag-ca" },
+    { id:"m47", text:"📷 수업: 디지털영상처리 복습",                     tagId:"tag-dip" },
+    { id:"m48", text:"🌐 React 공식문서 — 폼 다루기",                   tagId:"tag-react" },
+    { id:"m49", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  29: [
+    { id:"m50", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"m51", text:"👩🏻‍💻 근로(오후): 📗 RC 파트별 약점 정리",          tagId:"tag-toeic" },
+    { id:"m52", text:"☕ 자바 팀프로젝트 최종 작업",                     tagId:"tag-java" },
+    { id:"m53", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  30: [
+    { id:"m54", text:"👩🏻‍💻 근로(오전): 📗 토익 실전모의고사 1회 풀기",  tagId:"tag-toeic" },
+    { id:"m55", text:"🎧 수업: 오디오신호처리 복습",                     tagId:"tag-audio" },
+    { id:"m56", text:"☕ 자바 팀프로젝트 마감 🎉",                       tagId:"tag-java" },
+    { id:"m57", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  31: [
+    { id:"m58", text:"📗 토익 모의고사 오답 분석 + 취약 파트 정리",     tagId:"tag-toeic" },
+    { id:"m59", text:"🌐 React 공식문서 — Context API",                 tagId:"tag-react" },
+    { id:"m60", text:"📝 5월 회고 + 6월 계획 확인",                     tagId:"tag-quiz" },
+    { id:"m61", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
 };
 
+const MAY_WEEKS_META = [
+  { id:"may-week1", label:"시작", range:"5/18(일)",               month:"may", theme:"🚀 5월 공부 시작!",              themeDesc:"토익 유형파악 / React 공식문서 시작 / 자바 현황 파악",          color:"#ec4899", lightColor:"#fdf2f8", days:[18] },
+  { id:"may-week2", label:"4주차", range:"5/19(월) ~ 5/25(일)",  month:"may", theme:"📗 토익 LC+RC 기초 + React",     themeDesc:"LC Part 1~4 / RC Part 5~7 유형 / React 훅 공식문서",           color:"#8b5cf6", lightColor:"#f5f3ff", days:[19,20,21,22,23,24,25] },
+  { id:"may-week3", label:"5주차", range:"5/26(월) ~ 5/31(토)",  month:"may", theme:"📗 토익 실전 + ☕ 자바 마감",    themeDesc:"모의고사 1회 + 오답분석 / 자바 팀프로젝트 최종 마감",           color:"#f59e0b", lightColor:"#fffbeb", days:[26,27,28,29,30,31] },
+];
+
+// ── 6월 태스크 ──
+const JUN_TASKS_BY_DAY = {
+  // ── 1주차 6/1(일)~6/8(일) — 토익 D-12, 기말 준비 시작 ──
+  1: [
+    { id:"j1",  text:"📗 토익 D-12 — RC 파트별 미니테스트",             tagId:"tag-toeic" },
+    { id:"j2",  text:"🌐 React 공식문서 — Router 개념",                 tagId:"tag-react" },
+    { id:"j3",  text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  2: [
+    { id:"j4",  text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"j5",  text:"👩🏻‍💻 근로(오후): 📗 LC 파트별 미니테스트",         tagId:"tag-toeic" },
+    { id:"j6",  text:"📚 기말고사 범위 파악 + 전공 1회독 계획 세우기",   tagId:"tag-quiz" },
+    { id:"j7",  text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  3: [
+    { id:"j8",  text:"📗 토익 RC 시간배분 연습 (Part 7 집중)",           tagId:"tag-toeic" },
+    { id:"j9",  text:"🎧 수업: 오디오신호처리 복습",                     tagId:"tag-audio" },
+    { id:"j10", text:"🎨 수업: 컴퓨터그래픽스 복습",                     tagId:"tag-cg" },
+    { id:"j11", text:"☕ 15시 자바 팀미팅 (마감 후 마무리 정리)",        tagId:"tag-java" },
+    { id:"j12", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  4: [
+    { id:"j13", text:"📗 토익 LC 받아쓰기 훈련 + 오답 정리",            tagId:"tag-toeic" },
+    { id:"j14", text:"⚙️ 수업: 컴퓨터알고리즘 복습",                    tagId:"tag-ca" },
+    { id:"j15", text:"📷 수업: 디지털영상처리 복습",                     tagId:"tag-dip" },
+    { id:"j16", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  5: [
+    { id:"j17", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
+    { id:"j18", text:"👩🏻‍💻 근로(오후): 📗 RC Part 7 속독 연습",          tagId:"tag-toeic" },
+    { id:"j19", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  6: [
+    { id:"j20", text:"📗 토익 실전모의고사 2회 풀기",                    tagId:"tag-toeic" },
+    { id:"j21", text:"⚙️ 컴퓨터알고리즘 기말 1회독",                    tagId:"tag-ca" },
+    { id:"j22", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  7: [
+    { id:"j23", text:"📗 모의고사 2회 오답 분석 + 약점 파트 집중",       tagId:"tag-toeic" },
+    { id:"j24", text:"🎨 컴퓨터그래픽스 기말 1회독",                    tagId:"tag-cg" },
+    { id:"j25", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  8: [
+    { id:"j26", text:"📗 토익 D-5 — 실전감각 유지 (미니테스트)",        tagId:"tag-toeic" },
+    { id:"j27", text:"📷 디지털영상처리 기말 1회독",                     tagId:"tag-dip" },
+    { id:"j28", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  // ── 2주차 6/9(월)~6/15(일) — 토익 D-4, 기말 집중 ──
+  9: [
+    { id:"j29", text:"👩🏻‍💻 근로(오전): 📗 토익 최종 단어 정리",          tagId:"tag-toeic" },
+    { id:"j30", text:"👩🏻‍💻 근로(오후): 📗 토익 LC 최종 점검",            tagId:"tag-toeic" },
+    { id:"j31", text:"📚 기말고사 전과목 약점 정리",                     tagId:"tag-quiz" },
+    { id:"j32", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  10: [
+    { id:"j33", text:"📗 토익 RC 최종 점검",                             tagId:"tag-toeic" },
+    { id:"j34", text:"🎧 수업: 오디오신호처리 복습",                     tagId:"tag-audio" },
+    { id:"j35", text:"🎨 수업: 컴퓨터그래픽스 복습",                     tagId:"tag-cg" },
+    { id:"j36", text:"📚 기말 핵심 정리",                                tagId:"tag-quiz" },
+    { id:"j37", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  11: [
+    { id:"j38", text:"📗 토익 전략 최종 점검 (시간배분 시뮬레이션)",     tagId:"tag-toeic" },
+    { id:"j39", text:"⚙️ 수업: 컴퓨터알고리즘 복습",                    tagId:"tag-ca" },
+    { id:"j40", text:"📷 수업: 디지털영상처리 복습",                     tagId:"tag-dip" },
+    { id:"j41", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  12: [
+    { id:"j42", text:"👩🏻‍💻 근로(오전): 📗 토익 D-1 가볍게 훑기",        tagId:"tag-toeic" },
+    { id:"j43", text:"👩🏻‍💻 근로(오후): 📚 기말 마무리 정리",             tagId:"tag-quiz" },
+    { id:"j44", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  13: [
+    { id:"j45", text:"🏆 토익 시험 D-day! 컨디션 최우선 🙏",            tagId:"tag-toeic" },
+  ],
+  14: [
+    { id:"j46", text:"🎉 토익 끝! 푹 쉬기",                             tagId:"tag-quiz" },
+    { id:"j47", text:"📚 기말고사 전과목 최종 정리",                     tagId:"tag-quiz" },
+  ],
+  15: [
+    { id:"j48", text:"📚 기말고사 D-1 — 전과목 핵심만 빠르게",          tagId:"tag-quiz" },
+  ],
+  // ── 3주차 6/16(월)~6/19(목) — 🏫 기말고사 ──
+  16: [
+    { id:"j49", text:"🏫 기말고사 — 컨디션 관리, 최선을 다해! 🙏",      tagId:"tag-quiz" },
+  ],
+  17: [
+    { id:"j50", text:"🏫 기말고사 — 화이팅! 🙏",                        tagId:"tag-quiz" },
+  ],
+  18: [
+    { id:"j51", text:"🏫 기말고사 — 거의 다 왔어! 🙏",                  tagId:"tag-quiz" },
+  ],
+  19: [
+    { id:"j52", text:"🏫 기말고사 마지막 날 — 끝까지! 🙏",              tagId:"tag-quiz" },
+  ],
+  // ── 4주차 6/20(금)~ — 방학 시작! ──
+  20: [
+    { id:"j53", text:"🎉 기말고사 끝! 푹 쉬기",                         tagId:"tag-quiz" },
+  ],
+  21: [
+    { id:"j54", text:"🌐 React — 블로그/공식문서로 본격 스터디 시작",   tagId:"tag-react" },
+    { id:"j55", text:"🐍 백준 Python 1문제 (복귀!)",                     tagId:"tag-algo" },
+  ],
+  22: [
+    { id:"j56", text:"🌐 React — 컴포넌트 직접 만들어보기",             tagId:"tag-react" },
+    { id:"j57", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  23: [
+    { id:"j58", text:"🌐 React — hooks 실습 (useState/useEffect)",      tagId:"tag-react" },
+    { id:"j59", text:"📝 이번 학기 회고 + 여름방학 계획 초안",          tagId:"tag-quiz" },
+    { id:"j60", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  24: [
+    { id:"j61", text:"🌐 React — React Router 실습",                    tagId:"tag-react" },
+    { id:"j62", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  25: [
+    { id:"j63", text:"🌐 React — 미니 프로젝트 기획",                   tagId:"tag-react" },
+    { id:"j64", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  26: [
+    { id:"j65", text:"🌐 React — 미니 프로젝트 시작",                   tagId:"tag-react" },
+    { id:"j66", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  27: [
+    { id:"j67", text:"🌐 React — 미니 프로젝트 계속",                   tagId:"tag-react" },
+    { id:"j68", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  28: [
+    { id:"j69", text:"🌐 React — 미니 프로젝트 마무리",                 tagId:"tag-react" },
+    { id:"j70", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  29: [
+    { id:"j71", text:"🌐 React — 코드 리뷰 + 개선",                     tagId:"tag-react" },
+    { id:"j72", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+  30: [
+    { id:"j73", text:"📝 6월 전체 회고 + 7월 계획 초안",                tagId:"tag-quiz" },
+    { id:"j74", text:"🐍 백준 Python 1문제",                             tagId:"tag-algo" },
+  ],
+};
+
+const JUN_WEEKS_META = [
+  { id:"jun-week1", label:"1주차", range:"6/1(일) ~ 6/8(일)",   month:"jun", theme:"📗 토익 D-12 + 기말 준비",      themeDesc:"토익 실전모의고사 2회 / 전공 기말 1회독 시작",              color:"#0ea5e9", lightColor:"#f0f9ff", days:[1,2,3,4,5,6,7,8] },
+  { id:"jun-week2", label:"2주차", range:"6/9(월) ~ 6/15(일)",  month:"jun", theme:"📗 토익 D-4 + 🏫 기말 집중",   themeDesc:"토익 최종 점검 / 6/13 토익 시험 🏆 / 기말 마무리",         color:"#ef4444", lightColor:"#fef2f2", days:[9,10,11,12,13,14,15] },
+  { id:"jun-week3", label:"3주차", range:"6/16(월) ~ 6/19(목)", month:"jun", theme:"🏫 기말고사",                   themeDesc:"6/16~19 기말고사 — 최선을 다해! 🙏",                        color:"#f59e0b", lightColor:"#fffbeb", days:[16,17,18,19] },
+  { id:"jun-week4", label:"4주차", range:"6/20(금) ~ 6/30(월)", month:"jun", theme:"🎉 방학! React 본격 스터디",   themeDesc:"기말 끝 / React 미니 프로젝트 / 학기 회고",                 color:"#10b981", lightColor:"#f0fdf4", days:[20,21,22,23,24,25,26,27,28,29,30] },
+];
 
 // ── 4월 기본 태스크 ──
 const APR_TASKS_BY_DAY = {
@@ -233,7 +486,7 @@ const APR_TASKS_BY_DAY = {
     { id:"a84", text:"📝 4월 회고 마무리 + GitHub 커밋",               tagId:"tag-quiz" },
     { id:"a85", text:"🐍 백준 Python 1문제",                                 tagId:"tag-algo" },
   ],
-};
+};};
 
 const APR_WEEKS_META = [
   { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)",   month:"apr", theme:"✏️ React 프로젝트 시작",           themeDesc:"Vite 생성·레이아웃·핵심기능 1 / 전공 당일복습 유지",     color:"#8b5cf6", lightColor:"#f5f3ff", days:[1,2,3,4,5] },
@@ -255,6 +508,16 @@ function getDayLabel(d) { return DAY_LABELS[new Date(2026,2,d).getDay()]; }
 function getDayLabelApr(d) { return DAY_LABELS[new Date(2026,3,d).getDay()]; }
 function isWeekendApr(d) { const w=new Date(2026,3,d).getDay(); return w===0||w===6; }
 function isTodayApr(d) { return IS_APRIL_2026 && d===TODAY_APR_DAY; }
+const IS_MAY_2026  = todayDate.getFullYear()===2026 && todayDate.getMonth()===4;
+const IS_JUN_2026  = todayDate.getFullYear()===2026 && todayDate.getMonth()===5;
+const TODAY_MAY_DAY = IS_MAY_2026 ? todayDate.getDate() : null;
+const TODAY_JUN_DAY = IS_JUN_2026 ? todayDate.getDate() : null;
+function getDayLabelMay(d) { return DAY_LABELS[new Date(2026,4,d).getDay()]; }
+function getDayLabelJun(d) { return DAY_LABELS[new Date(2026,5,d).getDay()]; }
+function isWeekendMay(d) { const w=new Date(2026,4,d).getDay(); return w===0||w===6; }
+function isWeekendJun(d) { const w=new Date(2026,5,d).getDay(); return w===0||w===6; }
+function isTodayMay(d) { return IS_MAY_2026 && d===TODAY_MAY_DAY; }
+function isTodayJun(d) { return IS_JUN_2026 && d===TODAY_JUN_DAY; }
 function isWeekend(d)   { const w=new Date(2026,2,d).getDay(); return w===0||w===6; }
 function isToday(d)     { return IS_MARCH_2026 && d===TODAY_DAY; }
 function getTodayLabel(){ return IS_MARCH_2026 ? `3/${TODAY_DAY}(${getDayLabel(TODAY_DAY)})` : null; }
@@ -297,8 +560,8 @@ export default function App() {
     catch { return {}; }
   });
 
-  const [month, setMonth] = useState("mar"); // "mar" | "apr"
-  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,"apr-week1":false,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false});
+  const [month, setMonth] = useState("may"); // "mar"|"apr"|"may"|"jun"
+  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,"apr-week1":false,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false,"may-week1":true,"may-week2":false,"may-week3":false,"jun-week1":false,"jun-week2":false,"jun-week3":false,"jun-week4":false});
   const [tab, setTab]               = useState("all");
   const [moveModal, setMoveModal]   = useState(null);
   const [addState, setAddState]     = useState({});
@@ -333,6 +596,8 @@ export default function App() {
     if(!IS_MARCH_2026) return;
     const wk = WEEKS_META.find(w=>w.days.includes(TODAY_DAY));
     if(wk) setOpenWeeks(p=>({...p,[wk.id]:true}));
+    if(IS_MAY_2026) { const mwk=MAY_WEEKS_META.find(w=>w.days.includes(TODAY_MAY_DAY)); if(mwk) setOpenWeeks(p=>({...p,[mwk.id]:true})); }
+    if(IS_JUN_2026) { const jwk=JUN_WEEKS_META.find(w=>w.days.includes(TODAY_JUN_DAY)); if(jwk) setOpenWeeks(p=>({...p,[jwk.id]:true})); }
   },[]);
 
   // ── 태그 추가 ──
@@ -542,7 +807,7 @@ export default function App() {
 
       {/* 월 선택 탭 */}
       <div style={{display:"flex",gap:8,padding:"14px 16px 0",borderBottom:"1px solid #f1f5f9"}}>
-        {[["mar","🌸 3월"],["apr","🌿 4월"]].map(([m,label])=>(
+        {[["mar","🌸 3월"],["apr","🌿 4월"],["may","☀️ 5월"],["jun","🌊 6월"]].map(([m,label])=>(
           <button key={m} onClick={()=>setMonth(m)} style={{padding:"8px 20px",borderRadius:"12px 12px 0 0",border:"none",cursor:"pointer",fontSize:13,fontWeight:700,transition:"all 0.2s",background:month===m?"white":"transparent",color:month===m?"#db2777":"#9ca3af",boxShadow:month===m?"0 -2px 8px rgba(0,0,0,0.06)":""}}>{label}</button>
         ))}
       </div>
@@ -832,6 +1097,252 @@ export default function App() {
                             <div style={{width:42,height:42,borderRadius:13,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:tdy?week.color:wkd?"#fee2e2":"#f1f5f9",color:tdy?"white":wkd?"#ef4444":"#374151"}}>
                               <div style={{fontSize:16,fontWeight:800,lineHeight:1.1}}>{day}</div>
                               <div style={{fontSize:10,fontWeight:700}}>{getDayLabelApr(day)}</div>
+                            </div>
+                            <div style={{flex:1}}>
+                              {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px"}}>TODAY</span>}
+                              {wkd&&!tdy&&<span style={{fontSize:11,fontWeight:600,color:"#ef4444"}}>주말 · 3~4시간</span>}
+                              {!wkd&&!tdy&&<span style={{fontSize:11,fontWeight:500,color:"#9ca3af"}}>평일 · 1~2시간</span>}
+                            </div>
+                            <div style={{display:"flex",alignItems:"center",gap:8}}>
+                              <div style={{fontSize:12,fontWeight:700,color:allDone?"#10b981":"#9ca3af"}}>{allDone?"✅ 완료!":`${dayDone}/${allTasksForDay.length}`}</div>
+                              <button onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,open:!addS.open,text:"",tagId:tags[0]?.id}}))} style={{width:28,height:28,borderRadius:8,border:"none",background:addS.open?week.color:"#f1f5f9",color:addS.open?"white":"#9ca3af",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s"}}>
+                                {addS.open?"✕":"+"}
+                              </button>
+                            </div>
+                          </div>
+                          {addS.open&&(
+                            <div className="slide-down" style={{padding:"0 14px 10px"}}>
+                              <div style={{display:"flex",gap:6,marginBottom:8,overflowX:"auto",paddingBottom:2}}>
+                                {tags.map(tag=>(
+                                  <button key={tag.id} onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,tagId:tag.id}}))} style={{flexShrink:0,padding:"4px 10px",borderRadius:99,border:"1.5px solid",borderColor:addS.tagId===tag.id?week.color:"#e5e7eb",background:addS.tagId===tag.id?week.lightColor:"white",color:addS.tagId===tag.id?week.color:"#6b7280",fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
+                                    {tag.icon} {tag.label}
+                                  </button>
+                                ))}
+                              </div>
+                              <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6}}>
+                                <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",userSelect:"none"}}>
+                                  <div onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,isImportant:!addS.isImportant}}))} onMouseDown={e=>e.preventDefault()} style={{width:18,height:18,borderRadius:5,border:`2px solid ${addS.isImportant?"#f59e0b":"#d1d5db"}`,background:addS.isImportant?"#f59e0b":"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+                                    {addS.isImportant&&<span style={{color:"white",fontSize:11,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <span style={{fontSize:12,fontWeight:600,color:addS.isImportant?"#d97706":"#9ca3af"}}>⭐ 중요 할일로 표시</span>
+                                </label>
+                              </div>
+                              <div style={{display:"flex",gap:8}}>
+                                <input value={addS.text||""} onChange={e=>setAddState(p=>({...p,[dayKey]:{...addS,text:e.target.value}}))} onKeyDown={e=>{if(e.key==="Enter"){const s=addState[dayKey]||{};if(!(s.text||"").trim())return;const tag=tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};const newId=`custom-${makeId()}`;const newTask={id:newId,text:`${tag.icon} ${s.text.trim()}`,tagId:tag.id};setCustomTasks(p=>({...p,[dayKey]:[...(p[dayKey]||[]),newTask]}));if(s.isImportant)setImportant(p=>({...p,[newId]:true}));setAddState(p=>({...p,[dayKey]:{open:false,text:"",tagId:null,isImportant:false}}));}}} placeholder="할일 입력 후 Enter..." style={{flex:1,border:`1.5px solid ${week.color}`,borderRadius:10,padding:"8px 12px",fontSize:13,outline:"none",background:"white",color:"#374151"}} autoFocus/>
+                                <button onClick={()=>{const s=addState[dayKey]||{};if(!(s.text||"").trim())return;const tag=tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};const newId=`custom-${makeId()}`;const newTask={id:newId,text:`${tag.icon} ${s.text.trim()}`,tagId:tag.id};setCustomTasks(p=>({...p,[dayKey]:[...(p[dayKey]||[]),newTask]}));if(s.isImportant)setImportant(p=>({...p,[newId]:true}));setAddState(p=>({...p,[dayKey]:{open:false,text:"",tagId:null,isImportant:false}}));}} style={{padding:"8px 14px",borderRadius:10,border:"none",background:week.color,color:"white",fontSize:13,fontWeight:700,cursor:"pointer",flexShrink:0}}>추가</button>
+                              </div>
+                            </div>
+                          )}
+                          <div style={{padding:"2px 14px 10px"}}>
+                            {filtered.map((task,i)=>{
+                              const isCustom=task.id.startsWith("custom-");
+                              return(
+                                <div key={task.id} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 6px",borderTop:i>0?"1px solid #f1f5f9":"none",background:important[task.id]?"#fffbeb":"transparent",borderRadius:8,border:important[task.id]?"1.5px solid #fde68a":"1.5px solid transparent"}}>
+                                  <div onClick={()=>toggle(task.id)} style={{width:22,height:22,borderRadius:7,flexShrink:0,marginTop:1,border:checked[task.id]?`2px solid ${week.color}`:"2px solid #d1d5db",background:checked[task.id]?week.color:"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>
+                                    {checked[task.id]&&<span style={{color:"white",fontSize:13,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <div style={{flex:1}}>
+                                    {editMode?(
+                                      <input value={editingText[task.id]??task.text} onChange={e=>setEditingText(p=>({...p,[task.id]:e.target.value}))} style={{fontSize:14,fontWeight:500,color:"#1f2937",border:"none",borderBottom:"1.5px solid #db2777",background:"transparent",outline:"none",width:"100%",padding:"1px 0",fontFamily:"'Pretendard',-apple-system,sans-serif"}}/>
+                                    ):(
+                                      <span onClick={()=>toggle(task.id)} style={{fontSize:14,fontWeight:checked[task.id]?400:500,lineHeight:1.6,color:checked[task.id]?"#9ca3af":"#1f2937",textDecoration:checked[task.id]?"line-through":"none",transition:"all 0.15s",userSelect:"none",cursor:"pointer"}}>{editingText[task.id]??task.text}</span>
+                                    )}
+                                  </div>
+                                  <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
+                                    {important[task.id]&&<span style={{fontSize:15,lineHeight:1}}>⭐</span>}
+                                    {editMode&&isCustom&&<button onClick={()=>{setCustomTasks(p=>({...p,[dayKey]:(p[dayKey]||[]).filter(t=>t.id!==task.id)}));setChecked(p=>{const n={...p};delete n[task.id];return n;});}} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>}
+                                    {editMode&&!isCustom&&<button onClick={()=>deleteBasicTask(task.id)} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {month==="may" && tab!=="moved" && tab!=="journal" && (
+        <div style={{padding:"8px 16px",display:"flex",flexDirection:"column",gap:12}}>
+          {MAY_WEEKS_META.map(week=>{
+            const wAll   = week.days.flatMap(d=>MAY_TASKS_BY_DAY[d]||[]);
+            const wCustom= week.days.flatMap(d=>(customTasks[`may-${d}`]||[]));
+            const wTasks = [...wAll,...wCustom];
+            const wDone  = wTasks.filter(t=>checked[t.id]).length;
+            const wPct   = wTasks.length>0?Math.round((wDone/wTasks.length)*100):0;
+            const isOpen = openWeeks[week.id];
+            return(
+              <div key={week.id} style={{background:"white",borderRadius:20,overflow:"hidden",boxShadow:"0 2px 18px rgba(0,0,0,0.07)"}}>
+                <button onClick={()=>toggleWeek(week.id)} style={{width:"100%",border:"none",background:week.lightColor,cursor:"pointer",padding:"16px 18px",borderLeft:`5px solid ${week.color}`,display:"flex",alignItems:"center",gap:14,textAlign:"left"}}>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:4}}>
+                      <span style={{fontSize:12,fontWeight:800,color:week.color}}>{week.label}</span>
+                      <span style={{fontSize:11,color:"#9ca3af",fontWeight:500}}>{week.range}</span>
+                    </div>
+                    <div style={{fontSize:15,fontWeight:800,color:"#1e1b4b",letterSpacing:"-0.03em",marginBottom:3}}>{week.theme}</div>
+                    <div style={{fontSize:12,color:"#6b7280"}}>{week.themeDesc}</div>
+                    <div style={{marginTop:10,background:"#e5e7eb",borderRadius:99,height:5}}>
+                      <div style={{background:week.color,height:"100%",borderRadius:99,width:`${wPct}%`,transition:"width 0.4s"}}/>
+                    </div>
+                  </div>
+                  <div style={{textAlign:"center",minWidth:44}}>
+                    <div style={{fontSize:19,fontWeight:900,color:week.color}}>{wPct}%</div>
+                    <div style={{fontSize:11,color:"#9ca3af",fontWeight:500}}>{wDone}/{wTasks.length}</div>
+                    <div style={{fontSize:14,marginTop:6,color:week.color,display:"inline-block",transform:isOpen?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.25s"}}>▼</div>
+                  </div>
+                </button>
+                {isOpen&&(
+                  <div style={{padding:"6px 12px 14px"}}>
+                    {week.days.map(day=>{
+                      const dayKey = `may-${day}`;
+                      const tdy = isTodayMay(day);
+                      const base = (MAY_TASKS_BY_DAY[day]||[]);
+                      const custom = (customTasks[dayKey]||[]);
+                      const allTasksForDay = [...base,...custom];
+                      let filtered;
+                      if(tab==="today") filtered=tdy?allTasksForDay:[];
+                      else if(tab==="undone") filtered=allTasksForDay.filter(t=>!checked[t.id]);
+                      else filtered=allTasksForDay;
+                      if(filtered.length===0&&tab==="today"&&!tdy) return null;
+                      const dayDone=allTasksForDay.filter(t=>checked[t.id]).length;
+                      const allDone=allTasksForDay.length>0&&dayDone===allTasksForDay.length;
+                      const wkd=isWeekendMay(day);
+                      const addS=addState[dayKey]||{};
+                      return(
+                        <div key={day} style={{margin:"8px 0",borderRadius:14,overflow:"hidden",border:tdy?`2px solid ${week.color}`:"1px solid #f1f5f9",background:tdy?week.lightColor:"#fafafa"}}>
+                          <div style={{padding:"10px 14px 6px",display:"flex",alignItems:"center",gap:10}}>
+                            <div style={{width:42,height:42,borderRadius:13,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:tdy?week.color:wkd?"#fee2e2":"#f1f5f9",color:tdy?"white":wkd?"#ef4444":"#374151"}}>
+                              <div style={{fontSize:16,fontWeight:800,lineHeight:1.1}}>{day}</div>
+                              <div style={{fontSize:10,fontWeight:700}}>{getDayLabelMay(day)}</div>
+                            </div>
+                            <div style={{flex:1}}>
+                              {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px"}}>TODAY</span>}
+                              {wkd&&!tdy&&<span style={{fontSize:11,fontWeight:600,color:"#ef4444"}}>주말 · 3~4시간</span>}
+                              {!wkd&&!tdy&&<span style={{fontSize:11,fontWeight:500,color:"#9ca3af"}}>평일 · 1~2시간</span>}
+                            </div>
+                            <div style={{display:"flex",alignItems:"center",gap:8}}>
+                              <div style={{fontSize:12,fontWeight:700,color:allDone?"#10b981":"#9ca3af"}}>{allDone?"✅ 완료!":`${dayDone}/${allTasksForDay.length}`}</div>
+                              <button onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,open:!addS.open,text:"",tagId:tags[0]?.id}}))} style={{width:28,height:28,borderRadius:8,border:"none",background:addS.open?week.color:"#f1f5f9",color:addS.open?"white":"#9ca3af",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s"}}>
+                                {addS.open?"✕":"+"}
+                              </button>
+                            </div>
+                          </div>
+                          {addS.open&&(
+                            <div className="slide-down" style={{padding:"0 14px 10px"}}>
+                              <div style={{display:"flex",gap:6,marginBottom:8,overflowX:"auto",paddingBottom:2}}>
+                                {tags.map(tag=>(
+                                  <button key={tag.id} onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,tagId:tag.id}}))} style={{flexShrink:0,padding:"4px 10px",borderRadius:99,border:"1.5px solid",borderColor:addS.tagId===tag.id?week.color:"#e5e7eb",background:addS.tagId===tag.id?week.lightColor:"white",color:addS.tagId===tag.id?week.color:"#6b7280",fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
+                                    {tag.icon} {tag.label}
+                                  </button>
+                                ))}
+                              </div>
+                              <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6}}>
+                                <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",userSelect:"none"}}>
+                                  <div onClick={()=>setAddState(p=>({...p,[dayKey]:{...addS,isImportant:!addS.isImportant}}))} onMouseDown={e=>e.preventDefault()} style={{width:18,height:18,borderRadius:5,border:`2px solid ${addS.isImportant?"#f59e0b":"#d1d5db"}`,background:addS.isImportant?"#f59e0b":"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+                                    {addS.isImportant&&<span style={{color:"white",fontSize:11,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <span style={{fontSize:12,fontWeight:600,color:addS.isImportant?"#d97706":"#9ca3af"}}>⭐ 중요 할일로 표시</span>
+                                </label>
+                              </div>
+                              <div style={{display:"flex",gap:8}}>
+                                <input value={addS.text||""} onChange={e=>setAddState(p=>({...p,[dayKey]:{...addS,text:e.target.value}}))} onKeyDown={e=>{if(e.key==="Enter"){const s=addState[dayKey]||{};if(!(s.text||"").trim())return;const tag=tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};const newId=`custom-${makeId()}`;const newTask={id:newId,text:`${tag.icon} ${s.text.trim()}`,tagId:tag.id};setCustomTasks(p=>({...p,[dayKey]:[...(p[dayKey]||[]),newTask]}));if(s.isImportant)setImportant(p=>({...p,[newId]:true}));setAddState(p=>({...p,[dayKey]:{open:false,text:"",tagId:null,isImportant:false}}));}}} placeholder="할일 입력 후 Enter..." style={{flex:1,border:`1.5px solid ${week.color}`,borderRadius:10,padding:"8px 12px",fontSize:13,outline:"none",background:"white",color:"#374151"}} autoFocus/>
+                                <button onClick={()=>{const s=addState[dayKey]||{};if(!(s.text||"").trim())return;const tag=tags.find(t=>t.id===s.tagId)||tags[0]||{icon:"➕",label:""};const newId=`custom-${makeId()}`;const newTask={id:newId,text:`${tag.icon} ${s.text.trim()}`,tagId:tag.id};setCustomTasks(p=>({...p,[dayKey]:[...(p[dayKey]||[]),newTask]}));if(s.isImportant)setImportant(p=>({...p,[newId]:true}));setAddState(p=>({...p,[dayKey]:{open:false,text:"",tagId:null,isImportant:false}}));}} style={{padding:"8px 14px",borderRadius:10,border:"none",background:week.color,color:"white",fontSize:13,fontWeight:700,cursor:"pointer",flexShrink:0}}>추가</button>
+                              </div>
+                            </div>
+                          )}
+                          <div style={{padding:"2px 14px 10px"}}>
+                            {filtered.map((task,i)=>{
+                              const isCustom=task.id.startsWith("custom-");
+                              return(
+                                <div key={task.id} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 6px",borderTop:i>0?"1px solid #f1f5f9":"none",background:important[task.id]?"#fffbeb":"transparent",borderRadius:8,border:important[task.id]?"1.5px solid #fde68a":"1.5px solid transparent"}}>
+                                  <div onClick={()=>toggle(task.id)} style={{width:22,height:22,borderRadius:7,flexShrink:0,marginTop:1,border:checked[task.id]?`2px solid ${week.color}`:"2px solid #d1d5db",background:checked[task.id]?week.color:"white",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>
+                                    {checked[task.id]&&<span style={{color:"white",fontSize:13,fontWeight:900,lineHeight:1}}>✓</span>}
+                                  </div>
+                                  <div style={{flex:1}}>
+                                    {editMode?(
+                                      <input value={editingText[task.id]??task.text} onChange={e=>setEditingText(p=>({...p,[task.id]:e.target.value}))} style={{fontSize:14,fontWeight:500,color:"#1f2937",border:"none",borderBottom:"1.5px solid #db2777",background:"transparent",outline:"none",width:"100%",padding:"1px 0",fontFamily:"'Pretendard',-apple-system,sans-serif"}}/>
+                                    ):(
+                                      <span onClick={()=>toggle(task.id)} style={{fontSize:14,fontWeight:checked[task.id]?400:500,lineHeight:1.6,color:checked[task.id]?"#9ca3af":"#1f2937",textDecoration:checked[task.id]?"line-through":"none",transition:"all 0.15s",userSelect:"none",cursor:"pointer"}}>{editingText[task.id]??task.text}</span>
+                                    )}
+                                  </div>
+                                  <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
+                                    {important[task.id]&&<span style={{fontSize:15,lineHeight:1}}>⭐</span>}
+                                    {editMode&&isCustom&&<button onClick={()=>{setCustomTasks(p=>({...p,[dayKey]:(p[dayKey]||[]).filter(t=>t.id!==task.id)}));setChecked(p=>{const n={...p};delete n[task.id];return n;});}} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>}
+                                    {editMode&&!isCustom&&<button onClick={()=>deleteBasicTask(task.id)} style={{border:"none",background:"#fee2e2",color:"#ef4444",borderRadius:8,padding:"3px 7px",fontSize:11,fontWeight:700,cursor:"pointer"}}>삭제</button>}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {month==="jun" && tab!=="moved" && tab!=="journal" && (
+        <div style={{padding:"8px 16px",display:"flex",flexDirection:"column",gap:12}}>
+          {JUN_WEEKS_META.map(week=>{
+            const wAll   = week.days.flatMap(d=>JUN_TASKS_BY_DAY[d]||[]);
+            const wCustom= week.days.flatMap(d=>(customTasks[`jun-${d}`]||[]));
+            const wTasks = [...wAll,...wCustom];
+            const wDone  = wTasks.filter(t=>checked[t.id]).length;
+            const wPct   = wTasks.length>0?Math.round((wDone/wTasks.length)*100):0;
+            const isOpen = openWeeks[week.id];
+            return(
+              <div key={week.id} style={{background:"white",borderRadius:20,overflow:"hidden",boxShadow:"0 2px 18px rgba(0,0,0,0.07)"}}>
+                <button onClick={()=>toggleWeek(week.id)} style={{width:"100%",border:"none",background:week.lightColor,cursor:"pointer",padding:"16px 18px",borderLeft:`5px solid ${week.color}`,display:"flex",alignItems:"center",gap:14,textAlign:"left"}}>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:4}}>
+                      <span style={{fontSize:12,fontWeight:800,color:week.color}}>{week.label}</span>
+                      <span style={{fontSize:11,color:"#9ca3af",fontWeight:500}}>{week.range}</span>
+                    </div>
+                    <div style={{fontSize:15,fontWeight:800,color:"#1e1b4b",letterSpacing:"-0.03em",marginBottom:3}}>{week.theme}</div>
+                    <div style={{fontSize:12,color:"#6b7280"}}>{week.themeDesc}</div>
+                    <div style={{marginTop:10,background:"#e5e7eb",borderRadius:99,height:5}}>
+                      <div style={{background:week.color,height:"100%",borderRadius:99,width:`${wPct}%`,transition:"width 0.4s"}}/>
+                    </div>
+                  </div>
+                  <div style={{textAlign:"center",minWidth:44}}>
+                    <div style={{fontSize:19,fontWeight:900,color:week.color}}>{wPct}%</div>
+                    <div style={{fontSize:11,color:"#9ca3af",fontWeight:500}}>{wDone}/{wTasks.length}</div>
+                    <div style={{fontSize:14,marginTop:6,color:week.color,display:"inline-block",transform:isOpen?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.25s"}}>▼</div>
+                  </div>
+                </button>
+                {isOpen&&(
+                  <div style={{padding:"6px 12px 14px"}}>
+                    {week.days.map(day=>{
+                      const dayKey = `jun-${day}`;
+                      const tdy = isTodayJun(day);
+                      const base = (JUN_TASKS_BY_DAY[day]||[]);
+                      const custom = (customTasks[dayKey]||[]);
+                      const allTasksForDay = [...base,...custom];
+                      let filtered;
+                      if(tab==="today") filtered=tdy?allTasksForDay:[];
+                      else if(tab==="undone") filtered=allTasksForDay.filter(t=>!checked[t.id]);
+                      else filtered=allTasksForDay;
+                      if(filtered.length===0&&tab==="today"&&!tdy) return null;
+                      const dayDone=allTasksForDay.filter(t=>checked[t.id]).length;
+                      const allDone=allTasksForDay.length>0&&dayDone===allTasksForDay.length;
+                      const wkd=isWeekendJun(day);
+                      const addS=addState[dayKey]||{};
+                      return(
+                        <div key={day} style={{margin:"8px 0",borderRadius:14,overflow:"hidden",border:tdy?`2px solid ${week.color}`:"1px solid #f1f5f9",background:tdy?week.lightColor:"#fafafa"}}>
+                          <div style={{padding:"10px 14px 6px",display:"flex",alignItems:"center",gap:10}}>
+                            <div style={{width:42,height:42,borderRadius:13,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:tdy?week.color:wkd?"#fee2e2":"#f1f5f9",color:tdy?"white":wkd?"#ef4444":"#374151"}}>
+                              <div style={{fontSize:16,fontWeight:800,lineHeight:1.1}}>{day}</div>
+                              <div style={{fontSize:10,fontWeight:700}}>{getDayLabelJun(day)}</div>
                             </div>
                             <div style={{flex:1}}>
                               {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px"}}>TODAY</span>}

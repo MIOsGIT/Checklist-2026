@@ -1,17 +1,25 @@
 import { useState, useEffect } from "react";
 
 const DAY_LABELS = ["일","월","화","수","목","금","토"];
-const MARCH_DAYS = Array.from({ length: 22 }, (_, i) => i + 10); // 3/10 ~ 3/31
-const APRIL_DAYS = Array.from({ length: 30 }, (_, i) => i + 1);  // 4/1 ~ 4/30
+const MARCH_DAYS = Array.from({ length: 22 }, (_, i) => i + 10);
+const APRIL_DAYS = Array.from({ length: 30 }, (_, i) => i + 1);
+const MAY_DAYS   = Array.from({ length: 14 }, (_, i) => i + 18); // 5/18 ~ 5/31
+const JUN_DAYS   = Array.from({ length: 30 }, (_, i) => i + 1);
 
 function getDayLabelMar(d) { return DAY_LABELS[new Date(2026, 2, d).getDay()]; }
 function getDayLabelApr(d) { return DAY_LABELS[new Date(2026, 3, d).getDay()]; }
 function isWeekendMar(d) { const w = new Date(2026, 2, d).getDay(); return w === 0 || w === 6; }
 function isWeekendApr(d) { const w = new Date(2026, 3, d).getDay(); return w === 0 || w === 6; }
+function getDayLabelMay(d) { return DAY_LABELS[new Date(2026, 4, d).getDay()]; }
+function getDayLabelJun(d) { return DAY_LABELS[new Date(2026, 5, d).getDay()]; }
+function isWeekendMay(d) { const w = new Date(2026, 4, d).getDay(); return w === 0 || w === 6; }
+function isWeekendJun(d) { const w = new Date(2026, 5, d).getDay(); return w === 0 || w === 6; }
 
 const todayDate = new Date();
 const IS_MARCH = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 2;
 const IS_APRIL = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 3;
+const IS_MAY   = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 4;
+const IS_JUN   = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 5;
 const TODAY_DAY = todayDate.getDate();
 
 const STUDY_LEVELS = [
@@ -33,10 +41,14 @@ const CONDITION_LEVELS = [
 const MOOD_TAGS = ["집중잘됨🎯","뿌듯함🌟","힘들었지만함🥲","재밌었음😆","지루했음😑","발전한것같음📈","모르겠음🌀"];
 
 export default function Journal() {
-  const [journalMonth, setJournalMonth] = useState(IS_APRIL ? "apr" : "mar");
+  const [journalMonth, setJournalMonth] = useState(
+    IS_JUN ? "jun" : IS_MAY ? "may" : IS_APRIL ? "apr" : "mar"
+  );
   const [selectedDay, setSelectedDay] = useState(() => {
     if (IS_MARCH) return MARCH_DAYS.includes(TODAY_DAY) ? TODAY_DAY : 10;
     if (IS_APRIL) return TODAY_DAY;
+    if (IS_MAY)   return MAY_DAYS.includes(TODAY_DAY) ? TODAY_DAY : 18;
+    if (IS_JUN)   return TODAY_DAY;
     return 10;
   });
   const [view, setView] = useState("write");
@@ -54,19 +66,18 @@ export default function Journal() {
   // 월 바꾸면 날짜도 리셋
   const handleMonthChange = (m) => {
     setJournalMonth(m);
-    if (m === "mar") {
-      setSelectedDay(IS_MARCH && MARCH_DAYS.includes(TODAY_DAY) ? TODAY_DAY : 10);
-    } else {
-      setSelectedDay(IS_APRIL ? TODAY_DAY : 1);
-    }
+    if (m === "mar") setSelectedDay(IS_MARCH && MARCH_DAYS.includes(TODAY_DAY) ? TODAY_DAY : 10);
+    else if (m === "apr") setSelectedDay(IS_APRIL ? TODAY_DAY : 1);
+    else if (m === "may") setSelectedDay(IS_MAY && MAY_DAYS.includes(TODAY_DAY) ? TODAY_DAY : 18);
+    else if (m === "jun") setSelectedDay(IS_JUN ? TODAY_DAY : 1);
   };
 
-  const days     = journalMonth === "mar" ? MARCH_DAYS : APRIL_DAYS;
-  const monthNum = journalMonth === "mar" ? "03" : "04";
-  const getDayLabel = journalMonth === "mar" ? getDayLabelMar : getDayLabelApr;
-  const isWeekend   = journalMonth === "mar" ? isWeekendMar  : isWeekendApr;
-  const isToday = (d) => journalMonth === "mar" ? (IS_MARCH && d === TODAY_DAY) : (IS_APRIL && d === TODAY_DAY);
-  const monthLabel  = journalMonth === "mar" ? "3월" : "4월";
+  const days     = journalMonth==="mar"?MARCH_DAYS:journalMonth==="apr"?APRIL_DAYS:journalMonth==="may"?MAY_DAYS:JUN_DAYS;
+  const monthNum = journalMonth==="mar"?"03":journalMonth==="apr"?"04":journalMonth==="may"?"05":"06";
+  const getDayLabel = journalMonth==="mar"?getDayLabelMar:journalMonth==="apr"?getDayLabelApr:journalMonth==="may"?getDayLabelMay:getDayLabelJun;
+  const isWeekend   = journalMonth==="mar"?isWeekendMar:journalMonth==="apr"?isWeekendApr:journalMonth==="may"?isWeekendMay:isWeekendJun;
+  const isToday = (d) => journalMonth==="mar"?(IS_MARCH&&d===TODAY_DAY):journalMonth==="apr"?(IS_APRIL&&d===TODAY_DAY):journalMonth==="may"?(IS_MAY&&d===TODAY_DAY):(IS_JUN&&d===TODAY_DAY);
+  const monthLabel  = journalMonth==="mar"?"3월":journalMonth==="apr"?"4월":journalMonth==="may"?"5월":"6월";
 
   const key   = `2026-${monthNum}-${String(selectedDay).padStart(2, "0")}`;
   const entry = journals[key] || { study: null, condition: null, tags: [], memo: "" };
@@ -93,7 +104,7 @@ export default function Journal() {
 
       {/* 월 선택 탭 */}
       <div style={{ display: "flex", gap: 8, padding: "16px 16px 8px" }}>
-        {[["mar", "🌸 3월"], ["apr", "🌿 4월"]].map(([m, label]) => (
+        {[["mar", "🌸 3월"], ["apr", "🌿 4월"], ["may", "☀️ 5월"], ["jun", "🌊 6월"]].map(([m, label]) => (
           <button key={m} onClick={() => handleMonthChange(m)} style={{
             flex: 1, padding: "9px", borderRadius: 12, border: "none", cursor: "pointer",
             fontWeight: 700, fontSize: 13, fontFamily: "'Pretendard', sans-serif",
