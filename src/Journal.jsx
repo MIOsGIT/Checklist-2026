@@ -154,7 +154,7 @@ export default function Journal() {
                     minWidth: 44, height: 52, borderRadius: 12, border: "none",
                     cursor: "pointer", flexShrink: 0, position: "relative",
                     background: isSel ? PINK : isTdy ? "#fdf2f8" : "white",
-                    color: isSel ? "white" : isWeekend(d) ? "#ef4444" : "#374151",
+                    color: isSel ? "white" : dayStr === "토" ? "#3b82f6" : dayStr === "일" ? "#ef4444" : "#374151",
                     boxShadow: isSel ? "0 2px 10px rgba(219,39,119,0.35)" : "0 1px 3px rgba(0,0,0,0.07)",
                     fontFamily: "'Pretendard', sans-serif", transition: "all 0.15s"
                   }}>
