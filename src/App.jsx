@@ -7,258 +7,206 @@ const IS_MARCH_2026 = todayDate.getFullYear() === 2026 && todayDate.getMonth() =
 const IS_APRIL_2026 = todayDate.getFullYear() === 2026 && todayDate.getMonth() === 3;
 const TODAY_APR_DAY = IS_APRIL_2026 ? todayDate.getDate() : null;
 
-// ── 태그 간소화 (요청하신 3가지만 남김) ──
+// ── 태그 3개로 고정 ──
 const DEFAULT_TAGS = [
   { id: "tag-react",   icon: "🌐", label: "React" },
   { id: "tag-toeic",   icon: "📗", label: "TOEIC" },
   { id: "tag-java",    icon: "☕", label: "자바프로그래밍" },
 ];
 
+// (3, 4월 데이터는 유지하되 생략 없이 포함)
 const BASE_TASKS_BY_DAY = {
   // ── 3/23(월) ──
   23: [
-    { id:"t1",  text:"👩🏻‍💻 근로(오전): 전공 필기 가볍게 정리",             tagId:"tag-react" },
-    { id:"t2",  text:"👩🏻‍💻 근로(오후): 전공 필기 계속 or 백준 1문제",        tagId:"tag-react" },
-    { id:"t3",  text:"🎬 10~13강 (컴포넌트/JSX/조건부·리스트 렌더링)", tagId:"tag-react" },
+    { id:"t1",  text:"👩🏻‍💻 근로(오전): 전공 필기 가볍게 정리", tagId:"tag-java" },
+    { id:"t2",  text:"👩🏻‍💻 근로(오후): 전공 필기 계속", tagId:"tag-java" },
   ],
   // ── 3/24(화) ──
   24: [
-    { id:"t5",  text:"🎬 14~17강 (스타일링/Props/이벤트/State기초)",   tagId:"tag-react" },
-    { id:"t6",  text:"🎧 오디오신호처리 수업 복습",                    tagId:"tag-java" },
+    { id:"t5",  text:"🎬 React 기초 훑어보기", tagId:"tag-react" },
   ],
   // ── 3/25(수) ──
   25: [
-    { id:"t9",  text:"🎬 18~20강 (State심화/useReducer/useRef)",       tagId:"tag-react" },
-    { id:"t10", text:"⚙️ 컴퓨터알고리즘 수업 복습",                    tagId:"tag-java" },
+    { id:"t9",  text:"🎬 React State 개념 복습", tagId:"tag-react" },
   ],
   // ── 3/26(목) ──
   26: [
-    { id:"t13", text:"👩🏻‍💻 근로(오전): 전날 React 개념 복습",                tagId:"tag-react" },
-    { id:"t14", text:"👩🏻‍💻 근로(오후): 오늘 수업 필기 정리 (그래픽스·디지털영상·알고리즘)", tagId:"tag-java" },
+    { id:"t13", text:"👩🏻‍💻 근로(오전): 전날 React 개념 복습", tagId:"tag-react" },
+    { id:"t14", text:"👩🏻‍💻 근로(오후): 오늘 수업 필기 정리", tagId:"tag-java" },
   ],
   // ── 3/27(금) ──
   27: [
-    { id:"t16", text:"👩🏻‍💻 근로(오전): 전공 복습 or 백준 1문제",             tagId:"tag-java" },
-    { id:"t19", text:"🐍 백준 Python 1문제",                                 tagId:"tag-java" },
-  ],
-  // ── 3/28(토) ──
-  28: [
-    { id:"t20", text:"🎬 21~25강 (useEffect/커스텀훅/최적화/Context)", tagId:"tag-react" },
-  ],
-  // ── 3/29(일) ──
-  29: [
-    { id:"t25", text:"🎬 짬날 때: 26~27강 (라우팅/React19) 가볍게",         tagId:"tag-react" },
+    { id:"t16", text:"👩🏻‍💻 근로(오전): 전공 복습", tagId:"tag-java" },
   ],
   // ── 3/30(월) ──
   30: [
-    { id:"t26", text:"👩🏻‍💻 근로(오전): 28~30강 완강 🎉 (이어폰 끼고!)",     tagId:"tag-react" },
-    { id:"t27", text:"👩🏻‍💻 근로(오후): 완강 나머지 + 개념 메모",             tagId:"tag-react" },
-  ],
-  // ── 3/31(화) ──
-  31: [
-    { id:"t30", text:"📋 4월 계획 확인",                                     tagId:"tag-react" },
-    { id:"t31", text:"📌 GitHub 커밋으로 3월 마무리 ✨",                     tagId:"tag-react" },
+    { id:"t26", text:"👩🏻‍💻 근로(오전): 3월 마무리 정리", tagId:"tag-react" },
+    { id:"t27", text:"👩🏻‍💻 근로(오후): 4월 계획 세우기", tagId:"tag-react" },
   ],
 };
 
 const APR_TASKS_BY_DAY = {
-  // ── 4/2(목) ──
-  2:  [
-    { id:"a5",  text:"👩🏻‍💻 근로(오전): 전공 복습",                            tagId:"tag-java" },
-    { id:"a6",  text:"👩🏻‍💻 근로(오후): 전공 복습 계속",                       tagId:"tag-java" },
-  ],
-  // ── 4/3(금) ──
-  3:  [
-    { id:"a8",  text:"👩🏻‍💻 근로(오전): 전공 복습",                            tagId:"tag-java" },
-  ],
-  // ── 4/6(월) ──
-  6:  [
-    { id:"a17", text:"👩🏻‍💻 근로(오전): ⚙️ 알고리즘 과제 체크",              tagId:"tag-java" },
-    { id:"a18", text:"👩🏻‍💻 근로(오후): 전공 복습 계속",                       tagId:"tag-java" },
-  ],
-  // ── 4/9(목) ──
-  9:  [
-    { id:"a29", text:"👩🏻‍💻 근로(오전): ⚙️ 알고리즘 필기 정리",              tagId:"tag-java" },
-    { id:"a30", text:"👩🏻‍💻 근로(오후): 📷 디지털영상·🎨 그래픽스 필기 정리", tagId:"tag-java" },
-  ],
-  // ── 4/10(금) ──
-  10: [
-    { id:"a32", text:"👩🏻‍💻 근로(오전): 🎧 오디오 과제 체크",                 tagId:"tag-java" },
-  ],
-  // ── 4/13(월) ──
-  13: [
-    { id:"a41", text:"👩🏻‍💻 근로(오전): ⚙️ 컴퓨터알고리즘 시험범위 1회독",  tagId:"tag-java" },
-    { id:"a42", text:"👩🏻‍💻 근로(오후): ⚙️ 알고리즘 약점 정리",              tagId:"tag-java" },
-  ],
-  // ── 4/16(목) ──
-  16: [
-    { id:"a51", text:"👩🏻‍💻 근로(오전): 🎧 오디오신호처리 시험범위 1회독",   tagId:"tag-java" },
-    { id:"a52", text:"👩🏻‍💻 근로(오후): 🎧 오디오 약점 정리",                tagId:"tag-java" },
-  ],
-  // ── 4/17(금) ──
-  17: [
-    { id:"a53", text:"👩🏻‍💻 근로(오전): ☕ 자바프로그래밍 시험범위 복습",    tagId:"tag-java" },
-  ],
-  // ── 4/20(월) ──
-  20: [
-    { id:"a60", text:"👩🏻‍💻 근로(오전): 시험 직전 최종 정리",                tagId:"tag-java" },
-    { id:"a61", text:"👩🏻‍💻 근로(오후): 시험 직전 최종 정리 계속",            tagId:"tag-java" },
-  ],
-  // ── 4/27(월) ──
-  27: [
-    { id:"a70", text:"👩🏻‍💻 근로(오전): 🎬 React Query 개념 공부",            tagId:"tag-react" },
-    { id:"a71", text:"👩🏻‍💻 근로(오후): 🎬 React Query 계속",                tagId:"tag-react" },
-  ],
-  // ── 4/30(목) ──
-  30: [
-    { id:"a82", text:"👩🏻‍💻 근로(오전): 4월 전체 회고 작성",                  tagId:"tag-react" },
-    { id:"a83", text:"👩🏻‍💻 근로(오후): 5월 계획 초안",                      tagId:"tag-react" },
-  ],
+  2:  [{ id:"a5", text:"👩🏻‍💻 근로(오전): 전공 복습", tagId:"tag-java" }, { id:"a6", text:"👩🏻‍💻 근로(오후): 복습 계속", tagId:"tag-java" }],
+  3:  [{ id:"a8", text:"👩🏻‍💻 근로(오전): 전공 복습", tagId:"tag-java" }],
+  6:  [{ id:"a17", text:"👩🏻‍💻 근로(오전): 알고리즘", tagId:"tag-java" }, { id:"a18", text:"👩🏻‍💻 근로(오후): 복습 계속", tagId:"tag-java" }],
+  9:  [{ id:"a29", text:"👩🏻‍💻 근로(오전): 필기 정리", tagId:"tag-java" }, { id:"a30", text:"👩🏻‍💻 근로(오후): 필기 정리", tagId:"tag-java" }],
+  10: [{ id:"a32", text:"👩🏻‍💻 근로(오전): 오디오 과제", tagId:"tag-java" }],
+  13: [{ id:"a41", text:"👩🏻‍💻 근로(오전): 시험범위 1회독", tagId:"tag-java" }, { id:"a42", text:"👩🏻‍💻 근로(오후): 약점 정리", tagId:"tag-java" }],
+  16: [{ id:"a51", text:"👩🏻‍💻 근로(오전): 시험범위 1회독", tagId:"tag-java" }, { id:"a52", text:"👩🏻‍💻 근로(오후): 약점 정리", tagId:"tag-java" }],
+  17: [{ id:"a53", text:"👩🏻‍💻 근로(오전): 시험범위 복습", tagId:"tag-java" }],
+  20: [{ id:"a60", text:"👩🏻‍💻 근로(오전): 직전 최종 정리", tagId:"tag-java" }, { id:"a61", text:"👩🏻‍💻 근로(오후): 직전 정리", tagId:"tag-java" }],
+  27: [{ id:"a70", text:"👩🏻‍💻 근로(오전): React Query 개념", tagId:"tag-react" }, { id:"a71", text:"👩🏻‍💻 근로(오후): 실습", tagId:"tag-react" }],
+  30: [{ id:"a82", text:"👩🏻‍💻 근로(오전): 4월 회고", tagId:"tag-react" }, { id:"a83", text:"👩🏻‍💻 근로(오후): 5월 초안", tagId:"tag-react" }],
 };
 
+// ── 5월 (월~일 단위 완벽 매칭, 인강 배제, 알바/근로 반영) ──
 const MAY_TASKS_BY_DAY = {
+  // [3주차: 5/18(월) ~ 5/24(일)]
   18: [ // 월
-    { id:"m1_new", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 암기",               tagId:"tag-toeic" },
-    { id:"m2_new", text:"👩🏻‍💻 근로(오후): 🌐 React 공식문서",               tagId:"tag-react" },
-    { id:"m1",     text:"📗 토익 파트별 유형 파악 (LC/RC 구조 이해)",       tagId:"tag-toeic" },
-    { id:"m3",     text:"☕ 자바 팀프로젝트 현황 파악 + 역할 정리",         tagId:"tag-java" },
+    { id:"m1", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 50개 암기", tagId:"tag-toeic" },
+    { id:"m2", text:"👩🏻‍💻 근로(오후): 🌐 React 공식문서 튜토리얼 정독", tagId:"tag-react" },
+    { id:"m3", text:"☕ 자바 팀프로젝트 현황 파악 및 역할 분담", tagId:"tag-java" },
   ],
-  19: [ // 화 (근로 삭제됨)
-    { id:"m6",  text:"🌐 토익 공부 후: React 공식문서 — 컴포넌트",       tagId:"tag-react" },
+  19: [ // 화 (No 근로/알바)
+    { id:"m4", text:"📗 토익 RC Part 5, 6 문법 뽀개기", tagId:"tag-toeic" },
+    { id:"m5", text:"🌐 React 공식문서 - State와 Props 실습", tagId:"tag-react" },
   ],
-  20: [ // 수
-    { id:"m8",  text:"📗 LC Part 1~2 문제풀이 + 오답 정리",             tagId:"tag-toeic" },
-    { id:"m11", text:"☕ 15시 자바 팀미팅",                             tagId:"tag-java" },
-    { id:"m12", text:"🌐 React 공식문서 — Props & State",                tagId:"tag-react" },
+  20: [ // 수 (No 근로/알바)
+    { id:"m6", text:"📗 토익 LC Part 3, 4 쉐도잉 연습", tagId:"tag-toeic" },
+    { id:"m7", text:"🌐 React Hooks (useState) 블로그 아티클 정리", tagId:"tag-react" },
+    { id:"m8", text:"☕ 15시 자바 팀미팅", tagId:"tag-java" },
   ],
-  21: [ // 목
-    { id:"m4_new", text:"👩🏻‍💻 근로(오전): 📗 토익 LC Part 1~2 유형 정리",  tagId:"tag-toeic" },
-    { id:"m5_new", text:"👩🏻‍💻 근로(오후): 📗 토익 단어 30개 암기",         tagId:"tag-toeic" },
-    { id:"m14",    text:"📗 RC Part 5 빈출 문법 정리 (품사/시제/태)",       tagId:"tag-toeic" },
-    { id:"m17",    text:"🌐 React 공식문서 — useState 훅",                 tagId:"tag-react" },
+  21: [ // 목 (근로 종일, 17시 알바)
+    { id:"m9", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 복습 및 오답 확인", tagId:"tag-toeic" },
+    { id:"m10", text:"🌐 React 기술 블로그 아티클 1개 읽기", tagId:"tag-react" },
   ],
-  22: [ // 금 (오전 근로만)
-    { id:"m19", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
-    { id:"m21", text:"☕ 자바 팀프로젝트 작업",                          tagId:"tag-java" },
+  22: [ // 금 (오전 근로, 17시 알바)
+    { id:"m11", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 속독 요령 정리", tagId:"tag-toeic" },
+    { id:"m12", text:"☕ 오후 집중: 자바 팀프로젝트 핵심 로직 구현", tagId:"tag-java" },
   ],
-  23: [ // 토
-    { id:"m25", text:"☕ 자바프로그래밍 복습 + 프로젝트",          tagId:"tag-java" },
+  23: [ // 토 (17시 알바)
+    { id:"m13", text:"📗 오전 집중: 토익 실전 모의고사 1회 (시간엄수)", tagId:"tag-toeic" },
+    { id:"m14", text:"☕ 자바 팀프로젝트 개별 작업", tagId:"tag-java" },
   ],
-  24: [ // 일
-    { id:"m27", text:"📗 토익 LC Part 3~4 유형 파악",                  tagId:"tag-toeic" },
-    { id:"m28", text:"🌐 React 공식문서 — useEffect 훅",                tagId:"tag-react" },
+  24: [ // 일 (Free)
+    { id:"m15", text:"📗 모의고사 1회 오답노트 및 약점 분석", tagId:"tag-toeic" },
+    { id:"m16", text:"🌐 React 공식문서 - useEffect 실습해보기", tagId:"tag-react" },
   ],
+
+  // [4주차: 5/25(월) ~ 5/31(일)]
   25: [ // 월
-    { id:"m23_new", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
-    { id:"m24_new", text:"👩🏻‍💻 근로(오후): React 이벤트 처리",              tagId:"tag-react" },
-    { id:"m31",     text:"📗 토익 RC Part 6~7 독해 유형 정리",               tagId:"tag-toeic" },
+    { id:"m17", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 50개 암기", tagId:"tag-toeic" },
+    { id:"m18", text:"☕ 자바 팀플 코드 리뷰 및 피드백 반영", tagId:"tag-java" },
   ],
-  26: [ // 화 (근로 삭제됨)
-    { id:"m37", text:"🌐 React 공식문서 — 조건부 렌더링",                tagId:"tag-react" },
+  26: [ // 화
+    { id:"m19", text:"📗 토익 RC 기출문제 1세트 풀기", tagId:"tag-toeic" },
+    { id:"m20", text:"🌐 React Router 개념 공식문서/블로그 학습", tagId:"tag-react" },
   ],
   27: [ // 수
-    { id:"m39", text:"📗 LC Part 3~4 오답 분석",                       tagId:"tag-toeic" },
-    { id:"m42", text:"☕ 15시 자바 팀미팅 + 프로젝트 마무리 점검",       tagId:"tag-java" },
-    { id:"m43", text:"🌐 React 공식문서 — 리스트와 Key",                tagId:"tag-react" },
+    { id:"m21", text:"📗 토익 LC 기출문제 1세트 풀기", tagId:"tag-toeic" },
+    { id:"m22", text:"☕ 자바 팀플 최종 병합 준비", tagId:"tag-java" },
   ],
-  28: [ // 목
-    { id:"m35_new", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
-    { id:"m36_new", text:"👩🏻‍💻 근로(오후): 📗 LC Part 3~4 문제풀이",         tagId:"tag-toeic" },
-    { id:"m45",     text:"📗 RC Part 6~7 문제풀이",                         tagId:"tag-toeic" },
-    { id:"m48",     text:"🌐 React 공식문서 — 폼 다루기",                    tagId:"tag-react" },
+  28: [ // 목 (근로 종일, 17시 알바)
+    { id:"m23", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 오답노트 복습", tagId:"tag-toeic" },
   ],
-  29: [ // 금 (오전 근로만)
-    { id:"m50", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
-    { id:"m52", text:"☕ 자바 팀프로젝트 최종 작업",                      tagId:"tag-java" },
+  29: [ // 금 (오전 근로, 17시 알바)
+    { id:"m24", text:"👩🏻‍💻 근로(오전): 📗 토익 Part 7 시간 단축 연습", tagId:"tag-toeic" },
+    { id:"m25", text:"☕ 오후 집중: 자바 팀프로젝트 버그 수정", tagId:"tag-java" },
   ],
-  30: [ // 토
-    { id:"m56", text:"☕ 자바 팀프로젝트 마감 🎉",                        tagId:"tag-java" },
+  30: [ // 토 (17시 알바)
+    { id:"m26", text:"📗 오전 집중: 토익 실전 모의고사 2회 풀기", tagId:"tag-toeic" },
   ],
-  31: [ // 일
-    { id:"m58", text:"📗 토익 모의고사 오답 분석 + 취약 파트 정리",      tagId:"tag-toeic" },
-    { id:"m59", text:"🌐 React 공식문서 — Context API",                tagId:"tag-react" },
+  31: [ // 일 (Free)
+    { id:"m27", text:"📗 모의고사 2회 오답 분석", tagId:"tag-toeic" },
+    { id:"m28", text:"☕ 자바 팀프로젝트 최종본 점검 🚀", tagId:"tag-java" },
   ],
 };
 
+// ── 6월 (기말고사 및 토익 디데이 반영) ──
 const JUN_TASKS_BY_DAY = {
+  // [1주차: 6/1(월) ~ 6/7(일)]
   1: [ // 월
-    { id:"j4_new",  text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
-    { id:"j5_new",  text:"👩🏻‍💻 근로(오후): 📗 LC 파트별 미니테스트",         tagId:"tag-toeic" },
-    { id:"j1",      text:"📗 토익 D-12 — RC 파트별 미니테스트",              tagId:"tag-toeic" },
-    { id:"j2",      text:"🌐 React 공식문서 — Router 개념",                  tagId:"tag-react" },
+    { id:"j1", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 단어 50개, LC 오답듣기", tagId:"tag-toeic" },
+    { id:"j2", text:"☕ 기말고사 시험범위 파악 및 계획 세우기", tagId:"tag-java" },
   ],
-  2: [ // 화 (근로 삭제됨)
-    { id:"j8_new",  text:"📗 토익 RC 시간배분 연습",                         tagId:"tag-toeic" },
+  2: [ // 화
+    { id:"j3", text:"📗 토익 900+ 고득점 문법 정리", tagId:"tag-toeic" },
+    { id:"j4", text:"☕ 전공 기말고사 1회독 시작", tagId:"tag-java" },
   ],
   3: [ // 수
-    { id:"j11", text:"☕ 15시 자바 팀미팅 (마감 후 마무리 정리)",             tagId:"tag-java" },
+    { id:"j5", text:"📗 토익 LC 패러프레이징 단어 정리", tagId:"tag-toeic" },
+    { id:"j6", text:"☕ 전공 기말고사 1회독 계속", tagId:"tag-java" },
   ],
-  4: [ // 목
-    { id:"j17_new", text:"👩🏻‍💻 근로(오전): 📗 토익 단어 30개 암기",          tagId:"tag-toeic" },
-    { id:"j18_new", text:"👩🏻‍💻 근로(오후): 📗 RC Part 7 속독 연습",          tagId:"tag-toeic" },
-    { id:"j13",     text:"📗 토익 LC 받아쓰기 훈련 + 오답 정리",             tagId:"tag-toeic" },
+  4: [ // 목 (근로 종일, 17시 알바)
+    { id:"j7", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 RC Part 5 100제 풀기", tagId:"tag-toeic" },
   ],
-  5: [ // 금 (오전 근로만)
-    { id:"j20_new", text:"👩🏻‍💻 근로(오전): 실전모의고사 2회 풀기",           tagId:"tag-toeic" },
+  5: [ // 금 (오전 근로, 17시 알바)
+    { id:"j8", text:"👩🏻‍💻 근로(오전): 📗 토익 약점 파트 보완", tagId:"tag-toeic" },
+    { id:"j9", text:"☕ 오후 집중: 전공 과목 핵심 요약", tagId:"tag-java" },
   ],
-  6: [ // 토
-    { id:"j23_new", text:"📗 모의고사 2회 오답 분석",                        tagId:"tag-toeic" },
+  6: [ // 토 (17시 알바)
+    { id:"j10", text:"📗 오전 집중: 토익 실전 모의고사 3회 (시간엄수)", tagId:"tag-toeic" },
   ],
-  7: [ // 일
-    { id:"j26_new", text:"📗 토익 D-5 — 실전감각 유지",                      tagId:"tag-toeic" },
+  7: [ // 일 (Free)
+    { id:"j11", text:"📗 모의고사 3회 오답 분석", tagId:"tag-toeic" },
+    { id:"j12", text:"☕ 전공 기말고사 2회독", tagId:"tag-java" },
   ],
+
+  // [2주차: 6/8(월) ~ 6/14(일)]
   8: [ // 월
-    { id:"j29_new", text:"👩🏻‍💻 근로(오전): 📗 토익 최종 단어 정리",          tagId:"tag-toeic" },
-    { id:"j30_new", text:"👩🏻‍💻 근로(오후): 📗 토익 LC 최종 점검",            tagId:"tag-toeic" },
+    { id:"j13", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 자주 틀리는 단어장 반복", tagId:"tag-toeic" },
   ],
-  9: [ // 화 (근로 삭제됨)
-    { id:"j33_new", text:"📗 토익 RC 최종 점검",                             tagId:"tag-toeic" },
+  9: [ // 화
+    { id:"j14", text:"📗 토익 RC Part 7 하프 모의고사", tagId:"tag-toeic" },
+    { id:"j15", text:"☕ 기말고사 기출문제 풀이", tagId:"tag-java" },
   ],
-  11: [ // 목
-    { id:"j42_new", text:"👩🏻‍💻 근로(오전): 📗 토익 D-1 가볍게 훑기",         tagId:"tag-toeic" },
-    { id:"j43_new", text:"👩🏻‍💻 근로(오후): 기말 마무리",                      tagId:"tag-react" },
+  10: [ // 수
+    { id:"j16", text:"📗 토익 LC 하프 모의고사", tagId:"tag-toeic" },
+    { id:"j17", text:"☕ 기말고사 오답 정리", tagId:"tag-java" },
   ],
-  12: [ // 금 (오전 근로만)
-    { id:"j38_new", text:"👩🏻‍💻 근로(오전): 토익 전략 최종 점검",             tagId:"tag-toeic" },
+  11: [ // 목 (근로 종일, 17시 알바)
+    { id:"j18", text:"👩🏻‍💻 근로(오전/오후): 📗 토익 D-3 멘탈 관리 및 단어", tagId:"tag-toeic" },
   ],
-  13: [ // 토
-    { id:"j45", text:"🏆 토익 시험 D-day! 컨디션 최우선 🙏",             tagId:"tag-toeic" },
+  12: [ // 금 (오전 근로, 17시 알바)
+    { id:"j19", text:"👩🏻‍💻 근로(오전): 📗 토익 시간 배분 최종 시뮬레이션", tagId:"tag-toeic" },
+    { id:"j20", text:"☕ 오후: 전공 핵심 요약본 암기", tagId:"tag-java" },
   ],
-  14: [ // 일
-    { id:"j46", text:"🎉 토익 끝! 푹 쉬기",                              tagId:"tag-react" },
+  13: [ // 토 (17시 알바)
+    { id:"j21", text:"📗 오전 집중: 가벼운 LC 듣기 및 컨디션 조절", tagId:"tag-toeic" },
   ],
-  21: [
-    { id:"j54", text:"🌐 React — 블로그/공식문서로 본격 스터디 시작",    tagId:"tag-react" },
+  14: [ // 일 (Free)
+    { id:"j22", text:"🏆 토익 정기시험! 900점 가자 🔥", tagId:"tag-toeic" },
   ],
-  22: [
-    { id:"j56", text:"🌐 React — 컴포넌트 직접 만들어보기",              tagId:"tag-react" },
+
+  // [3주차: 6/15(월) ~ 6/21(일)] - 16~19일 기말고사
+  15: [ // 월
+    { id:"j23", text:"👩🏻‍💻 근로(오전/오후): ☕ 기말고사 D-1 전과목 총정리", tagId:"tag-java" },
   ],
-  23: [
-    { id:"j58", text:"🌐 React — hooks 실습 (useState/useEffect)",       tagId:"tag-react" },
-  ],
-  24: [
-    { id:"j61", text:"🌐 React — React Router 실습",                     tagId:"tag-react" },
-  ],
-  25: [
-    { id:"j63", text:"🌐 React — 미니 프로젝트 기획",                    tagId:"tag-react" },
-  ],
+  16: [ { id:"j24", text:"🏫 기말고사 1일차 - 파이팅!", tagId:"tag-java" } ],
+  17: [ { id:"j25", text:"🏫 기말고사 2일차", tagId:"tag-java" } ],
+  18: [ { id:"j26", text:"🏫 기말고사 3일차", tagId:"tag-java" } ],
+  19: [ { id:"j27", text:"🏫 기말고사 4일차 (마지막)", tagId:"tag-java" } ],
+  20: [ { id:"j28", text:"🎉 오전: 기말 끝! 푹 쉬기 (17시 알바)", tagId:"tag-react" } ],
+  21: [ { id:"j29", text:"🌐 React 공식문서 기반 미니 프로젝트 기획", tagId:"tag-react" } ],
+
+  // [4주차: 6/22(월) ~ 6/28(일)]
+  22: [ { id:"j30", text:"🌐 React 프로젝트 세팅 및 컴포넌트 레이아웃", tagId:"tag-react" } ],
+  23: [ { id:"j31", text:"🌐 React 상태관리(useState/Context) 적용", tagId:"tag-react" } ],
+  24: [ { id:"j32", text:"🌐 React API 연동 및 데이터 패칭 실습", tagId:"tag-react" } ],
+  25: [ { id:"j33", text:"👩🏻‍💻 근로(오전/오후): 🌐 React 관련 블로그 아티클 스크랩", tagId:"tag-react" } ],
   26: [
-    { id:"j65", text:"🌐 React — 미니 프로젝트 시작",                    tagId:"tag-react" },
+    { id:"j34", text:"👩🏻‍💻 근로(오전): 🌐 아티클 읽기", tagId:"tag-react" },
+    { id:"j35", text:"🌐 오후 집중: 리팩토링 및 커스텀 훅 분리", tagId:"tag-react" },
   ],
-  27: [
-    { id:"j67", text:"🌐 React — 미니 프로젝트 계속",                    tagId:"tag-react" },
-  ],
-  28: [
-    { id:"j69", text:"🌐 React — 미니 프로젝트 마무리",                  tagId:"tag-react" },
-  ],
-  29: [
-    { id:"j71", text:"🌐 React — 코드 리뷰 + 개선",                      tagId:"tag-react" },
-  ],
-  30: [
-    { id:"j73", text:"📝 6월 전체 회고 + 7월 계획 초안",                 tagId:"tag-react" },
-  ],
+  27: [ { id:"j36", text:"🌐 오전: React 프로젝트 UI 폴리싱 및 버그 수정", tagId:"tag-react" } ],
+  28: [ { id:"j37", text:"🌐 미니 프로젝트 최종 완성 및 GitHub 배포 🚀", tagId:"tag-react" } ],
+
+  // [5주차: 6/29(월) ~ 6/30(화)]
+  29: [ { id:"j38", text:"👩🏻‍💻 근로(오전/오후): 🌐 개발 블로그에 프로젝트 회고 작성", tagId:"tag-react" } ],
+  30: [ { id:"j39", text:"📝 6월 최종 마무리 및 7월 방향성 세우기", tagId:"tag-react" } ],
 };
 
+// 배열 평탄화
 const ALL_BASE_TASKS_MAR = Object.values(BASE_TASKS_BY_DAY).flat();
 const ALL_BASE_TASKS_APR = Object.values(APR_TASKS_BY_DAY).flat();
 const ALL_BASE_TASKS_MAY = Object.values(MAY_TASKS_BY_DAY).flat();
@@ -266,25 +214,27 @@ const ALL_BASE_TASKS_JUN = Object.values(JUN_TASKS_BY_DAY).flat();
 const ALL_BASE_TASKS = [...ALL_BASE_TASKS_MAR, ...ALL_BASE_TASKS_APR, ...ALL_BASE_TASKS_MAY, ...ALL_BASE_TASKS_JUN];
 
 const WEEKS_META = [
-  { id:"week1", label:"1주차", range:"3/23(월) ~ 3/29(일)", theme:"🎬 인강 완주 + 전공 당일복습",  themeDesc:"강의 10~27강 / 수업 당일 필기 / 근로 중 복습 / 알바 고려", color:"#ec4899", lightColor:"#fdf2f8", days:[23,24,25,26,27,28,29] },
-  { id:"week2", label:"마무리", range:"3/30(월) ~ 3/31(화)", theme:"🎉 완강 + 4월 준비",            themeDesc:"28~30강 완강 / 완강 회고 / 4월 계획 확인",                 color:"#f59e0b", lightColor:"#fffbeb", days:[30,31] },
+  { id:"week1", label:"1주차", range:"3/23(월) ~ 3/29(일)", theme:"🎬 기본 복습", themeDesc:"전공 당일 복습", color:"#ec4899", lightColor:"#fdf2f8", days:[23,24,25,26,27,28,29] },
+  { id:"week2", label:"2주차", range:"3/30(월) ~ 3/31(화)", theme:"🎉 3월 마무리", themeDesc:"마무리 및 4월 준비", color:"#f59e0b", lightColor:"#fffbeb", days:[30,31] },
 ];
 const APR_WEEKS_META = [
-  { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)",   month:"apr", theme:"✏️ React 프로젝트 시작",           themeDesc:"Vite 생성·레이아웃·핵심기능 1 / 전공 당일복습 유지",     color:"#8b5cf6", lightColor:"#f5f3ff", days:[2,3] },
-  { id:"apr-week2", label:"2주차", range:"4/6(월) ~ 4/12(일)",  month:"apr", theme:"🔗 coupang 연결 + Tailwind",       themeDesc:"API 연동·CORS 해결·화면 출력 / 전공 과제 체크",          color:"#0ea5e9", lightColor:"#f0f9ff", days:[6,9,10] },
-  { id:"apr-week3", label:"3주차", range:"4/13(월) ~ 4/19(일)", month:"apr", theme:"🚨 시험 2주 전! 전공 집중",        themeDesc:"전과목 1회독 + 시험범위 정리 / React 가볍게 유지",       color:"#ef4444", lightColor:"#fef2f2", days:[13,16,17] },
-  { id:"apr-week4", label:"4주차", range:"4/20(월) ~ 4/26(일)", month:"apr", theme:"🏫 중간고사",                      themeDesc:"4/21~24 시험 — 코딩 완전 휴식 / 시험 후 회복",           color:"#f59e0b", lightColor:"#fffbeb", days:[20] },
-  { id:"apr-week5", label:"5주차", range:"4/27(월) ~ 4/30(목)", month:"apr", theme:"🚀 React Query + 자바 팀프로젝트", themeDesc:"React Query 실습 / 팀프로젝트 킥오프 / 4월 회고",         color:"#10b981", lightColor:"#f0fdf4", days:[27,30] },
+  { id:"apr-week1", label:"1주차", range:"4/1(수) ~ 4/5(일)", month:"apr", theme:"✏️ 4월 시작", themeDesc:"전공 당일복습 유지", color:"#8b5cf6", lightColor:"#f5f3ff", days:[2,3] },
+  { id:"apr-week2", label:"2주차", range:"4/6(월) ~ 4/12(일)", month:"apr", theme:"🔗 4월 2주차", themeDesc:"전공 과제 체크", color:"#0ea5e9", lightColor:"#f0f9ff", days:[6,9,10] },
+  { id:"apr-week3", label:"3주차", range:"4/13(월) ~ 4/19(일)", month:"apr", theme:"🚨 시험 전 집중", themeDesc:"시험범위 정리", color:"#ef4444", lightColor:"#fef2f2", days:[13,16,17] },
+  { id:"apr-week4", label:"4주차", range:"4/20(월) ~ 4/26(일)", month:"apr", theme:"🏫 중간고사", themeDesc:"시험 후 회복", color:"#f59e0b", lightColor:"#fffbeb", days:[20] },
+  { id:"apr-week5", label:"5주차", range:"4/27(월) ~ 4/30(목)", month:"apr", theme:"🚀 4월 마무리", themeDesc:"4월 회고", color:"#10b981", lightColor:"#f0fdf4", days:[27,30] },
 ];
+// 월~일 규칙 완벽 적용
 const MAY_WEEKS_META = [
-  { id:"may-week1", label:"시작", range:"5/18(일)",              month:"may", theme:"🚀 5월 공부 시작!",              themeDesc:"토익 유형파악 / React 공식문서 시작 / 자바 현황 파악",        color:"#ec4899", lightColor:"#fdf2f8", days:[18] },
-  { id:"may-week2", label:"4주차", range:"5/19(월) ~ 5/25(일)",  month:"may", theme:"📗 토익 LC+RC 기초 + React",     themeDesc:"LC Part 1~4 / RC Part 5~7 유형 / React 훅 공식문서",            color:"#8b5cf6", lightColor:"#f5f3ff", days:[19,20,21,22,23,24,25] },
-  { id:"may-week3", label:"5주차", range:"5/26(월) ~ 5/31(토)",  month:"may", theme:"📗 토익 실전 + ☕ 자바 마감",    themeDesc:"모의고사 1회 + 오답분석 / 자바 팀프로젝트 최종 마감",            color:"#f59e0b", lightColor:"#fffbeb", days:[26,27,28,29,30,31] },
+  { id:"may-week3", label:"3주차", range:"5/18(월) ~ 5/24(일)", month:"may", theme:"🚀 토익 900+ / React 공식문서 시작", themeDesc:"단어/LC/RC 집중, React 튜토리얼 읽기, 자바 시작", color:"#ec4899", lightColor:"#fdf2f8", days:[18,19,20,21,22,23,24] },
+  { id:"may-week4", label:"4주차", range:"5/25(월) ~ 5/31(일)", month:"may", theme:"📗 실전 모의고사 + 자바 프로젝트 마감", themeDesc:"토익 모의고사 풀이, 자바 최종 제출", color:"#8b5cf6", lightColor:"#f5f3ff", days:[25,26,27,28,29,30,31] },
 ];
 const JUN_WEEKS_META = [
-  { id:"jun-week1", label:"1주차", range:"6/1(일) ~ 6/8(일)",   month:"jun", theme:"📗 토익 D-12 + 기말 준비",      themeDesc:"토익 실전모의고사 2회 / 전공 기말 1회독 시작",              color:"#0ea5e9", lightColor:"#f0f9ff", days:[1,2,3,4,5,6,7,8] },
-  { id:"jun-week2", label:"2주차", range:"6/9(월) ~ 6/15(일)",  month:"jun", theme:"📗 토익 D-4 + 🏫 기말 집중",   themeDesc:"토익 최종 점검 / 6/13 토익 시험 🏆 / 기말 마무리",         color:"#ef4444", lightColor:"#fef2f2", days:[9,11,12,13,14] },
-  { id:"jun-week4", label:"4주차", range:"6/20(금) ~ 6/30(월)", month:"jun", theme:"🎉 방학! React 본격 스터디",   themeDesc:"기말 끝 / React 미니 프로젝트 / 학기 회고",                 color:"#10b981", lightColor:"#f0fdf4", days:[21,22,23,24,25,26,27,28,29,30] },
+  { id:"jun-week1", label:"1주차", range:"6/1(월) ~ 6/7(일)", month:"jun", theme:"📚 기말 대비 시작 + 토익 실전", themeDesc:"전공 1회독, 토익 오답노트 보완", color:"#0ea5e9", lightColor:"#f0f9ff", days:[1,2,3,4,5,6,7] },
+  { id:"jun-week2", label:"2주차", range:"6/8(월) ~ 6/14(일)", month:"jun", theme:"🏆 6/14 토익 시험 + 기말 집중", themeDesc:"목표 900점 달성! 기말고사 요약정리", color:"#ef4444", lightColor:"#fef2f2", days:[8,9,10,11,12,13,14] },
+  { id:"jun-week3", label:"3주차", range:"6/15(월) ~ 6/21(일)", month:"jun", theme:"🏫 6/16~19 기말고사", themeDesc:"시험 잘 마무리하고 푹 쉬기", color:"#f59e0b", lightColor:"#fffbeb", days:[15,16,17,18,19,20,21] },
+  { id:"jun-week4", label:"4주차", range:"6/22(월) ~ 6/28(일)", month:"jun", theme:"🌐 React 미니 프로젝트", themeDesc:"공식문서 기반으로 직접 만들어보기", color:"#10b981", lightColor:"#f0fdf4", days:[22,23,24,25,26,27,28] },
+  { id:"jun-week5", label:"5주차", range:"6/29(월) ~ 6/30(화)", month:"jun", theme:"✨ 6월 회고", themeDesc:"기술 블로그 회고 및 7월 계획", color:"#6366f1", lightColor:"#e0e7ff", days:[29,30] },
 ];
 
 const DAY_LABELS = ["일","월","화","수","목","금","토"];
@@ -306,7 +256,6 @@ const TODAY_MAY_DAY = IS_MAY_2026 ? todayDate.getDate() : null;
 const TODAY_JUN_DAY = IS_JUN_2026 ? todayDate.getDate() : null;
 function isTodayMay(d) { return IS_MAY_2026 && d===TODAY_MAY_DAY; }
 function isTodayJun(d) { return IS_JUN_2026 && d===TODAY_JUN_DAY; }
-function getTodayLabel(){ return IS_MARCH_2026 ? `3/${TODAY_DAY}(${getDayLabel(TODAY_DAY)})` : null; }
 function makeId()       { return `id-${Date.now()}-${Math.random().toString(36).slice(2,7)}`; }
 function makeConfetti(n=60){ return Array.from({length:n},(_,i)=>({ id:i, x:Math.random()*100, color:COLORS[Math.floor(Math.random()*COLORS.length)], size:Math.random()*8+5, delay:Math.random()*0.5, duration:Math.random()*1.5+1.5, shape:Math.random()>.5?"circle":"rect" })); }
 
@@ -314,18 +263,16 @@ export default function App() {
   const [tags, setTags] = useState(() => {
     try { 
       const saved = JSON.parse(localStorage.getItem("mio-tags")); 
-      if (saved && saved.some(t => t.label === "얄코 강의")) {
-          return DEFAULT_TAGS; // 이전 태그가 남아있다면 초기화
-      }
+      // 이전 코드로 저장된 불필요한 태그(얄코 강의 등)가 있으면 3개로 초기화
+      if (saved && saved.length !== 3) return DEFAULT_TAGS;
       return saved || DEFAULT_TAGS;
-    }
-    catch { return DEFAULT_TAGS; }
+    } catch { return DEFAULT_TAGS; }
   });
   
   const [showTagInput, setShowTagInput] = useState(false);
   const [newTagIcon, setNewTagIcon]   = useState("🏷️");
   const [newTagLabel, setNewTagLabel] = useState("");
-  const [selectedTag, setSelectedTag] = useState(null); // 태그 필터링 상태 추가
+  const [selectedTag, setSelectedTag] = useState(null);
 
   const [taskOrder, setTaskOrder] = useState(() => {
     try { return JSON.parse(localStorage.getItem("mio-task-order") || "{}"); } catch { return {}; }
@@ -344,7 +291,7 @@ export default function App() {
   });
 
   const [month, setMonth] = useState("may");
-  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,"apr-week1":false,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false,"may-week1":true,"may-week2":true,"may-week3":true,"jun-week1":true,"jun-week2":true,"jun-week4":true});
+  const [openWeeks, setOpenWeeks] = useState({week1:true,week2:false,"apr-week1":false,"apr-week2":false,"apr-week3":false,"apr-week4":false,"apr-week5":false,"may-week3":true,"may-week4":true,"jun-week1":true,"jun-week2":true,"jun-week3":true,"jun-week4":true,"jun-week5":true});
   const [tab, setTab]               = useState("all");
   const [moveModal, setMoveModal]   = useState(null);
   const [addState, setAddState]     = useState({});
@@ -358,9 +305,7 @@ export default function App() {
   });
   const [dragActiveId, setDragActiveId] = useState(null);
   const [confetti, setConfetti]     = useState([]);
-  const [celebMsg, setCelebMsg]     = useState(null);
-  const prevTodayDone = useRef(null);
-  const prevAllDone   = useRef(null);
+
   const dragItem      = useRef(null);
   const dragOverItem  = useRef(null);
 
@@ -384,7 +329,6 @@ export default function App() {
     if (selectedTag === id) setSelectedTag(null);
   };
 
-  // ── 할일 목록 정렬 및 필터 (월별 처리 지원) ──
   function getOrderedTasks(day, currentMonth) {
     let baseMap, allBaseTasks;
     if(currentMonth === "mar") { baseMap = BASE_TASKS_BY_DAY; allBaseTasks = ALL_BASE_TASKS_MAR; }
@@ -401,10 +345,7 @@ export default function App() {
 
     let pool = [...incoming, ...staying, ...custom].filter(t=>!hiddenTasks[t.id]);
     
-    // 태그 필터 적용
-    if (selectedTag) {
-      pool = pool.filter(t => t.tagId === selectedTag);
-    }
+    if (selectedTag) pool = pool.filter(t => t.tagId === selectedTag);
 
     const order = taskOrder[dayKey];
     const orderMap = {};
@@ -425,7 +366,6 @@ export default function App() {
     });
   }
 
-  // ── 드래그 앤 드롭 ──
   const onDragStart = (e, day, taskId) => {
     dragItem.current = {day, id: taskId};
     setDragActiveId(taskId);
@@ -496,13 +436,30 @@ export default function App() {
   const confirmMove  = (targetDay) => { if(!moveModal) return; setMoved(p=>({...p,[moveModal.taskId]:targetDay})); setMoveModal(null); };
   const cancelMove   = (taskId) => setMoved(p=>{ const n={...p}; delete n[taskId]; return n; });
 
-  const allCustomFlat = Object.values(customTasks).flat();
-  const visibleBaseTasks = ALL_BASE_TASKS.filter(t=>!hiddenTasks[t.id]);
-  const allTasksCount = visibleBaseTasks.length + allCustomFlat.length;
-  const totalDone = [...visibleBaseTasks, ...allCustomFlat].filter(t=>checked[t.id]).length;
-  const progress  = Math.round((totalDone/(allTasksCount||1))*100);
+  // 현재 선택된 '달'의 진행률만 계산
+  let currentMonthBaseTasks = [];
+  if (month === "mar") currentMonthBaseTasks = ALL_BASE_TASKS_MAR;
+  else if (month === "apr") currentMonthBaseTasks = ALL_BASE_TASKS_APR;
+  else if (month === "may") currentMonthBaseTasks = ALL_BASE_TASKS_MAY;
+  else if (month === "jun") currentMonthBaseTasks = ALL_BASE_TASKS_JUN;
+
+  const currentVisibleBaseTasks = currentMonthBaseTasks.filter(t=>!hiddenTasks[t.id]);
+  const currentMonthCustomTasks = Object.keys(customTasks)
+    .filter(k => {
+      if(month === "mar") return !k.includes("-");
+      return k.startsWith(month + "-");
+    })
+    .flatMap(k => customTasks[k]);
+
+  let allMonthTasks = [...currentVisibleBaseTasks, ...currentMonthCustomTasks];
+  if (selectedTag) allMonthTasks = allMonthTasks.filter(t => t.tagId === selectedTag);
+
+  const monthTotalCount = allMonthTasks.length;
+  const monthTotalDone = allMonthTasks.filter(t=>checked[t.id]).length;
+  const progress = monthTotalCount > 0 ? Math.round((monthTotalDone / monthTotalCount) * 100) : 0;
 
   const PINK = "#db2777";
+  const monthLabelText = { mar: "3월", apr: "4월", may: "5월", jun: "6월" }[month];
 
   return (<>
     <style>{`
@@ -515,7 +472,6 @@ export default function App() {
       .modal-box{background:white;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:24px 20px 40px;max-height:80vh;overflow-y:auto;}
       .day-btn{width:100%;border:1.5px solid #e5e7eb;background:#fafafa;border-radius:12px;padding:12px 16px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:500;color:#374151;transition:all 0.15s;}
       .day-btn:hover{border-color:${PINK};background:#fdf2f8;color:${PINK};}
-      .celeb-msg{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);z-index:1000;pointer-events:none;text-align:center;background:white;border-radius:24px;padding:28px 36px;box-shadow:0 8px 40px rgba(219,39,119,0.25);white-space:pre-line;}
       .slide-down{animation:slide-down 0.2s ease;}
       @keyframes slide-down{0%{opacity:0;transform:translateY(-6px);}100%{opacity:1;transform:translateY(0);}}
       .task-row{transition:background 0.15s;}
@@ -533,7 +489,7 @@ export default function App() {
       {/* HEADER */}
       <div style={{background:`linear-gradient(135deg,#f472b6 0%,${PINK} 100%)`,padding:"28px 20px 22px",color:"white",position:"sticky",top:0,zIndex:100,boxShadow:"0 4px 24px rgba(219,39,119,0.3)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-          <div style={{fontSize:11,fontWeight:500,opacity:0.75,letterSpacing:"0.05em"}}>📅 2026년 공부 플래너</div>
+          <div style={{fontSize:11,fontWeight:500,opacity:0.75,letterSpacing:"0.05em"}}>📅 2026년 집중 공부 플래너</div>
           <button onClick={()=>setTab("journal")} style={{border:"1.5px solid rgba(255,255,255,0.5)",background:"rgba(255,255,255,0.15)",color:"white",borderRadius:99,padding:"4px 12px",fontSize:12,fontWeight:700,cursor:"pointer",backdropFilter:"blur(4px)",whiteSpace:"nowrap"}}>📓 학습일지</button>
         </div>
         <div style={{fontSize:20,fontWeight:800,letterSpacing:"-0.03em",marginBottom:18,color:"white"}}>Study CheckList ✨</div>
@@ -541,19 +497,19 @@ export default function App() {
           <div style={{background:"white",height:"100%",borderRadius:99,width:`${progress}%`,transition:"width 0.5s cubic-bezier(.4,0,.2,1)"}}/>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:12,fontWeight:500,opacity:0.85,color:"white"}}>
-          <span>전체 진행률</span>
-          <span style={{fontWeight:700}}>{totalDone} / {allTasksCount}개 ({progress}%)</span>
+          <span>{monthLabelText} 전체 진행률 {selectedTag ? "(필터됨)" : ""}</span>
+          <span style={{fontWeight:700}}>{monthTotalDone} / {monthTotalCount}개 ({progress}%)</span>
         </div>
       </div>
 
       {/* 월 선택 탭 */}
       <div style={{display:"flex",gap:8,padding:"14px 16px 0",borderBottom:"1px solid #f1f5f9"}}>
         {[["mar","🌸 3월"],["apr","🌿 4월"],["may","☀️ 5월"],["jun","🌊 6월"]].map(([m,label])=>(
-          <button key={m} onClick={()=>setMonth(m)} style={{padding:"8px 20px",borderRadius:"12px 12px 0 0",border:"none",cursor:"pointer",fontSize:13,fontWeight:700,transition:"all 0.2s",background:month===m?"white":"transparent",color:month===m?"#db2777":"#9ca3af",boxShadow:month===m?"0 -2px 8px rgba(0,0,0,0.06)":""}}>{label}</button>
+          <button key={m} onClick={()=>{setMonth(m); setSelectedTag(null);}} style={{padding:"8px 20px",borderRadius:"12px 12px 0 0",border:"none",cursor:"pointer",fontSize:13,fontWeight:700,transition:"all 0.2s",background:month===m?"white":"transparent",color:month===m?"#db2777":"#9ca3af",boxShadow:month===m?"0 -2px 8px rgba(0,0,0,0.06)":""}}>{label}</button>
         ))}
       </div>
 
-      {/* TAGS 범례 (필터 기능 추가됨) */}
+      {/* TAGS 범례 (필터 기능 추가) */}
       <div style={{padding:"14px 16px 4px"}}>
         <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:6,scrollbarWidth:"none"}}>
           <style>{`.tag-scroll::-webkit-scrollbar{display:none;}`}</style>
@@ -570,12 +526,12 @@ export default function App() {
             >
               <span>{tag.icon}</span><span>{tag.label}</span>
               {!DEFAULT_TAGS.find(d=>d.id===tag.id)&&(
-                <span onClick={(e)=>{e.stopPropagation(); deleteTag(tag.id);}} style={{marginLeft:2,color:"#f9a8d4",fontSize:13,fontWeight:900}}>×</span>
+                <span onClick={(e)=>{e.stopPropagation(); deleteTag(tag.id);}} style={{marginLeft:4,color:"#f9a8d4",fontSize:13,fontWeight:900}}>×</span>
               )}
             </div>
           ))}
           <button onClick={()=>setShowTagInput(p=>!p)} style={{flexShrink:0,padding:"5px 12px",borderRadius:99,border:`1.5px dashed ${PINK}`,background:"white",color:PINK,fontSize:12,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>
-            {showTagInput?"✕":"+ 태그 추가"}
+            {showTagInput?"✕":"+ 추가"}
           </button>
         </div>
         {showTagInput&&(
@@ -595,7 +551,7 @@ export default function App() {
         <div style={{flexShrink:0,marginLeft:"auto",display:"flex",gap:6}}>
           <button 
             onClick={()=>{ setReorderMode(p=>!p); setEditMode(false); }} 
-            disabled={!!selectedTag} // 필터링 중에는 드래그 비활성화
+            disabled={!!selectedTag} 
             style={{opacity: selectedTag ? 0.5 : 1, padding:"8px 14px",borderRadius:99,border:`1.5px solid ${reorderMode?"#f59e0b":"#e5e7eb"}`,cursor:selectedTag?"not-allowed":"pointer",fontSize:12,fontWeight:700,whiteSpace:"nowrap",transition:"all 0.2s",background:reorderMode?"#fffbeb":"white",color:reorderMode?"#d97706":"#9ca3af"}}
           >
             {reorderMode?"✅ 완료":"↕️ 이동"}
@@ -606,7 +562,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── 렌더링 영역 ── */}
       {tab==="moved" && (
         <div style={{padding:"8px 16px"}}>
           {Object.keys(moved).length===0?(
@@ -639,11 +594,7 @@ export default function App() {
 
             return weeksData.map(week => {
               const isOpen = openWeeks[week.id];
-              // 간단한 진행률 계산 (필터링되지 않은 전체 기준)
-              const wTasks = week.days.flatMap(d => {
-                const dayKey = month === "mar" ? d : `${month}-${d}`;
-                return getOrderedTasks(d, month);
-              });
+              const wTasks = week.days.flatMap(d => getOrderedTasks(d, month));
               const wDone = wTasks.filter(t=>checked[t.id]).length;
               const wPct = wTasks.length > 0 ? Math.round((wDone/wTasks.length)*100) : 0;
 
@@ -700,8 +651,8 @@ export default function App() {
                               </div>
                               <div style={{flex:1}}>
                                 {tdy&&<span style={{fontSize:11,fontWeight:800,background:week.color,color:"white",borderRadius:99,padding:"2px 9px"}}>TODAY</span>}
-                                {wkd&&!tdy&&<span style={{fontSize:11,fontWeight:600,color:"#ef4444"}}>주말 · 3~4시간</span>}
-                                {!wkd&&!tdy&&<span style={{fontSize:11,fontWeight:500,color:"#9ca3af"}}>평일 · 1~2시간</span>}
+                                {wkd&&!tdy&&<span style={{fontSize:11,fontWeight:600,color:"#ef4444"}}>주말 · 오후 알바</span>}
+                                {!wkd&&!tdy&&<span style={{fontSize:11,fontWeight:500,color:"#9ca3af"}}>평일 · 근로/알바</span>}
                               </div>
                               <div style={{display:"flex",alignItems:"center",gap:8}}>
                                 <div style={{fontSize:12,fontWeight:700,color:allDone?"#10b981":"#9ca3af"}}>{allDone?"✅ 완료!":`${dayDone}/${orderedTasks.length}`}</div>
@@ -798,10 +749,14 @@ export default function App() {
         </div>
       )}
 
-      {tab==="all" && month==="mar" && (
+      {tab==="all" && (
         <div style={{margin:"8px 16px 0",background:"white",borderRadius:20,padding:"20px",boxShadow:"0 2px 14px rgba(0,0,0,0.06)"}}>
-          <div style={{fontSize:14,fontWeight:800,color:"#374151",letterSpacing:"-0.02em",marginBottom:14}}>💡 공부 원칙</div>
-          {["강의는 1.5배속 + 직접 손으로 따라치기 (복붙 금지)","모르면 구글 → 공식문서 → 강의 재수강 순서로","NestJS 복습은 '읽기'가 아니라 '설명할 수 있는지' 확인하기","AI 코드 생성 절대 금지 — 직접 만들어야 포폴이 됨"].map((tip,i)=>(
+          <div style={{fontSize:14,fontWeight:800,color:"#374151",letterSpacing:"-0.02em",marginBottom:14}}>💡 5~6월 공부 원칙</div>
+          {["React는 인강 대신 공식문서/블로그 위주로 직접 찾아가며 실습",
+            "목,금,토 알바(17시~) 가기 전에는 무조건 공부 분량 다 채우기!",
+            "월/목/금 오전 근로 중에는 토익 단어나 가벼운 복습 위주",
+            "토익 900+을 위해 주말에는 무조건 실전 모의고사 1회 이상 풀기",
+            "기말고사는 2주 전(6월초)부터 전공 1회독 시작하기"].map((tip,i)=>(
             <div key={i} style={{display:"flex",gap:10,marginBottom:9,fontSize:13,lineHeight:1.6}}>
               <span style={{color:PINK,fontWeight:800,flexShrink:0}}>0{i+1}.</span>
               <span style={{color:"#4b5563",fontWeight:400}}>{tip}</span>
@@ -809,10 +764,10 @@ export default function App() {
           ))}
         </div>
       )}
-      <div style={{textAlign:"center",marginTop:28,fontSize:13,fontWeight:600,color:"#f9a8d4"}}>🌸 화이팅! 할 수 있어! 🌸</div>
+      <div style={{textAlign:"center",marginTop:28,fontSize:13,fontWeight:600,color:"#f9a8d4"}}>🌸 토익 900, 기말고사 모두 화이팅! 🌸</div>
     </div>
 
-    {/* 날짜 이동 모달 (수정된 이동 로직 반영) */}
+    {/* 날짜 이동 모달 (각 달에 맞게 텍스트/표기 동적 적용) */}
     {moveModal && (() => {
       let availableDays = [];
       if(month === "mar") availableDays = Object.keys(BASE_TASKS_BY_DAY).map(Number);
@@ -825,7 +780,7 @@ export default function App() {
           <div className="modal-box" onClick={e=>e.stopPropagation()}>
             <div style={{fontSize:16,fontWeight:800,color:"#1e1b4b",marginBottom:6}}>📦 할일 미루기</div>
             <div style={{fontSize:13,color:"#6b7280",marginBottom:20,lineHeight:1.5,background:"#f9fafb",borderRadius:10,padding:"10px 12px"}}>{moveModal.taskText}</div>
-            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>어느 날로 미룰까요? ({month.toUpperCase()}월)</div>
+            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>어느 날로 미룰까요? ({monthLabelText})</div>
             <div style={{maxHeight:"45vh",overflowY:"auto"}}>
               {availableDays.filter(d=>d>moveModal.fromDay).map(day=>{
                 let dLabel = ""; let wkd = false;
