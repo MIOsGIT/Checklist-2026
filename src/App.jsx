@@ -1,5 +1,6 @@
 import Journal from "./Journal.jsx";
 import { useState, useEffect, useRef } from "react";
+import { useGoogleLogin } from '@react-oauth/google';
 
 const todayDate = new Date();
 const TODAY_DAY = todayDate.getDate();
@@ -445,6 +446,80 @@ export default function App() {
   const confirmMove  = (targetDay) => { if(!moveModal) return; setMoved(p=>({...p,[moveModal.taskId]:targetDay})); setMoveModal(null); };
   const cancelMove   = (taskId) => setMoved(p=>{ const n={...p}; delete n[taskId]; return n; });
 
+  // ─────────────────────────────────────────
+  // 📱 오늘의 할 일 아이폰(Google Tasks) 연동 로직
+  // ─────────────────────────────────────────
+
+  // 1. 오늘 날짜에 해당하는 할 일 목록만 뽑아오는 함수
+  const getTodayTasksList = () => {
+    const today = todayDate.getDate();
+    // 현재 달이 무슨 달인지 체크해서 그 달의 오늘 할 일을 가져옴
+    if (IS_MARCH_2026) return getOrderedTasks(today, "mar");
+    if (IS_APRIL_2026) return getOrderedTasks(today, "apr");
+    if (IS_MAY_2026) return getOrderedTasks(today, "may");
+    if (IS_JUN_2026) return getOrderedTasks(today, "jun");
+    return [];
+  };
+
+  // 2. 구글 API로 전송하는 함수
+  const syncTodayTasksToGoogle = async (accessToken) => {
+    const todayTasks = getTodayTasksList();
+
+    // 완료되지 않은(체크 안 된) 오늘 할 일만 필터링
+    const undoneTasks = todayTasks.filter(t => !checked[t.id]);
+
+    if (undoneTasks.length === 0) {
+      alert("오늘 남은 할 일이 없어요! 완벽해 🌸");
+      return;
+    }
+
+    // 아이폰 미리알림 '오늘' 목록에 뜨게 하려면 오늘 날짜 시간이 필요함
+    const todayIso = new Date().toISOString(); 
+
+    try {
+      let successCount = 0;
+      // 한꺼번에 보내면 튕길 수 있어서 for문으로 하나씩 전송
+      for (const task of undoneTasks) {
+        // 편집 중인 텍스트가 있으면 그걸로, 없으면 원래 텍스트로!
+        const taskText = editingText[task.id] ?? task.text; 
+
+        const res = await fetch('https://tasks.googleapis.com/tasks/v1/lists/@default/tasks', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: taskText,
+            notes: 'React 플래너에서 전송됨 ✨',
+            due: todayIso // 마감일을 오늘로 설정!
+          })
+        });
+
+        if (res.ok) successCount++;
+      }
+
+      if (successCount === undoneTasks.length) {
+        alert(`오늘의 할 일 ${successCount}개를 아이폰으로 보냈어요! 📱🔥`);
+      } else {
+        alert(`${undoneTasks.length}개 중 ${successCount}개만 전송됐어요. 다시 시도해 주세요.`);
+      }
+    } catch (error) {
+      console.error('동기화 에러:', error);
+      alert('네트워크 오류가 발생했어요.');
+    }
+  };
+
+  // 3. 구글 로그인 및 권한 요청 훅
+  const handleTodaySyncClick = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      // 로그인 성공 시 발급된 토큰으로 전송 함수 실행!
+      syncTodayTasksToGoogle(tokenResponse.access_token);
+    },
+    scope: 'https://www.googleapis.com/auth/tasks',
+  });
+  // ─────────────────────────────────────────
+
   let currentMonthBaseTasks = [];
   if (month === "mar") currentMonthBaseTasks = ALL_BASE_TASKS_MAR;
   else if (month === "apr") currentMonthBaseTasks = ALL_BASE_TASKS_APR;
@@ -507,6 +582,19 @@ export default function App() {
           <span>{monthLabelText} 전체 진행률 {selectedTag ? "(필터됨)" : ""}</span>
           <span style={{fontWeight:700}}>{monthTotalDone} / {monthTotalCount}개 ({progress}%)</span>
         </div>
+
+        {/* 👇 여기부터 추가! (오늘 할 일 전송 버튼) */}
+        <div style={{ marginTop: 16 }}>
+          <button 
+            onClick={() => handleTodaySyncClick()}
+            style={{ width: "100%", padding: "12px", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.4)", borderRadius: 12, color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", gap: 8, transition: "background 0.2s" }}
+            onMouseOver={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.3)"}
+            onMouseOut={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.2)"}
+          >
+            <span>📱 오늘의 남은 할 일 폰으로 보내기</span>
+          </button>
+        </div>
+        
       </div>
 
       <div style={{display:"flex",gap:8,padding:"14px 16px 0",borderBottom:"1px solid #f1f5f9"}}>
